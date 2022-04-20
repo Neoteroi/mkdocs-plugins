@@ -1,0 +1,115 @@
+name: Build
+
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - main
+      - ci
+  pull_request:
+    branches:
+      - "*"
+
+env:
+  PROJECT_NAME: neoteroi
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9, "3.10"]
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 9
+          submodules: false
+
+      - name: Use Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: actions/cache@v1
+        id: depcache
+        with:
+          path: deps
+          key: requirements-pip-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
+
+      - name: Download dependencies
+        if: steps.depcache.outputs.cache-hit != 'true'
+        run: |
+          pip download --dest=deps -r requirements.txt
+
+      - name: Install dependencies
+        run: |
+          PYVER=`python -V 2>&1`
+
+          if [ "${PYVER:0:-2}" == "Python 3.10" ]; then
+            pip install -r requirements.txt
+          else
+            pip install -U --no-index --find-links=deps deps/*
+          fi
+
+      - name: Run tests
+        run: |
+          pytest --doctest-modules --junitxml=junit/pytest-results-${{ matrix.python-version }}.xml --cov=$PROJECT_NAME --cov-report=xml tests/
+
+      - name: Run linters
+        run: |
+          echo "Running linters"
+
+          flake8 .
+          isort --check-only . 2>&1
+          black --check . 2>&1
+
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@master
+        with:
+          name: pytest-results-${{ matrix.python-version }}
+          path: junit/pytest-results-${{ matrix.python-version }}.xml
+        if: always()
+
+      - name: Codecov
+        run: |
+          bash <(curl -s https://codecov.io/bash)
+
+      - name: Install distribution dependencies
+        run: pip install --upgrade twine setuptools wheel
+        if: matrix.python-version == 3.9
+
+      - name: Create distribution package
+        run: python setup.py sdist bdist_wheel
+        if: matrix.python-version == 3.9
+
+      - name: Upload distribution package
+        uses: actions/upload-artifact@master
+        with:
+          name: dist-package-${{ matrix.python-version }}
+          path: dist
+        if: matrix.python-version == 3.9
+
+  publish:
+    runs-on: ubuntu-18.04
+    needs: build
+    if: github.event_name == 'release'
+    steps:
+      - name: Download a distribution artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-package-3.9
+          path: dist
+      - name: Publish distribution 📦 to Test PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          skip_existing: true
+          user: __token__
+          password: ${{ secrets.test_pypi_password }}
+          repository_url: https://test.pypi.org/legacy/
+      - name: Publish distribution 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}

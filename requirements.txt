@@ -1,0 +1,7 @@
+pytest
+pytest-cov
+essentials-openapi[full]
+mkdocs
+flake8
+black
+isort
