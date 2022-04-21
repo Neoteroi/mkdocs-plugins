@@ -68,7 +68,7 @@ plugins:
       use_pymdownx: true
 ```
 
-Download a local copy of the provided `extra.css` file and configure it as extra
+Download a local copy of the provided [`extra.css` file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/mkdocsoad/resources/extra.css) and configure it as extra
 file in your MkDocs configuration:
 
 ```yaml
