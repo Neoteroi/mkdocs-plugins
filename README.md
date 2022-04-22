@@ -43,8 +43,8 @@ Example result:
 
 ### Recommended: enable PyMDown and extra CSS
 
-This plugin has been originally designed to generate Markdown that makes use of three
-extensions from [PyMdown extensions](https://facelessuser.github.io/pymdown-extensions/).
+This plugin was designed to generate Markdown for sites that use [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/)
+and three extensions from [PyMdown extensions](https://facelessuser.github.io/pymdown-extensions/).
 To achieve the best results, it is recommended to enable PyMdown extensions.
 
 1. Install [PyMdown extensions](https://facelessuser.github.io/pymdown-extensions/)
@@ -68,8 +68,7 @@ plugins:
       use_pymdownx: true
 ```
 
-Download a local copy of the provided [`extra.css` file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/mkdocsoad/resources/extra.css) and configure it as extra
-file in your MkDocs configuration:
+Download a local copy of the provided [`extra.css` file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/mkdocsoad/resources/extra.css) and configure it as extra file in your MkDocs configuration:
 
 ```yaml
 extra_css:
