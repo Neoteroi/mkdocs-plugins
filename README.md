@@ -23,6 +23,7 @@ How to use:
 
 ```yaml
 plugins:
+  - search
   - neoteroi.mkdocsoad
 ```
 
@@ -64,6 +65,7 @@ Enable PyMdown integration this way:
 
 ```yaml
 plugins:
+  - search
   - neoteroi.mkdocsoad:
       use_pymdownx: true
 ```
