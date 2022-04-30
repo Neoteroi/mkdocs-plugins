@@ -1,7 +1,6 @@
 import re
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Type, TypeVar
 
-from essentials.meta import deprecated
 
 _TABLE_LINE_PATTERN = re.compile(r"\s?\|([^\|]+)")
 _TABLE_SEPARATOR_LINE_PATTERN = re.compile(r"^[-:\s\|]*$")
@@ -88,6 +87,12 @@ class Table:
         yield self._headers
         yield from self.records
 
+    def items(self) -> Iterable[Dict[str, str]]:
+        properties = {index: header for index, header in enumerate(self.headers)}
+
+        for record in self.records:
+            yield {properties[index]: value for index, value in enumerate(record)}
+
     def __iter__(self):
         yield from self.records
 
@@ -114,7 +119,7 @@ class Table:
 T = TypeVar("T", bound=Table)
 
 
-def read_table(markdown: str, cls: Type[T]) -> Optional[T]:
+def read_table(markdown: str, cls: Type[T] = Table) -> Optional[T]:
     headers: List[str] = []
     records: List[List[str]] = []
 
@@ -132,47 +137,3 @@ def read_table(markdown: str, cls: Type[T]) -> Optional[T]:
                 records.append(row)
 
     return cls(headers, records) if headers else None
-
-
-def read_table_records(markdown: str) -> Iterable[Dict[str, str]]:
-    """
-    Reads the records from a Markdown table and yields them, assuming that the table
-    has headers and the separator line after the headers.
-
-    Example:
-    ```
-        | A   | B   | C   | D   |
-        | --- | --- | --- | --- |
-        | 1   | 2   | 3   | 4   |
-        | 5   | 6   | 7   | 8   |
-    ```
-
-    yields the following ->
-    ```
-        [
-            {"A": "1", "B": "2", "C": "3", "D": "4"},
-            {"A": "5", "B": "6", "C": "7", "D": "8"}
-        ]
-    ```
-    """
-    headers: Dict[int, str] = {}
-
-    # TODO: raise a ValueError if none of the lines contains a headers separator line
-
-    for line in markdown.splitlines():
-        if _TABLE_SEPARATOR_LINE_PATTERN.match(line):
-            continue
-
-        matches = list(_TABLE_LINE_PATTERN.finditer(line))
-
-        if matches:
-            if not headers:
-                headers = {
-                    index: match.group(1).strip() for index, match in enumerate(matches)
-                }
-            else:
-                values = {
-                    headers[index]: match.group(1).strip()
-                    for index, match in enumerate(matches)
-                }
-                yield values

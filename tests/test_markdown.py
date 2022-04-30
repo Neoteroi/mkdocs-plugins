@@ -1,5 +1,5 @@
 import pytest
-from neoteroi.markdown.tables import read_table_records, Table
+from neoteroi.markdown.tables import read_table, Table
 
 
 def test_markdown_table():
@@ -67,5 +67,7 @@ def test_markdown_table_index_error():
     ],
 )
 def test_read_table(markdown, expected_result):
-    rows = list(read_table_records(markdown))
-    assert rows == expected_result
+    table = read_table(markdown)
+    assert table is not None
+    items = list(table.items())
+    assert items == expected_result
