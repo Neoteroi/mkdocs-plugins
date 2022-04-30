@@ -25,9 +25,9 @@ setup(
     url="https://github.com/Neoteroi/mkdocs-plugins",
     author="RobertoPrevato",
     author_email="roberto.prevato@gmail.com",
-    keywords="MkDocs OpenAPI Swagger Markdown plugin documentation",
+    keywords="MkDocs OpenAPI Swagger Markdown plugins extensions documentation",
     license="MIT",
-    packages=["neoteroi.mkdocsoad"],
+    packages=["neoteroi.markdown", "neoteroi.mkdocsoad", "neoteroi.spantable"],
     install_requires=["essentials-openapi[full]", "mkdocs"],
     entry_points={
         "mkdocs.plugins": [
