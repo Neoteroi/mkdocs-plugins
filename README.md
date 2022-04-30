@@ -136,20 +136,20 @@ markdown_extensions:
 ::end-spantable::
 ```
 
-Produces an output like the following (**styles with red lines are added to highlight
-colspan and rowspan**):
+Produces an output like the following (**red lines are added in this example just to
+highlight colspan and rowspan**):
 
 ![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/a7d6390c33a1e84e8d1b5b144af5df91ddd501a6/spantable-example-01.png)
 
 ### SpanTable options
 
 | Option          | Description                                                                                                               |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------ |
 | @span           | Applies colspan and rowspan automatically to expand the cell to all adjacent cells (colspan has precedence over rowspan). |
 | @span=x         | colspan=x                                                                                                                 |
 | @span=x:y       | colspan=x; rowspan=y;                                                                                                     |
 | caption="value" | Adds a _caption_ element with the given value to the table (optional).                                                    |
-| class="value"   | Adds a class to the _table_ element with the given value (optional).                                                      |
+| class="value"   | Adds a _class_ to the _table_ element with the given value (optional).                                                    |
 
 In the following example, the cells with `Italy` and `France` both get
 `colspan="2" rowspan="3"` because they have empty adjacent cells growing one
