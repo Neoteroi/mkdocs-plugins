@@ -12,10 +12,10 @@ pip install neoteroi-mkdocs
 
 This package includes the following plugins and extensions:
 
-| Name        | Description                                               | Type                       |
-| :---------- | :-------------------------------------------------------- | :------------------------- |
-| `mkdocsoad` | Generates documentation from OpenAPI specification files. | MkDocs plugin.             |
-| `spantable` | Tables supporting colspan and rowspan.                    | Python Markdown extension. |
+| Name                      | Description                                               | Type                       |
+| :------------------------ | :-------------------------------------------------------- | :------------------------- |
+| [`mkdocsoad`](#mkdocsoad) | Generates documentation from OpenAPI specification files. | MkDocs plugin.             |
+| [`spantable`](#spantable) | Tables supporting colspan and rowspan.                    | Python Markdown extension. |
 
 ## MkDocsOAD
 
