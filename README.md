@@ -10,7 +10,7 @@
 pip install neoteroi-mkdocs
 ```
 
-This package include the following plugins and extensions:
+This package includes the following plugins and extensions:
 
 | Name        | Description                                               | Type                       |
 | :---------- | :-------------------------------------------------------- | :------------------------- |
