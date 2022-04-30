@@ -4,11 +4,16 @@
 [![license](https://img.shields.io/github/license/neoteroi/mkdocs-plugins.svg)](https://github.com/neoteroi/mkdocs-plugins/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/Neoteroi/mkdocs-plugins/branch/main/graph/badge.svg)](https://codecov.io/gh/Neoteroi/mkdocs-plugins)
 
-# Plugins for MkDocs
+# Plugins for MkDocs and Python Markdown
 
 ```bash
 pip install neoteroi-mkdocs
 ```
+
+| Name        | Description                                               | Type                       |
+| ----------- | --------------------------------------------------------- | -------------------------- |
+| `mkdocsoad` | Generates documentation from OpenAPI specification files. | MkDocs plugin.             |
+| `spantable` | Tables supporting colspan and rowspan.                    | Python Markdown extension. |
 
 ## MkDocsOAD
 
@@ -89,3 +94,76 @@ extra_css:
 ---
 
 ![Example result](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/06e157c4f49e27a7e488d72d36d199194e28e952/oad-example-2.png)
+
+## SpanTable
+
+Extension for Python Markdown to support tables with `colspan` and `rowspan`,
+including automatic handling of span value, support for captions, and table
+classes.
+
+How to use:
+
+1. Configure the extension in the MkDocs configuration file:
+
+```yaml
+markdown_extensions:
+  - neoteroi.spantable
+```
+
+2. Write a Markdown table like in the following example, use `@span`
+   placeholders for automatic handling of colspan and rowspan depending on
+   adjacent empty cells:
+
+```
+::spantable:: caption="Offices by countries" class="shops-by-countries"
+
+| Country      | Address                                                  |
+| ------------ | -------------------------------------------------------- |
+| France @span | 8 Rue St Ferréol - 92190 City: Meudon (Île-de-France)    |
+|              | 50 boulevard Amiral Courbet - 94310 Orly (Île-de-France) |
+|              | ...                                                      |
+|              | ...                                                      |
+| Italy @span  | Str. S. Maurizio, 12, 10072 Caselle torinese TO          |
+|              | S.S. Torino-Asti - 10026 Santena (TO)                    |
+|              | ...                                                      |
+| Poland @span | al. Jana Pawła II 22, 00-133 Warszawa                    |
+|              | plac Trzech Krzyży 4/6, 00-535 Warszawa                  |
+|              | ...                                                      |
+|              | ...                                                      |
+
+::end-spantable::
+```
+
+Produces an output like the following (**styles with red lines are added just for
+clarity**):
+
+![Example table](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/a7d6390c33a1e84e8d1b5b144af5df91ddd501a6/spantable-example-01.png)
+
+### SpanTable options
+
+| Option          | Description                                                                                                               |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| @span           | Applies colspan and rowspan automatically to expand the cell to all adjacent cells (colspan has precedence over rowspan). |
+| @span=x         | colspan=x                                                                                                                 |
+| @span=x:y       | colspan=x; rowspan=y;                                                                                                     |
+| caption="value" | Adds a _caption_ element with the given value to the table (optional).                                                    |
+| class="value"   | Adds a class to the _table_ element with the given value (optional).                                                      |
+
+In the following example, the cells with `Italy` and `France` both get
+`colspan="2" rowspan="3"` because they have empty adjacent cells growing one
+column and two rows:
+
+```
+::spantable:: caption="Life Expectancy By Current Age" class="foo"
+
+| Italy @span   |       | 40 @span      |       | 20 @span      |       |
+| ------------- | ----- | ------------- | ----- | ------------- | ----- |
+|               |       | Men           | Women | Men           | Women |
+|               |       | 78            | 82    | 77            | 81    |
+| Poland @span  |       | 40 @span      |       | 20 @span      |       |
+| ------------- | ----- | ------------- | ----- | ------------- | ----- |
+|               |       | Men           | Women | Men           | Women |
+|               |       | 78            | 82    | 77            | 81    |
+
+::end-spantable::
+```
