@@ -10,8 +10,10 @@
 pip install neoteroi-mkdocs
 ```
 
+This package include the following plugins and extensions:
+
 | Name        | Description                                               | Type                       |
-| ----------- | --------------------------------------------------------- | -------------------------- |
+| :---------- | :-------------------------------------------------------- | :------------------------- |
 | `mkdocsoad` | Generates documentation from OpenAPI specification files. | MkDocs plugin.             |
 | `spantable` | Tables supporting colspan and rowspan.                    | Python Markdown extension. |
 
@@ -85,7 +87,7 @@ extra_css:
 ### Supported sources for OpenAPI Documentation
 
 | Source                         | Example                                                     |
-| ------------------------------ | ----------------------------------------------------------- |
+| :----------------------------- | :---------------------------------------------------------- |
 | YAML file                      | `[OAD(./docs/swagger.yaml)]`                                |
 | JSON file                      | `[OAD(./docs/swagger.json)]`                                |
 | URL returning YAML on HTTP GET | `[OAD(https://example-domain.net/swagger/v1/swagger.yaml)]` |
@@ -134,10 +136,10 @@ markdown_extensions:
 ::end-spantable::
 ```
 
-Produces an output like the following (**styles with red lines are added just for
-clarity**):
+Produces an output like the following (**styles with red lines are added to highlight
+colspan and rowspan**):
 
-![Example table](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/a7d6390c33a1e84e8d1b5b144af5df91ddd501a6/spantable-example-01.png)
+![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/a7d6390c33a1e84e8d1b5b144af5df91ddd501a6/spantable-example-01.png)
 
 ### SpanTable options
 
@@ -167,3 +169,5 @@ column and two rows:
 
 ::end-spantable::
 ```
+
+![SpanTable example 2](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/605bc8563472113e0fcb8af331b4a59e91c07069/spantable-example-02.png)
