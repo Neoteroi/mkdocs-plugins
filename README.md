@@ -142,9 +142,7 @@ Produces an output like the following:
 
 ![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/6df659decb605cf9d1f6166a8ae5cc6a0ba897bb/spantable-example-01b.png)
 
-_With red lines to highlight the cells:_
-
-![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/df66e695db04404f5dd3c04cb4688b373c2ed388/spantable-example-01.png)
+_Note: caption and class are not required._
 
 ### SpanTable options
 
