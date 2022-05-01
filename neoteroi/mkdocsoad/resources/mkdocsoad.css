@@ -7,6 +7,30 @@
 **/
 
 /* For large screens, make better use of the horizontal space */
+
+:root {
+    --http-get-color: green;
+    --http-delete-color: #dc0101;
+    --http-head-color: slateblue;
+    --http-options-color: steelblue;
+    --http-patch-color: darkorange;
+    --http-post-color: darkblue;
+    --http-put-color: darkmagenta;
+    --http-trace-color: darkcyan;
+    --http-route-param-color: rgb(51, 128, 210);
+    --oad-operation-separator-border-color: gray;
+    --oad-block-border-color: #00bfa5;
+}
+
+@media screen {
+    /* Slate theme, i.e. dark mode */
+    [data-md-color-scheme="slate"] {
+        --http-get-color: #115911;
+        --http-post-color: #0093c0;
+        --http-put-color: #c333c3;
+    }
+}
+
 @media screen and (min-width: 2000px) {
     .md-grid {
         max-width: 98%;
@@ -31,72 +55,72 @@ span[class^="http-"] {
 }
 
 .http-get {
-    background-color: green;
+    background-color: var(--http-get-color);
 }
 
 .http-delete {
-    background-color: #dc0101;
+    background-color: var(--http-delete-color);
 }
 
 .http-post {
-    background-color: darkblue;
+    background-color: var(--http-post-color);
 }
 
 .http-patch {
-    background-color: darkorange;
+    background-color: var(--http-patch-color);
 }
 
 .http-trace {
-    background-color: darkcyan;
+    background-color: var(--http-trace-color);
 }
 
 .http-put {
-    background-color: darkmagenta;
+    background-color: var(--http-put-color);
 }
 
 .http-head {
-    background-color: slateblue;
+    background-color: var(--http-head-color);
 }
 
 .http-options {
-    background-color: steelblue;
+    background-color: var(--http-options-color);
 }
 
 .route-param {
-    color:rgb(51, 128, 210);
+    color: var(--http-route-param-color);
 }
 
 .operation-separator + h3[id^="get"] .route-param {
-    color: green;
+    color: var(--http-get-color);
 }
 
 .operation-separator + h3[id^="delete"] .route-param {
-    color: #dc0101;
+    color: var(--http-delete-color);
 }
 
 
 .operation-separator + h3[id^="post"] .route-param {
-    color: darkblue;
+    color: var(--http-post-color);
 }
 
 .operation-separator + h3[id^="patch"] .route-param {
-    color: darkorange;
+    color: var(--http-patch-color);
 }
 
 .operation-separator + h3[id^="trace"] .route-param {
-    color: darkcyan;
+    color: var(--http-trace-color);
 }
 
 .operation-separator + h3[id^="put"] .route-param {
-    color: darkmagenta;
+    color: var(--http-put-color);
 }
 
 .operation-separator + h3[id^="head"] .route-param {
-    color: slateblue;
+    color: var(--http-head-color);
 }
 
 .operation-separator + h3[id^="options"] .route-param {
-    color: steelblue;
+    color: var(--http-options-color);
 }
 
 .api-version {
@@ -105,7 +129,7 @@ span[class^="http-"] {
 
 .operation-separator {
     margin: 0 !important;
-    border-bottom: 2px dotted gray !important;
+    border-bottom: 2px dotted var(--oad-operation-separator-border-color) !important;
     padding-top: .5rem;
 }
 
@@ -113,21 +137,33 @@ span[class^="http-"] {
     margin-top: 1rem;
 }
 
-.boolean-type, .string-type, .integer-type {
-    color: darkslateblue;
+.string-type {
+    color: var(--md-code-hl-string-color);
+}
+
+.integer-type, .number-type {
+    color: var(--md-code-hl-number-color);
+}
+
+.boolean-type {
+    color: var(--md-code-hl-keyword-color);
 }
 
 .format {
-    color: blueviolet;
+    color: var(--md-code-hl-name-color);
 }
 
 .null-type {
-    color: brown;
+    color: var(--md-code-hl-keyword-color);
+}
+
+a.ref-link {
+    color: var(--md-code-hl-special-color);
 }
 
 .request-block + div {
     padding-left: 1rem;
-    border-left: 2px dashed #00bfa5;
+    border-left: 2px dashed var(--oad-block-border-color);
 }
 
 .small-note {
