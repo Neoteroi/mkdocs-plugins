@@ -113,16 +113,28 @@ span[class^="http-"] {
     margin-top: 1rem;
 }
 
-.boolean-type, .string-type, .integer-type {
-    color: darkslateblue;
+.string-type {
+    color: var(--md-code-hl-string-color);
+}
+
+.integer-type, .number-type {
+    color: var(--md-code-hl-number-color);
+}
+
+.boolean-type {
+    color: var(--md-code-hl-keyword-color);
 }
 
 .format {
-    color: blueviolet;
+    color: var(--md-code-hl-name-color);
 }
 
 .null-type {
-    color: brown;
+    color: var(--md-code-hl-keyword-color);
+}
+
+a.ref-link {
+    color: var(--md-code-hl-special-color);
 }
 
 .request-block + div {
