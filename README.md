@@ -116,10 +116,10 @@ markdown_extensions:
 
 2. Write a Markdown table like in the following example, use `@span`
    placeholders for automatic handling of colspan and rowspan depending on
-   adjacent empty cells:
+   adjacent empty cells (separator lines are ignored):
 
 ```
-::spantable:: caption="Offices by countries" class="offices-by-countries"
+::spantable:: caption="Offices by country" class="offices-by-country"
 
 | Country      | Address                                                  |
 | ------------ | -------------------------------------------------------- |
@@ -144,7 +144,7 @@ Produces an output like the following:
 
 _With red lines to highlight the cells:_
 
-![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/a7d6390c33a1e84e8d1b5b144af5df91ddd501a6/spantable-example-01.png)
+![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/df66e695db04404f5dd3c04cb4688b373c2ed388/spantable-example-01.png)
 
 ### SpanTable options
 
