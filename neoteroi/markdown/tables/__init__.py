@@ -1,7 +1,6 @@
 import re
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Type, TypeVar
 
-
 _TABLE_LINE_PATTERN = re.compile(r"\s?\|([^\|]+)")
 _TABLE_SEPARATOR_LINE_PATTERN = re.compile(r"^[-:\s\|]*$")
 

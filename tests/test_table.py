@@ -1,4 +1,5 @@
 import pytest
+
 from neoteroi.markdown.tables import Matrix, Table
 
 

@@ -3,9 +3,7 @@ This package contains common utilities for markdown used across the various plug
 for Markdown.
 """
 import re
-
 from typing import Dict, Tuple
-
 
 _PROPS_RE = re.compile(
     r"""\s?((?P<name>[^\s\=]+)=(?P<quot>"|')(?P<value>[^\"\']+)(?P=quot))""",

@@ -7,8 +7,8 @@ MIT license.
 """
 import logging
 import re
-from typing import Dict, Optional
 import xml.etree.ElementTree as etree
+from typing import Dict, Optional
 
 from markdown import Extension
 from markdown.blockprocessors import BlockProcessor
