@@ -77,11 +77,13 @@ plugins:
       use_pymdownx: true
 ```
 
-Download a local copy of the provided [`extra.css` file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/mkdocsoad/resources/extra.css) and configure it as extra file in your MkDocs configuration:
+Download a local copy of the provided [`mkdocsoad.css`
+file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/mkdocsoad/resources/mkdocsoad.css)
+and configure it as extra file in your MkDocs configuration:
 
 ```yaml
 extra_css:
-  - css/extra.css
+  - css/mkdocsoad.css
 ```
 
 ### Supported sources for OpenAPI Documentation
@@ -148,6 +150,7 @@ highlight colspan and rowspan**):
 | @span           | Applies colspan and rowspan automatically to expand the cell to all adjacent cells (colspan has precedence over rowspan). |
 | @span=x         | colspan=x                                                                                                                 |
 | @span=x:y       | colspan=x; rowspan=y;                                                                                                     |
+| @class="value"  | Adds an HTML _class_ to any cell, to simplify styling (optional).                                                         |
 | caption="value" | Adds a _caption_ element with the given value to the table (optional).                                                    |
 | class="value"   | Adds a _class_ to the _table_ element with the given value (optional).                                                    |
 
@@ -173,3 +176,14 @@ column and two rows:
 Note: separator lines are ignored when determining the span size.
 
 ![SpanTable example 2](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/605bc8563472113e0fcb8af331b4a59e91c07069/spantable-example-02.png)
+
+### Styling
+
+Download a local copy of the provided [`spantable.css`
+file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/spantable/resources/spantable.css)
+and configure it as extra file in your MkDocs configuration:
+
+```yaml
+extra_css:
+  - css/spantable.css
+```
