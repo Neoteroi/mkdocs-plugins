@@ -138,8 +138,11 @@ markdown_extensions:
 ::end-spantable::
 ```
 
-Produces an output like the following (**red lines are added in this example just to
-highlight colspan and rowspan**):
+Produces an output like the following:
+
+![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/6df659decb605cf9d1f6166a8ae5cc6a0ba897bb/spantable-example-01b.png)
+
+_With red lines to highlight the cells:_
 
 ![SpanTable example 1](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/a7d6390c33a1e84e8d1b5b144af5df91ddd501a6/spantable-example-01.png)
 
@@ -173,9 +176,9 @@ column and two rows:
 ::end-spantable::
 ```
 
-Note: separator lines are ignored when determining the span size.
+Produces an output like the following:
 
-![SpanTable example 2](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/605bc8563472113e0fcb8af331b4a59e91c07069/spantable-example-02.png)
+![SpanTable example 2](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/6df659decb605cf9d1f6166a8ae5cc6a0ba897bb/spantable-example-02b.png)
 
 ### Styling
 
