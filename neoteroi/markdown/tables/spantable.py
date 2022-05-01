@@ -1,9 +1,9 @@
 import re
 from dataclasses import dataclass
-from typing import Iterable, List, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
+from .. import extract_props
 from . import Matrix, Table
-
 
 SPAN_RE = re.compile(r"@span=?([\d]+)?:?([\d]+)?")
 
@@ -12,9 +12,13 @@ SPAN_RE = re.compile(r"@span=?([\d]+)?:?([\d]+)?")
 class Cell:
     text: str
     skip: bool = False
-    html_class: str = ""
     col_span: int = 1
     row_span: int = 1
+    props: Optional[Dict[str, str]] = None
+
+    @property
+    def html_class(self) -> Optional[str]:
+        return self.props.get("class") if self.props else None
 
 
 def _iter_coords(
@@ -87,14 +91,21 @@ def get_matrix(table: Table) -> Matrix:
                         column_index, row_index, cols_span, rows_span
                     ):
                         current = coords == (column_index, row_index)
+                        cell_text, props = (
+                            extract_props(SPAN_RE.sub("", value).strip(), "@")
+                            if current
+                            else ["", {}]
+                        )
                         matrix[coords] = Cell(
-                            SPAN_RE.sub("", value).strip() if current else "",
+                            cell_text,
                             skip=not current,
                             col_span=cols_span,
                             row_span=rows_span,
+                            props=props,
                         )
             else:
-                matrix[column_index, row_index] = Cell(value)
+                cell_text, props = extract_props(value, "@")
+                matrix[column_index, row_index] = Cell(cell_text, props=props)
     return matrix
 
 

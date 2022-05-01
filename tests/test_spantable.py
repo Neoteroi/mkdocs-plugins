@@ -1,6 +1,7 @@
-import pytest
 import markdown
-from neoteroi.spantable import SpanTableExtension
+import pytest
+
+from neoteroi.spantable import SpanTableExtension, makeExtension
 
 
 @pytest.mark.parametrize(
@@ -228,6 +229,104 @@ from neoteroi.spantable import SpanTableExtension
 </div>
             """,
         ],
+        [
+            """
+            ::spantable:: caption="Dungeons & Dragons 4th edition"
+
+            | Class   | Power Source      |
+            | ------- | ----------------- |
+            | Cleric  | Divine @span=0:2  |
+            | Paladin |                   |
+            | Fighter | Martial @span=0:5 |
+            | Ranger  |                   |
+            | Rogue   |                   |
+            | Warlord | Arcane  @span=0:2 |
+            | Warlock |                   |
+
+            ::end-spantable::
+            """,
+            """
+<div class="span-table-wrapper">
+<table class="span-table"><caption>Dungeons &amp; Dragons 4th edition</caption><tr>
+<td>Class</td>
+<td>Power Source</td>
+</tr>
+<tr>
+<td>Cleric</td>
+<td rowspan="2">Divine</td>
+</tr>
+<tr>
+<td>Paladin</td>
+</tr>
+<tr>
+<td>Fighter</td>
+<td rowspan="5">Martial</td>
+</tr>
+<tr>
+<td>Ranger</td>
+</tr>
+<tr>
+<td>Rogue</td>
+</tr>
+<tr>
+<td>Warlord</td>
+</tr>
+<tr>
+<td>Warlock</td>
+</tr>
+</table>
+</div>
+            """,
+        ],
+        [
+            """
+            ::spantable:: caption="Dungeons & Dragons 4th edition"
+
+            | Class   | Power Source      |
+            | ------- | ----------------- |
+            | Cleric @class="divine" | Divine @span=0:2 @class="divine"  |
+            | Paladin @class="divine" |                   |
+            | Fighter | Martial @span=0:5 |
+            | Ranger  |                   |
+            | Rogue   |                   |
+            | Warlord | Arcane  @span=0:2 |
+            | Warlock |                   |
+
+            ::end-spantable::
+            """,
+            """
+<div class="span-table-wrapper">
+<table class="span-table"><caption>Dungeons &amp; Dragons 4th edition</caption><tr>
+<td>Class</td>
+<td>Power Source</td>
+</tr>
+<tr>
+<td class="divine">Cleric</td>
+<td class="divine" rowspan="2">Divine</td>
+</tr>
+<tr>
+<td class="divine">Paladin</td>
+</tr>
+<tr>
+<td>Fighter</td>
+<td rowspan="5">Martial</td>
+</tr>
+<tr>
+<td>Ranger</td>
+</tr>
+<tr>
+<td>Rogue</td>
+</tr>
+<tr>
+<td>Warlord</td>
+</tr>
+<tr>
+<td>Warlock</td>
+</tr>
+</table>
+</div>
+            """,
+        ],
     ],
 )
 def test_spantable_extension(example, expected_result):
@@ -249,3 +348,7 @@ def test_spantable_extension_handles_unclosed_tag():
     assert (
         '::spantable:: caption="Offices by country" class="offices-by-country"' in html
     )
+
+
+def test_make_extension():
+    assert isinstance(makeExtension(), SpanTableExtension)

@@ -1,6 +1,6 @@
 import pytest
 
-from neoteroi.markdown import parse_props
+from neoteroi.markdown import extract_props, parse_props
 from neoteroi.markdown.tables import Table, read_table
 
 
@@ -81,6 +81,7 @@ def test_read_table(markdown, expected_result):
         ("", {}),
         ("Lorem ipsum dolor sit amet", {}),
         ("example foo='power'", {"foo": "power"}),
+        ("example @foo='power'", {"@foo": "power"}),
         ("example\nfoo='power'", {"foo": "power"}),
         ('example foo="power"', {"foo": "power"}),
         (
@@ -96,3 +97,35 @@ def test_read_table(markdown, expected_result):
 def test_parse_props(value, expected_result):
     props = parse_props(value)
     assert props == expected_result
+
+
+@pytest.mark.parametrize(
+    "value,expected_result",
+    [
+        ("", {}),
+        ("Lorem ipsum dolor sit amet", {}),
+        ("example class='x' @foo='power'", {"foo": "power"}),
+        ("example @foo='power'", {"foo": "power"}),
+        ("example\n@foo='power'", {"foo": "power"}),
+    ],
+)
+def test_parse_props_with_prefix(value, expected_result):
+    props = parse_props(value, "@")
+    assert props == expected_result
+
+
+@pytest.mark.parametrize(
+    "value,expected_result",
+    [
+        ("", ("", {})),
+        ("Lorem ipsum dolor sit amet", ("Lorem ipsum dolor sit amet", {})),
+        (
+            "example class='x' @foo='power'",
+            ("example", {"class": "x", "@foo": "power"}),
+        ),
+        ("lorem ipsum\n@foo='power'", ("lorem ipsum", {"@foo": "power"})),
+    ],
+)
+def test_extract_props(value, expected_result):
+    result = extract_props(value)
+    assert result == expected_result

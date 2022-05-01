@@ -33,9 +33,6 @@ class Matrix:
     def __iter__(self):
         yield from self.rows
 
-    def __len__(self):
-        return len(self.rows)
-
     def __setitem__(self, key, value):
         if isinstance(key, tuple):
             if len(key) > 2:
@@ -81,11 +78,6 @@ class Table:
     @property
     def records(self) -> Tuple[Tuple[str, ...], ...]:
         return self._records
-
-    @property
-    def rows(self) -> Iterable[Tuple[str, ...]]:
-        yield self._headers
-        yield from self.records
 
     def items(self) -> Iterable[Dict[str, str]]:
         properties = {index: header for index, header in enumerate(self.headers)}
