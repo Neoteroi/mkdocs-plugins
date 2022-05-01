@@ -13,6 +13,7 @@ import xml.etree.ElementTree as etree
 from markdown import Extension
 from markdown.blockprocessors import BlockProcessor
 
+from neoteroi.markdown import parse_props
 from neoteroi.markdown.tables import read_table
 from neoteroi.markdown.tables.spantable import Cell, SpanTable
 
@@ -21,16 +22,7 @@ logger = logging.getLogger("MARKDOWN")
 
 class SpanTableProcessor(BlockProcessor):
 
-    START_RE = re.compile(
-        r"""
-            (?P<indent>\s*)
-            ::spantable::
-            \s*(caption=(?P<quot>"|')(?P<caption>[\w\s]+)(?P=quot))?
-            \s*(class=(?P<quot1>"|')(?P<class>[\w\s]+)(?P=quot1))?
-            \s*
-         """,
-        re.MULTILINE | re.DOTALL | re.VERBOSE,
-    )
+    START_RE = re.compile(r"""(?P<indent>\s*)::spantable::[\w\s]*""", re.DOTALL)
 
     END_RE = re.compile(r"\s*:{2}end-spantable:{2}\s*\n?")
 
@@ -84,13 +76,9 @@ class SpanTableProcessor(BlockProcessor):
             logger.warning(
                 "Unclosed ::spantable:: block - expected a ::end-spantable::."
             )
-            return
+            return False
 
-        open_match = self.START_RE.search(blocks[0])
-        assert (
-            open_match is not None
-        ), "The opening block must match the opening pattern if test() -> True"
-        props = open_match.groupdict()
+        props = parse_props(blocks[0])
 
         table_blocks = list(self.pop_to_index(blocks, closing_block_index))
         span_table = self.read_first_table(table_blocks)

@@ -1,5 +1,7 @@
 import pytest
-from neoteroi.markdown.tables import read_table, Table
+
+from neoteroi.markdown import parse_props
+from neoteroi.markdown.tables import Table, read_table
 
 
 def test_markdown_table():
@@ -71,3 +73,26 @@ def test_read_table(markdown, expected_result):
     assert table is not None
     items = list(table.items())
     assert items == expected_result
+
+
+@pytest.mark.parametrize(
+    "value,expected_result",
+    [
+        ("", {}),
+        ("Lorem ipsum dolor sit amet", {}),
+        ("example foo='power'", {"foo": "power"}),
+        ("example\nfoo='power'", {"foo": "power"}),
+        ('example foo="power"', {"foo": "power"}),
+        (
+            'example foo="power" style="color:red;"',
+            {"foo": "power", "style": "color:red;"},
+        ),
+        (
+            'example\n\nfoo="power"\nstyle="color:red;"',
+            {"foo": "power", "style": "color:red;"},
+        ),
+    ],
+)
+def test_parse_props(value, expected_result):
+    props = parse_props(value)
+    assert props == expected_result

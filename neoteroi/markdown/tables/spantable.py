@@ -80,7 +80,7 @@ def get_matrix(table: Table) -> Matrix:
                     )
                 else:
                     cols_span = max(int(raw_cols_span or 1), 1)
-                    rows_span = max(int(raw_cols_span or 1), 1)
+                    rows_span = max(int(raw_rows_span or 1), 1)
 
                 if cols_span > 0 or rows_span > 0:
                     for coords in _iter_coords(
@@ -113,7 +113,3 @@ class SpanTable(Table):
     @property
     def matrix(self) -> Matrix:
         return self._matrix
-
-    def should_skip(self, coords: Tuple[int, int]) -> bool:
-        cell = self.matrix[coords]
-        return isinstance(cell, Cell) and cell.skip

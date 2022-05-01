@@ -117,7 +117,7 @@ markdown_extensions:
    adjacent empty cells:
 
 ```
-::spantable:: caption="Offices by countries" class="shops-by-countries"
+::spantable:: caption="Offices by countries" class="offices-by-countries"
 
 | Country      | Address                                                  |
 | ------------ | -------------------------------------------------------- |
@@ -169,5 +169,7 @@ column and two rows:
 
 ::end-spantable::
 ```
+
+Note: separator lines are ignored when determining the span size.
 
 ![SpanTable example 2](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/605bc8563472113e0fcb8af331b4a59e91c07069/spantable-example-02.png)
