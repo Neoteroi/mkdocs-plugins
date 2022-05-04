@@ -39,7 +39,7 @@ setup(
             "neoteroi.mkdocsoad = neoteroi.mkdocsoad:MkDocsOpenAPIDocumentationPlugin",
         ],
         "markdown.extensions": [
-            "neoteroi.spantable = neoteroi.spantable.SpanTableExtension"
+            "neoteroi.spantable = neoteroi.spantable:SpanTableExtension"
         ],
     },
     include_package_data=True,
