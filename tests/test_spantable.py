@@ -1,7 +1,7 @@
 import markdown
 import pytest
 
-from neoteroi.spantable import SpanTableExtension, makeExtension
+from neoteroi.spantable import SpanTableExtension, make_extension
 
 
 @pytest.mark.parametrize(
@@ -351,4 +351,4 @@ def test_spantable_extension_handles_unclosed_tag():
 
 
 def test_make_extension():
-    assert isinstance(makeExtension(), SpanTableExtension)
+    assert isinstance(make_extension(), SpanTableExtension)
