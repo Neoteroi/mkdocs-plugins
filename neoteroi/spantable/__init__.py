@@ -139,5 +139,5 @@ class SpanTableExtension(Extension):
         )
 
 
-def makeExtension(*args, **kwargs):
+def make_extension(*args, **kwargs):
     return SpanTableExtension(*args, **kwargs)

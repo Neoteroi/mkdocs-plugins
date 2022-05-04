@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="neoteroi-mkdocs",
-    version="0.0.3",
+    version="0.0.4",
     description="Plugins for MkDocs and Python Markdown",
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -38,7 +38,9 @@ setup(
         "mkdocs.plugins": [
             "neoteroi.mkdocsoad = neoteroi.mkdocsoad:MkDocsOpenAPIDocumentationPlugin",
         ],
-        "markdown.extensions": ["neoteroi.spantable = neoteroi.spantable.__init__"],
+        "markdown.extensions": [
+            "neoteroi.spantable = neoteroi.spantable:SpanTableExtension"
+        ],
     },
     include_package_data=True,
     zip_safe=False,
