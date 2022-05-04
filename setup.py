@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="neoteroi-mkdocs",
-    version="0.0.2",
+    version="0.0.3",
     description="Plugins for MkDocs and Python Markdown",
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -27,7 +27,12 @@ setup(
     author_email="roberto.prevato@gmail.com",
     keywords="MkDocs OpenAPI Swagger Markdown plugins extensions documentation",
     license="MIT",
-    packages=["neoteroi.markdown", "neoteroi.mkdocsoad", "neoteroi.spantable"],
+    packages=[
+        "neoteroi.markdown",
+        "neoteroi.markdown.tables",
+        "neoteroi.mkdocsoad",
+        "neoteroi.spantable",
+    ],
     install_requires=["essentials-openapi[full]", "mkdocs"],
     entry_points={
         "mkdocs.plugins": [
