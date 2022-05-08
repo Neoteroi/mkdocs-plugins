@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="neoteroi-mkdocs",
-    version="0.0.4",
+    version="0.0.5",
     description="Plugins for MkDocs and Python Markdown",
     long_description=readme(),
     long_description_content_type="text/markdown",

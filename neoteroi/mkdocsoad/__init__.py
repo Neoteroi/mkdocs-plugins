@@ -28,8 +28,10 @@ class MkDocsOpenAPIDocumentationPlugin(BasePlugin):
         source = match.group(1).strip("'\"")
         data = read_from_source(source)
 
-        handler = OpenAPIV3DocumentationHandler(data, style=self._get_style())
-        return handler.write(data)
+        handler = OpenAPIV3DocumentationHandler(
+            data, style=self._get_style(), source=source
+        )
+        return handler.write()
 
     def on_page_markdown(self, markdown, *args, **kwargs):
         """
