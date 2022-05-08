@@ -20,14 +20,17 @@
     --http-route-param-color: rgb(51, 128, 210);
     --oad-operation-separator-border-color: gray;
     --oad-block-border-color: #00bfa5;
+    --oad-small-note-color: #666;
+    --oad-indent-border-color: #444;
 }
 
 @media screen {
     /* Slate theme, i.e. dark mode */
     [data-md-color-scheme="slate"] {
-        --http-get-color: #115911;
+        --http-get-color: #2ea82e;
         --http-post-color: #0093c0;
         --http-put-color: #c333c3;
+        --oad-small-note-color: #afafaf;
     }
 }
 
@@ -168,7 +171,7 @@ a.ref-link {
 
 .small-note {
     font-size: 14px;
-    color: #666;
+    color: var(--oad-small-note-color);
 }
 
 .request-body-title {
@@ -182,7 +185,7 @@ a.ref-link {
 .response-section {
     margin-top: 2px;
     padding-left: 1rem;
-    border-left: 2px dotted #ddd;
+    border-left: 2px dotted var(--oad-indent-border-color);
 }
 
 .info-data {
