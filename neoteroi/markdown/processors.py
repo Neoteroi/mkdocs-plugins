@@ -154,7 +154,7 @@ class BaseBlockProcessor(BlockProcessor, ABC):
     def start_pattern(self) -> re.Pattern:
         if self._start_pattern is None:
             self._start_pattern = re.compile(
-                rf"""(?P<indent>\s*)::{self.name}::([^\s]*)""", re.DOTALL
+                rf"""(?P<indent>\s*)::{self.name}::([^\n]*)?""", re.DOTALL
             )
         return self._start_pattern
 
@@ -204,12 +204,25 @@ class BaseBlockProcessor(BlockProcessor, ABC):
                 f"Unclosed ::{self.name}:: block - expected a ::end-{self.name}::."
             )
             return False
+        match = self.start_pattern.match(blocks[0])
 
-        # TODO: gestire blocchi senza \n
-        props = parse_props(self.start_pattern.sub("", blocks[0]), bool_attrs=True)
+        assert match is not None, "A match here is expected"
 
-        blocks.pop(0)
-        raw_text = self.get_content(pop_to_index(blocks, closing_block_index - 1))
+        props = parse_props(
+            match.group(0).lstrip().replace(f"::{self.name}::", ""), bool_attrs=True
+        )
+
+        if closing_block_index == 0:
+            # there is no carriage return, which is not ideal for
+            # what we want to achieve
+            single_block = blocks[0].lstrip()
+            raw_text = textwrap.dedent(
+                self.end_pattern.sub("", self.start_pattern.sub("", single_block))
+            ).lstrip()
+            blocks.pop(0)
+        else:
+            blocks.pop(0)
+            raw_text = self.get_content(pop_to_index(blocks, closing_block_index - 1))
 
         try:
             obj = self.parse(raw_text, props)
