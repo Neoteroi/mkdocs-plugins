@@ -1,0 +1,25 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "yaml.schemas": {
+            "https://json.schemastore.org/github-workflow.json": "file:///home/ra/projects/github/mkdocs-oad-plugin/.github/workflows/build.yml"
+        }
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Python: TEST",
+                "type": "python",
+                "request": "launch",
+                "program": "test.py",
+                "console": "integratedTerminal",
+                "justMyCode": false
+            }
+        ]
+    }
+}

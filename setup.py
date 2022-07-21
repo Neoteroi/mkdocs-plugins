@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="neoteroi-mkdocs",
-    version="0.0.5",
+    version="0.0.6",
     description="Plugins for MkDocs and Python Markdown",
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -29,9 +29,11 @@ setup(
     license="MIT",
     packages=[
         "neoteroi.markdown",
+        "neoteroi.markdown.data",
         "neoteroi.markdown.tables",
         "neoteroi.mkdocsoad",
         "neoteroi.spantable",
+        "neoteroi.timeline",
     ],
     install_requires=["essentials-openapi[full]", "mkdocs"],
     entry_points={
@@ -39,7 +41,8 @@ setup(
             "neoteroi.mkdocsoad = neoteroi.mkdocsoad:MkDocsOpenAPIDocumentationPlugin",
         ],
         "markdown.extensions": [
-            "neoteroi.spantable = neoteroi.spantable:SpanTableExtension"
+            "neoteroi.spantable = neoteroi.spantable:SpanTableExtension",
+            "neoteroi.timeline = neoteroi.timeline:TimelineExtension",
         ],
     },
     include_package_data=True,
