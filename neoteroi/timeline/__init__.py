@@ -1,15 +1,15 @@
 """
 This module provides an extension to support Markdown tables with colspan and rowspan.
 
-neoteroi.Timeline
+neoteroi.timeline
 
 MIT License
-
 Copyright (c) 2022 to present, Roberto Prevato
 """
 from markdown import Extension
 
-from neoteroi.markdown.processors import BaseBlockProcessor, SourceInlineProcessor
+from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
+from neoteroi.markdown.utils import create_instance
 
 from .domain import Timeline, TimelineItem
 from .html import TimelineHTMLBuilder, aligment_from_props
@@ -29,35 +29,43 @@ class BaseTimelineProcessor:
         builder.build_html(
             parent,
             Timeline(
-                [TimelineItem(**item) for item in obj],
+                [create_instance(TimelineItem, item) for item in obj],
                 align=aligment_from_props(props),
                 alternate=props.get("alternate", False),
             ),
         )
 
 
-class TimelineProcessor(BaseTimelineProcessor, BaseBlockProcessor):
-    """"""
+class TimelineEmbeddedProcessor(BaseTimelineProcessor, EmbeddedBlockProcessor):
+    """
+    Block processor that can render a timeline using data embedded in the Markdown.
+    """
 
 
-class TimelineInlineProcessor(BaseTimelineProcessor, SourceInlineProcessor):
-    """"""
+class TimelineSourceProcessor(BaseTimelineProcessor, SourceBlockProcessor):
+    """
+    Block processor that can render a timeline using data from a source outside of the
+    Markdown (e.g. file, URL, database).
+    """
 
 
 class TimelineExtension(Extension):
     """Extension that includes timelines."""
 
+    config = {
+        "priority": [12, "The priority to be configured for the extension."],
+    }
+
     def extendMarkdown(self, md):
         md.registerExtension(self)
+        priority = self.getConfig("priority")
 
         md.parser.blockprocessors.register(
-            TimelineProcessor(md.parser), "Timeline", 106
+            TimelineEmbeddedProcessor(md.parser), "timeline", priority + 0.1
         )
 
-        md.inlinePatterns.register(
-            TimelineInlineProcessor(md),
-            "InlineTimelineProcessor",
-            15,
+        md.parser.blockprocessors.register(
+            TimelineSourceProcessor(md.parser), "timeline-from-source", priority
         )
 
 

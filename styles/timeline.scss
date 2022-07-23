@@ -1,0 +1,584 @@
+/**
+ *  Extra CSS file for MkDocs and the neoteroi.timeline extension.
+ *
+ *  https://github.com/Neoteroi/mkdocs-plugins
+**/
+@import "./colors.scss";
+
+select.ug-style-select {
+    border: 1px solid #bdb8b8;
+    border-radius: 5px;
+    padding: 0.2rem 1rem;
+    margin-right: 1rem;
+}
+
+.ug-timeline {
+
+    .ug-timeline-title {
+        font-size: 1.1rem;
+        margin-top: 0;
+    }
+
+    .ug-timeline-sub-title {
+        margin-top: 0;
+    }
+
+    .ug-timeline-content {
+        font-size: 0.8rem;
+        border-bottom: 2px dashed #ccc;
+        padding-bottom: 1.2rem;
+    }
+
+    &.horizontal {
+        .ug-timeline-items {
+            flex-direction: row;
+            overflow-x: scroll;
+
+            >div {
+                min-width: 400px;
+                margin-right: 50px;
+            }
+        }
+
+        &.reverse {
+            .ug-timeline-items {
+                flex-direction: row-reverse;
+            }
+        }
+
+        &.center {
+            .ug-timeline-before {
+                background-image: linear-gradient(rgba(252, 70, 107, 0) 0%, rgba(252, 70, 107, 1) 100%);
+                background-repeat: no-repeat;
+                background-size: 100% 2px;
+                background-position: 0 center;
+            }
+
+            .ug-timeline-after {
+                background-image: linear-gradient(180deg, rgba(252, 70, 107, 1) 0%, rgba(252, 70, 107, 0) 100%);
+                background-repeat: no-repeat;
+                background-size: 100% 2px;
+                background-position: 0 center;
+            }
+
+            .ug-timeline-items {
+                background-image: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%);
+                background-repeat: no-repeat;
+                background-size: 100% 2px;
+                background-position: 0 center;
+            }
+        }
+
+        .ug-timeline-dot {
+            left: 50%;
+
+            &:not(.bigger) {
+                top: calc(50% - 4px);
+            }
+
+            &.bigger {
+                top: calc(50% - 15px);
+            }
+        }
+    }
+
+    &.vertical {
+        .ug-timeline-items {
+            flex-direction: column;
+        }
+
+        &.reverse {
+            .ug-timeline-items {
+                flex-direction: column-reverse;
+            }
+        }
+
+        &.center {
+            .ug-timeline-before {
+                background: linear-gradient(rgba(252, 70, 107, 0) 0%, rgba(252, 70, 107, 1) 100%) no-repeat center/2px 100%;
+            }
+
+            .ug-timeline-after {
+                background: linear-gradient(rgba(252, 70, 107, 1) 0%, rgba(252, 70, 107, 0) 100%) no-repeat center/2px 100%;
+            }
+
+            .ug-timeline-items {
+                background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%) no-repeat center/2px 100%;
+            }
+
+            .ug-timeline-dot {
+                left: calc(50% - 10px);
+
+                &:not(.bigger) {
+                    top: 10px;
+                }
+
+                &.bigger {
+                    left: calc(50% - 20px);
+                }
+            }
+        }
+
+        &.left {
+            padding-left: 100px;
+
+            .ug-timeline-item {
+                padding-left: 70px;
+            }
+
+            .ug-timeline-sub-title {
+                left: -100px;
+                width: 100px;
+            }
+
+            .ug-timeline-before {
+                background: linear-gradient(rgba(252, 70, 107, 0) 0%, rgb(252, 70, 107) 100%) no-repeat 30px/2px 100%;
+            }
+
+            .ug-timeline-after {
+                background: linear-gradient(rgba(252, 70, 107, 1) 0%, rgba(252, 70, 107, 0) 100%) no-repeat 30px/2px 100%;
+            }
+
+            .ug-timeline-items {
+                background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%) no-repeat 30px/2px 100%;
+            }
+
+            .ug-timeline-dot {
+                left: 21px;
+                top: 8px;
+
+                &.bigger {
+                    top: 0px;
+                    left: 10px;
+                }
+            }
+        }
+
+        &.right {
+            padding-right: 100px;
+
+            .ug-timeline-sub-title {
+                right: -100px;
+                text-align: left;
+                width: 100px;
+            }
+
+            .ug-timeline-item {
+                padding-right: 70px;
+            }
+
+            .ug-timeline-before {
+                background: linear-gradient(rgba(252, 70, 107, 0) 0%, rgba(252, 70, 107, 1) 100%) no-repeat calc(100% - 30px)/2px 100%;
+            }
+
+            .ug-timeline-after {
+                background: linear-gradient(rgba(252, 70, 107, 1) 0%, rgba(252, 70, 107, 0) 100%) no-repeat calc(100% - 30px)/2px 100%;
+            }
+
+            .ug-timeline-items {
+                background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(252, 70, 107, 1) 100%) no-repeat calc(100% - 30px)/2px 100%;
+            }
+
+            .ug-timeline-dot {
+                right: 21px;
+                top: 8px;
+
+                &.bigger {
+                    top: 10px;
+                    right: 10px;
+                }
+            }
+        }
+    }
+}
+
+.ug-timeline-items {
+    display: flex;
+    position: relative;
+
+    >div {
+        min-height: 100px;
+        padding-top: 2px;
+        padding-bottom: 20px;
+    }
+}
+
+.ug-timeline-before {
+    content: "";
+    height: 15px;
+}
+
+.ug-timeline-after {
+    content: "";
+    height: 60px;
+
+    margin-bottom: 20px;
+}
+
+.ug-timeline-sub-title {
+    position: absolute;
+    width: 50%;
+    top: 4px;
+    font-size: 18px;
+    color: var(--ug-color-50);
+}
+
+[data-md-color-scheme="slate"] .ug-timeline-sub-title {
+    color: var(--ug-color-51);
+}
+
+.ug-timeline-item {
+    position: relative;
+}
+
+.ug-timeline.vertical.center {
+    &:not(.alternate) {
+        .ug-timeline-item {
+            padding-left: calc(50% + 40px);
+
+            .ug-timeline-sub-title {
+                left: 0;
+                padding-right: 40px;
+                text-align: right;
+            }
+        }
+    }
+
+    &.alternate {
+        .ug-timeline-item {
+            &:nth-child(odd) {
+                padding-left: calc(50% + 40px);
+
+                .ug-timeline-sub-title {
+                    left: 0;
+                    padding-right: 40px;
+                    text-align: right;
+                }
+
+            }
+
+            &:nth-child(even) {
+                text-align: right;
+                padding-right: calc(50% + 40px);
+
+                .ug-timeline-sub-title {
+                    right: 0;
+                    padding-left: 40px;
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
+
+.ug-timeline-dot {
+    position: relative;
+    width: 20px;
+    height: 20px;
+
+    border-radius: 100%;
+    background-color: #fc5b5b;
+    position: absolute;
+    top: 0px;
+    z-index: 2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    border: 3px solid white;
+
+    &:not(.bigger) {
+        .icon {
+            font-size: 10px;
+        }
+    }
+
+    &.bigger {
+        width: 40px;
+        height: 40px;
+
+        padding: 3px;
+    }
+
+    .icon {
+        color: white;
+    }
+}
+
+/* Fix for webkit (Chrome, Safari) */
+@supports not (-moz-appearance:none) {
+
+    /*
+    This fix is necessary, for some reason, to render the timeline properly
+    inside `details` elements used by pymdownx. Firefox doesn't need this fix,
+    it renders elements properly.
+    */
+    details {
+
+        .ug-timeline.vertical.center.alternate .ug-timeline-item:nth-child(odd) .ug-timeline-sub-title,
+        .ug-timeline.vertical.center:not(.alternate) .ug-timeline-item .ug-timeline-sub-title {
+            left: -40px;
+        }
+
+        .ug-timeline.vertical.center.alternate .ug-timeline-item:nth-child(even) .ug-timeline-sub-title {
+            right: -40px;
+        }
+
+        .ug-timeline.vertical.center .ug-timeline-dot {
+            left: calc(50% - 12px);
+        }
+
+        .ug-timeline-dot.bigger {
+            width: 28px;
+            height: 28px;
+            font-size: 1rem !important;
+        }
+    }
+}
+
+/* default colors */
+.ug-timeline-item:nth-child(0) .ug-timeline-dot {
+    background-color: var(--ug-color-0);
+}
+
+.ug-timeline-item:nth-child(1) .ug-timeline-dot {
+    background-color: var(--ug-color-1);
+}
+
+.ug-timeline-item:nth-child(2) .ug-timeline-dot {
+    background-color: var(--ug-color-2);
+}
+
+.ug-timeline-item:nth-child(3) .ug-timeline-dot {
+    background-color: var(--ug-color-3);
+}
+
+.ug-timeline-item:nth-child(4) .ug-timeline-dot {
+    background-color: var(--ug-color-4);
+}
+
+.ug-timeline-item:nth-child(5) .ug-timeline-dot {
+    background-color: var(--ug-color-5);
+}
+
+.ug-timeline-item:nth-child(6) .ug-timeline-dot {
+    background-color: var(--ug-color-6);
+}
+
+.ug-timeline-item:nth-child(7) .ug-timeline-dot {
+    background-color: var(--ug-color-7);
+}
+
+.ug-timeline-item:nth-child(8) .ug-timeline-dot {
+    background-color: var(--ug-color-8);
+}
+
+.ug-timeline-item:nth-child(9) .ug-timeline-dot {
+    background-color: var(--ug-color-9);
+}
+
+.ug-timeline-item:nth-child(10) .ug-timeline-dot {
+    background-color: var(--ug-color-10);
+}
+
+.ug-timeline-item:nth-child(11) .ug-timeline-dot {
+    background-color: var(--ug-color-11);
+}
+
+.ug-timeline-item:nth-child(12) .ug-timeline-dot {
+    background-color: var(--ug-color-12);
+}
+
+.ug-timeline-item:nth-child(13) .ug-timeline-dot {
+    background-color: var(--ug-color-13);
+}
+
+.ug-timeline-item:nth-child(14) .ug-timeline-dot {
+    background-color: var(--ug-color-14);
+}
+
+.ug-timeline-item:nth-child(15) .ug-timeline-dot {
+    background-color: var(--ug-color-15);
+}
+
+.ug-timeline-item:nth-child(16) .ug-timeline-dot {
+    background-color: var(--ug-color-16);
+}
+
+.ug-timeline-item:nth-child(17) .ug-timeline-dot {
+    background-color: var(--ug-color-17);
+}
+
+.ug-timeline-item:nth-child(18) .ug-timeline-dot {
+    background-color: var(--ug-color-18);
+}
+
+.ug-timeline-item:nth-child(19) .ug-timeline-dot {
+    background-color: var(--ug-color-19);
+}
+
+.ug-timeline-item:nth-child(20) .ug-timeline-dot {
+    background-color: var(--ug-color-20);
+}
+
+.ug-timeline-item:nth-child(21) .ug-timeline-dot {
+    background-color: var(--ug-color-21);
+}
+
+.ug-timeline-item:nth-child(22) .ug-timeline-dot {
+    background-color: var(--ug-color-22);
+}
+
+.ug-timeline-item:nth-child(23) .ug-timeline-dot {
+    background-color: var(--ug-color-23);
+}
+
+.ug-timeline-item:nth-child(24) .ug-timeline-dot {
+    background-color: var(--ug-color-24);
+}
+
+.ug-timeline-item:nth-child(25) .ug-timeline-dot {
+    background-color: var(--ug-color-25);
+}
+
+.ug-timeline-item:nth-child(26) .ug-timeline-dot {
+    background-color: var(--ug-color-26);
+}
+
+.ug-timeline-item:nth-child(27) .ug-timeline-dot {
+    background-color: var(--ug-color-27);
+}
+
+.ug-timeline-item:nth-child(28) .ug-timeline-dot {
+    background-color: var(--ug-color-28);
+}
+
+.ug-timeline-item:nth-child(29) .ug-timeline-dot {
+    background-color: var(--ug-color-29);
+}
+
+.ug-timeline-item:nth-child(30) .ug-timeline-dot {
+    background-color: var(--ug-color-30);
+}
+
+.ug-timeline-item:nth-child(31) .ug-timeline-dot {
+    background-color: var(--ug-color-31);
+}
+
+.ug-timeline-item:nth-child(32) .ug-timeline-dot {
+    background-color: var(--ug-color-32);
+}
+
+.ug-timeline-item:nth-child(33) .ug-timeline-dot {
+    background-color: var(--ug-color-33);
+}
+
+.ug-timeline-item:nth-child(34) .ug-timeline-dot {
+    background-color: var(--ug-color-34);
+}
+
+.ug-timeline-item:nth-child(35) .ug-timeline-dot {
+    background-color: var(--ug-color-35);
+}
+
+.ug-timeline-item:nth-child(36) .ug-timeline-dot {
+    background-color: var(--ug-color-36);
+}
+
+.ug-timeline-item:nth-child(37) .ug-timeline-dot {
+    background-color: var(--ug-color-37);
+}
+
+.ug-timeline-item:nth-child(38) .ug-timeline-dot {
+    background-color: var(--ug-color-38);
+}
+
+.ug-timeline-item:nth-child(39) .ug-timeline-dot {
+    background-color: var(--ug-color-39);
+}
+
+.ug-timeline-item:nth-child(40) .ug-timeline-dot {
+    background-color: var(--ug-color-40);
+}
+
+.ug-timeline-item:nth-child(41) .ug-timeline-dot {
+    background-color: var(--ug-color-41);
+}
+
+.ug-timeline-item:nth-child(42) .ug-timeline-dot {
+    background-color: var(--ug-color-42);
+}
+
+.ug-timeline-item:nth-child(43) .ug-timeline-dot {
+    background-color: var(--ug-color-43);
+}
+
+.ug-timeline-item:nth-child(44) .ug-timeline-dot {
+    background-color: var(--ug-color-44);
+}
+
+.ug-timeline-item:nth-child(45) .ug-timeline-dot {
+    background-color: var(--ug-color-45);
+}
+
+.ug-timeline-item:nth-child(46) .ug-timeline-dot {
+    background-color: var(--ug-color-46);
+}
+
+.ug-timeline-item:nth-child(47) .ug-timeline-dot {
+    background-color: var(--ug-color-47);
+}
+
+.ug-timeline-item:nth-child(48) .ug-timeline-dot {
+    background-color: var(--ug-color-48);
+}
+
+.ug-timeline-item:nth-child(49) .ug-timeline-dot {
+    background-color: var(--ug-color-49);
+}
+
+.ug-timeline-item:nth-child(50) .ug-timeline-dot {
+    background-color: var(--ug-color-50);
+}
+
+.ug-timeline-item:nth-child(51) .ug-timeline-dot {
+    background-color: var(--ug-color-51);
+}
+
+.ug-timeline-item:nth-child(52) .ug-timeline-dot {
+    background-color: var(--ug-color-52);
+}
+
+.ug-timeline-item:nth-child(53) .ug-timeline-dot {
+    background-color: var(--ug-color-53);
+}
+
+.ug-timeline-item:nth-child(54) .ug-timeline-dot {
+    background-color: var(--ug-color-54);
+}
+
+.ug-timeline-item:nth-child(55) .ug-timeline-dot {
+    background-color: var(--ug-color-55);
+}
+
+.ug-timeline-item:nth-child(56) .ug-timeline-dot {
+    background-color: var(--ug-color-56);
+}
+
+.ug-timeline-item:nth-child(57) .ug-timeline-dot {
+    background-color: var(--ug-color-57);
+}
+
+.ug-timeline-item:nth-child(58) .ug-timeline-dot {
+    background-color: var(--ug-color-58);
+}
+
+.ug-timeline-item:nth-child(59) .ug-timeline-dot {
+    background-color: var(--ug-color-59);
+}
+
+.ug-timeline-item:nth-child(60) .ug-timeline-dot {
+    background-color: var(--ug-color-60);
+}

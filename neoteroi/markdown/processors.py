@@ -19,7 +19,6 @@ from abc import ABC, abstractmethod
 from typing import Iterable, List, Optional
 
 from markdown.blockprocessors import BlockProcessor
-from markdown.inlinepatterns import InlineProcessor
 
 from neoteroi.markdown import parse_props
 from neoteroi.markdown.data.files import FileReader
@@ -99,8 +98,24 @@ class BaseProcessor(ABC):
     def parse(self, text, props):
         return try_parse_text(text, self.get_parsers(props))
 
+    def get_match(self, pattern, blocks) -> Optional[re.Match]:
+        first_block = blocks.pop(0)
+        new_lines = []
+        match = None
 
-class SourceInlineProcessor(InlineProcessor, BaseProcessor):
+        for line in first_block.splitlines():
+            match = pattern.match(line)
+            if match:
+                break
+            else:
+                new_lines.append(line)
+        if new_lines:
+            blocks.insert(0, "\n".join(new_lines))
+
+        return match
+
+
+class SourceBlockProcessor(BlockProcessor, BaseProcessor):
     """
     Base class for inline processors that read information from a file or URL source
     and handle it to create an HTML element, like:
@@ -110,8 +125,21 @@ class SourceInlineProcessor(InlineProcessor, BaseProcessor):
     [timeline(https://.../example.json)]
     """
 
-    def __init__(self, md) -> None:
-        super().__init__(rf"\[{self.name}\s?([^\(]*)\((.*?)\)\]", md)
+    _pattern: Optional[re.Pattern] = None
+
+    @property
+    def pattern(self) -> re.Pattern:
+        if self._pattern is None:
+            self._pattern = re.compile(
+                rf"(?P<indent>\s*)\[{self.name}\s?([^\(]*)\((.*?)\)\]", re.DOTALL
+            )
+        return self._pattern
+
+    def test(self, parent, block) -> bool:
+        if self.pattern.search(block):
+            return True
+        else:
+            return False
 
     data_readers: Iterable[DataReader] = (FileReader(), HTTPSource())
 
@@ -123,24 +151,29 @@ class SourceInlineProcessor(InlineProcessor, BaseProcessor):
             if reader.test(source):
                 return reader
 
-        raise ValueError(f"Unsupported source: {source}.")
+        logger.warning("Could not resolve the source ")
+        raise ValueError(
+            f"[{self.name}] invalid source: {source}. The source could not be "
+            "resolved. If the source is a file, verify the path."
+        )
 
     def read_from_source(self, source: str, props):
         reader = self.get_data_reader(source)
         return reader.read(source)
 
-    def handleMatch(self, m, data):
-        raw_props = m.group(1)
-        value = m.group(2)
+    def run(self, parent, blocks):
+        match = self.get_match(self.pattern, blocks)
+        assert match is not None
+
+        groups = match.groups()
+        raw_props = groups[1]
+        value = groups[2]
 
         if raw_props:
             props = parse_props(raw_props, bool_attrs=True)
         else:
             props = {}
         raw_text = self.read_from_source(value, props)
-
-        parent = etree.Element("div")
-        # TODO: remove duplication
 
         try:
             obj = self.parse(raw_text, props)
@@ -150,10 +183,8 @@ class SourceInlineProcessor(InlineProcessor, BaseProcessor):
         else:
             self.build_html(parent, obj, props)
 
-        return parent, m.start(0), m.end(0)
 
-
-class BaseBlockProcessor(BlockProcessor, BaseProcessor):
+class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
     """
     Base class for standard block processors that handle a fragment like:
 

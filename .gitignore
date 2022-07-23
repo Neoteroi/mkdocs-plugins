@@ -5,3 +5,6 @@ htmlcov
 __pycache__
 *.egg-info
 *.tar.gz
+
+styles/*.css
+styles/*.css.map
