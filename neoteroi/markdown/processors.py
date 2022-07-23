@@ -1,12 +1,12 @@
 """
-This module defines common classes used in the package to implement BlockProcessor
-types. It defines a common class to handle a notation like:
+This module defines common processor classes used in the package. It defines classes to
+handle common notations like:
 
-[example(content)]
+[example(pros?)(content-source)]
 
 and
 
-::example:: prop_1="value_1" prop_2="value_2" ...
+::example:: (props?) ...
 content
 ::/example::
 """
@@ -22,6 +22,8 @@ from markdown.blockprocessors import BlockProcessor
 from markdown.inlinepatterns import InlineProcessor
 
 from neoteroi.markdown import parse_props
+from neoteroi.markdown.data.files import FileReader
+from neoteroi.markdown.data.source import DataReader
 from neoteroi.markdown.data.text import (
     DEFAULT_PARSERS,
     CSVParser,
@@ -30,6 +32,7 @@ from neoteroi.markdown.data.text import (
     YAMLParser,
     try_parse_text,
 )
+from neoteroi.markdown.data.web import HTTPSource
 
 logger = logging.getLogger("MARKDOWN")
 
@@ -58,72 +61,99 @@ def pop_to_index(items, index):
         i += 1
 
 
-class NeoteroiInlineProcessor(InlineProcessor):
-    """
-    Common inline processor that reads information from a file or URL source and handles
-    it to create an HTML element.
-    """
-
-    def get_data_from_source(self, value: str):
-        ...
-
-    def handleMatch(self, m, data):
-        import xml.etree.ElementTree as etree
-
-        value = m.group(1)
-
-        el = etree.Element("div")
-        el.text = m.group(1) + " FUUUU!"
-        return el, m.start(0), m.end(0)
-
-
-class SourceOnlyProcessor(BlockProcessor, ABC):
-    """
-    A processor that handles a fragment like:
-
-    [example(...)]
-    """
-
-    _pattern: Optional[re.Pattern] = None
+class BaseProcessor(ABC):
+    parsers: Iterable[TextParser] = DEFAULT_PARSERS
 
     @property
     @abstractmethod
     def name(self) -> str:
         """Returns the name of the tag that will be handled by this processor."""
 
-    @property
-    def pattern(self) -> re.Pattern:
-        if self._pattern is None:
-            self._pattern = re.compile(rf"\[{self.name}\(([^\)]+)\)\]")
-        return self._pattern
+    @abstractmethod
+    def build_html(self, parent, obj, props) -> None:
+        """Builds the HTML for the given input object."""
 
-    def find_closing_fragment_index(self, blocks) -> int:
-        return _find_closing_fragment_index(self.pattern, blocks)
+    def get_parsers(self, props):
+        """
+        Tries to get the best parser by tag property.
+        """
+        if props.get("yaml") is True:
+            return [YAMLParser()]
 
-    def test(self, parent, block) -> bool:
-        if self.pattern.search(block):
-            return True
+        if props.get("json") is True:
+            return [JSONParser()]
+
+        if props.get("csv") is True:
+            return [CSVParser()]
+
+        return self.parsers
+
+    def _render_courtesy_error(self, parent):
+        div = etree.SubElement(parent, "div", {"class": "ug-error"})
+        p = etree.SubElement(div, "p", {"class": "ug-error"})
+        p.text = (
+            f"Could not parse the value of this {self.name} block. "
+            "Please correct the input."
+        )
+
+    def parse(self, text, props):
+        return try_parse_text(text, self.get_parsers(props))
+
+
+class SourceInlineProcessor(InlineProcessor, BaseProcessor):
+    """
+    Base class for inline processors that read information from a file or URL source
+    and handle it to create an HTML element, like:
+
+    [timeline(./example.yaml)]
+
+    [timeline(https://.../example.json)]
+    """
+
+    def __init__(self, md) -> None:
+        super().__init__(rf"\[{self.name}\s?([^\(]*)\((.*?)\)\]", md)
+
+    data_readers: Iterable[DataReader] = (FileReader(), HTTPSource())
+
+    def get_data_reader(self, source: str) -> DataReader:
+        if not source:
+            raise ValueError("Missing source parameter.")
+
+        for reader in self.data_readers:
+            if reader.test(source):
+                return reader
+
+        raise ValueError(f"Unsupported source: {source}.")
+
+    def read_from_source(self, source: str, props):
+        reader = self.get_data_reader(source)
+        return reader.read(source)
+
+    def handleMatch(self, m, data):
+        raw_props = m.group(1)
+        value = m.group(2)
+
+        if raw_props:
+            props = parse_props(raw_props, bool_attrs=True)
         else:
-            return False
+            props = {}
+        raw_text = self.read_from_source(value, props)
 
-    def run(self, parent, blocks):
-        closing_block_index = self.find_closing_fragment_index(blocks)
+        parent = etree.Element("div")
+        # TODO: remove duplication
 
-        if closing_block_index == -1:
-            # unclosed tag, ignore
-            logger.warning(
-                f"Unclosed ::{self.name}:: block - expected a ::/{self.name}::."
-            )
-            return False
+        try:
+            obj = self.parse(raw_text, props)
+        except ValueError:
+            logger.exception("Could not parse the value of a %s block.", self.name)
+            self._render_courtesy_error(parent)
+        else:
+            self.build_html(parent, obj, props)
 
-        relevant_blocks = list(pop_to_index(blocks, closing_block_index))
-        print(relevant_blocks)
-        import xml.etree.ElementTree as etree
-
-        etree.SubElement(parent, "div", {"class": "ug-timeline"})
+        return parent, m.start(0), m.end(0)
 
 
-class BaseBlockProcessor(BlockProcessor, ABC):
+class BaseBlockProcessor(BlockProcessor, BaseProcessor):
     """
     Base class for standard block processors that handle a fragment like:
 
@@ -138,17 +168,6 @@ class BaseBlockProcessor(BlockProcessor, ABC):
 
     _start_pattern: Optional[re.Pattern] = None
     _end_pattern: Optional[re.Pattern] = None
-
-    parsers: Iterable[TextParser] = DEFAULT_PARSERS
-
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        """Returns the name of the tag that will be handled by this processor."""
-
-    @abstractmethod
-    def build_html(self, parent, obj, props) -> None:
-        """Builds the HTML for the given input object."""
 
     @property
     def start_pattern(self) -> re.Pattern:
@@ -170,26 +189,8 @@ class BaseBlockProcessor(BlockProcessor, ABC):
         else:
             return False
 
-    def get_parsers(self, props):
-        """
-        Tries to get the best parser by tag property.
-        """
-        if props.get("yaml") is True:
-            return [YAMLParser()]
-
-        if props.get("json") is True:
-            return [JSONParser()]
-
-        if props.get("csv") is True:
-            return [CSVParser()]
-
-        return self.parsers
-
     def find_closing_fragment_index(self, blocks) -> int:
         return _find_closing_fragment_index(self.end_pattern, blocks)
-
-    def parse(self, text, props):
-        return try_parse_text(text, self.get_parsers(props))
 
     def get_content(self, relevant_blocks):
         raw_text = textwrap.dedent("".join(relevant_blocks))
@@ -231,11 +232,3 @@ class BaseBlockProcessor(BlockProcessor, ABC):
             self._render_courtesy_error(parent)
         else:
             self.build_html(parent, obj, props)
-
-    def _render_courtesy_error(self, parent):
-        div = etree.SubElement(parent, "div", {"class": "ug-error"})
-        p = etree.SubElement(div, "p", {"class": "ug-error"})
-        p.text = (
-            f"Could not parse the value of this {self.name} block. "
-            "Please correct the input."
-        )

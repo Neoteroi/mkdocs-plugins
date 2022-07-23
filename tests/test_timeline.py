@@ -1,8 +1,10 @@
+import textwrap
+
 import markdown
 import pytest
 
 from neoteroi.timeline import TimelineExtension
-
+from tests import get_resource_file_path
 
 EXAMPLE_1 = """
 <div class="ug-timeline vertical left">
@@ -180,4 +182,22 @@ def test_timeline_extension_csv_format(example, expected_result):
     html = markdown.markdown(example, extensions=[TimelineExtension()])
 
     assert html is not None
+    assert html.strip() == expected_result.strip()
+
+
+@pytest.mark.parametrize(
+    "example,expected_result",
+    [
+        [
+            textwrap.dedent(
+                f"""
+                [timeline({get_resource_file_path('./timeline-1.json')})]
+                """
+            ),
+            EXAMPLE_1,
+        ]
+    ],
+)
+def test_timeline_inline_extension(example, expected_result):
+    html = markdown.markdown(example, extensions=[TimelineExtension()])
     assert html.strip() == expected_result.strip()

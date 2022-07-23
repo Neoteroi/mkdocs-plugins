@@ -1,24 +1,24 @@
-import json
 from pathlib import Path
+from typing import Any
 
-import yaml
-
-from . import ContentSource
+from .source import DataReader
 
 
-def read_file(file_path: Path) -> str:
-    with open(file_path, "rt", encoding="utf-8") as source_file:
+def read_file(file_path: Path, encoding: str = "utf-8") -> str:
+    with open(file_path, "rt", encoding=encoding) as source_file:
         return source_file.read()
 
 
-def read_json_file(file_path: Path) -> str:
-    return json.loads(read_file(file_path))
+class FileReader(DataReader):
+    encoding = "utf-8"
 
+    def test(self, source: str) -> bool:
+        # TODO: qui va meglio controllare se la risorsa >>sembra<< un file,
+        # così l'utente riceve una exception di tipo FileNotFound se non si trova
+        # niente
+        source_path = Path(source)
+        return source_path.exists() and source_path.is_file()
 
-def read_yaml_file(file_path: Path) -> str:
-    return yaml.safe_load(read_file(file_path))
-
-
-class JSONContentReader(ContentSource):
-    def read(self):
-        """Returns content read from a source."""
+    def read(self, source: str) -> Any:
+        assert self.test(source)
+        return read_file(Path(source), encoding=self.encoding)
