@@ -89,8 +89,12 @@ class BaseProcessor(ABC):
         for parser in self.get_parsers(props):
             try:
                 return parser.parse(text)
-            except (TypeError, ValueError):
-                pass
+            except (TypeError, ValueError) as parser_exc:
+                logger.debug(
+                    "The parser %s failed to parse the text.",
+                    type(parser).__qualname__,
+                    exc_info=parser_exc,
+                )
 
         raise ValueError("The input text could not be parsed.")
 
@@ -173,8 +177,8 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
 
         logger.warning("Could not resolve the source ")
         raise ValueError(
-            f"[{self.name}] invalid source: {source}. The source could not be "
-            "resolved. If the source is a file, verify the path."
+            f'[{self.name}] invalid source. The source "{source}" could not be '
+            "resolved. If the source is a file, please verify the path."
         )
 
     def read_from_source(self, source: str):
@@ -194,8 +198,12 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
         else:
             props = {}
 
-        data = self.read_from_source(source)
-        self.render(parent, data, props)
+        try:
+            data = self.read_from_source(source)
+        except ValueError as value_error:
+            self.render_courtesy_error(parent, str(value_error))
+        else:
+            self.render(parent, data, props)
 
 
 class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
