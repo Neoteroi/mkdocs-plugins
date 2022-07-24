@@ -81,7 +81,7 @@ class BaseProcessor(ABC):
         return self.parsers
 
     def render_courtesy_error(self, parent, message: str):
-        div = etree.SubElement(parent, "div", {"class": "ug-error"})
+        div = etree.SubElement(parent, "div", {"class": "nt-error"})
         p = etree.SubElement(div, "p")
         p.text = message
 

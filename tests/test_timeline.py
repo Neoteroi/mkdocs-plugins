@@ -8,55 +8,55 @@ from neoteroi.timeline import BaseTimelineProcessor, TimelineExtension, make_ext
 from tests import get_resource_file_path
 
 EXAMPLE_1 = """
-<div class="ug-timeline vertical left">
-<div class="ug-timeline-before"></div>
-<div class="ug-timeline-items">
-<div class="ug-timeline-item blue">
-<h3 class="ug-timeline-title">Zero</h3>
-<span class="ug-timeline-sub-title">2022-Q1</span><p class="ug-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
-<div class="ug-timeline-dot blue bigger"><i class="fa-solid fa-archway icon"></i></div>
+<div class="nt-timeline vertical left">
+<div class="nt-timeline-before"></div>
+<div class="nt-timeline-items">
+<div class="nt-timeline-item blue">
+<h3 class="nt-timeline-title">Zero</h3>
+<span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
+<div class="nt-timeline-dot blue bigger"><i class="fa-solid fa-archway icon"></i></div>
 </div>
-<div class="ug-timeline-item cyan">
-<h3 class="ug-timeline-title">One</h3>
-<span class="ug-timeline-sub-title">2022-Q2</span><p class="ug-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
-<div class="ug-timeline-dot cyan bigger"><i class="fa-solid fa-star icon"></i></div>
+<div class="nt-timeline-item cyan">
+<h3 class="nt-timeline-title">One</h3>
+<span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+<div class="nt-timeline-dot cyan bigger"><i class="fa-solid fa-star icon"></i></div>
 </div>
 </div>
-<div class="ug-timeline-after"></div>
+<div class="nt-timeline-after"></div>
 </div>
 """
 
 EXAMPLE_2 = """
-<div class="ug-timeline vertical left">
-<div class="ug-timeline-before"></div>
-<div class="ug-timeline-items">
-<div class="ug-timeline-item blue">
-<h3 class="ug-timeline-title">Zero</h3>
-<span class="ug-timeline-sub-title">2022-Q1</span><p class="ug-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
-<div class="ug-timeline-dot blue bigger"><i class="fa-solid fa-archway icon"></i></div>
+<div class="nt-timeline vertical left">
+<div class="nt-timeline-before"></div>
+<div class="nt-timeline-items">
+<div class="nt-timeline-item blue">
+<h3 class="nt-timeline-title">Zero</h3>
+<span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
+<div class="nt-timeline-dot blue bigger"><i class="fa-solid fa-archway icon"></i></div>
 </div>
-<div class="ug-timeline-item cyan">
-<h3 class="ug-timeline-title">One</h3>
-<span class="ug-timeline-sub-title">2022-Q2</span><p class="ug-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin felis eros, facilisis sed feugiat a, efficitur ut neque. In vel nulla et nulla aliquet porta ac at est.</p>
-<div class="ug-timeline-dot cyan bigger"><i class="fa-solid fa-star icon"></i></div>
+<div class="nt-timeline-item cyan">
+<h3 class="nt-timeline-title">One</h3>
+<span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin felis eros, facilisis sed feugiat a, efficitur ut neque. In vel nulla et nulla aliquet porta ac at est.</p>
+<div class="nt-timeline-dot cyan bigger"><i class="fa-solid fa-star icon"></i></div>
 </div>
-<div class="ug-timeline-item">
-<h3 class="ug-timeline-title">Two</h3>
-<span class="ug-timeline-sub-title">2022-Q3</span><p class="ug-timeline-content">Lorem ipsum dolor sit amet.</p>
-<div class="ug-timeline-dot  bigger"><i class="fa-solid fa-meteor icon"></i></div>
+<div class="nt-timeline-item">
+<h3 class="nt-timeline-title">Two</h3>
+<span class="nt-timeline-sub-title">2022-Q3</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet.</p>
+<div class="nt-timeline-dot  bigger"><i class="fa-solid fa-meteor icon"></i></div>
 </div>
-<div class="ug-timeline-item pink">
-<h3 class="ug-timeline-title">Three</h3>
-<span class="ug-timeline-sub-title">2022-Q4</span><p class="ug-timeline-content">Lorem ipsum dolor sit amet.</p>
-<div class="ug-timeline-dot pink"></div>
+<div class="nt-timeline-item pink">
+<h3 class="nt-timeline-title">Three</h3>
+<span class="nt-timeline-sub-title">2022-Q4</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet.</p>
+<div class="nt-timeline-dot pink"></div>
 </div>
-<div class="ug-timeline-item cyan">
-<h3 class="ug-timeline-title">Four</h3>
-<span class="ug-timeline-sub-title">2023-Q1</span><p class="ug-timeline-content">Lorem ipsum dolor sit amet.</p>
-<div class="ug-timeline-dot cyan bigger"><i class="fa-solid fa-fire icon"></i></div>
+<div class="nt-timeline-item cyan">
+<h3 class="nt-timeline-title">Four</h3>
+<span class="nt-timeline-sub-title">2023-Q1</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet.</p>
+<div class="nt-timeline-dot cyan bigger"><i class="fa-solid fa-fire icon"></i></div>
 </div>
 </div>
-<div class="ug-timeline-after"></div>
+<div class="nt-timeline-after"></div>
 </div>
 """
 
