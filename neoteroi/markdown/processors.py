@@ -23,20 +23,13 @@ from markdown.blockprocessors import BlockProcessor
 from neoteroi.markdown import parse_props
 from neoteroi.markdown.data.files import FileReader
 from neoteroi.markdown.data.source import DataReader
-from neoteroi.markdown.data.text import (
-    DEFAULT_PARSERS,
-    CSVParser,
-    JSONParser,
-    TextParser,
-    YAMLParser,
-    try_parse_text,
-)
+from neoteroi.markdown.data.text import CSVParser, JSONParser, TextParser, YAMLParser
 from neoteroi.markdown.data.web import HTTPSource
 
 logger = logging.getLogger("MARKDOWN")
 
 
-def _find_closing_fragment_index(pattern: re.Pattern, blocks: List[str]) -> int:
+def find_closing_fragment_index(pattern: re.Pattern, blocks: List[str]) -> int:
     for index, block in enumerate(blocks):
         if pattern.search(block):
             return index
@@ -61,7 +54,7 @@ def pop_to_index(items, index):
 
 
 class BaseProcessor(ABC):
-    parsers: Iterable[TextParser] = DEFAULT_PARSERS
+    parsers: Iterable[TextParser] = (YAMLParser(), JSONParser(), CSVParser())
 
     @property
     @abstractmethod
@@ -87,16 +80,43 @@ class BaseProcessor(ABC):
 
         return self.parsers
 
-    def _render_courtesy_error(self, parent):
+    def _render_courtesy_error(self, parent, message: str):
         div = etree.SubElement(parent, "div", {"class": "ug-error"})
-        p = etree.SubElement(div, "p", {"class": "ug-error"})
-        p.text = (
-            f"Could not parse the value of this {self.name} block. "
-            "Please correct the input."
-        )
+        p = etree.SubElement(div, "p")
+        p.text = message
 
     def parse(self, text, props):
-        return try_parse_text(text, self.get_parsers(props))
+        for parser in self.get_parsers(props):
+            try:
+                return parser.parse(text)
+            except (TypeError, ValueError):
+                pass
+
+        raise ValueError("The input text could not be parsed.")
+
+    def render(self, parent, data, props):
+        if isinstance(data, str):
+            try:
+                obj = self.parse(data, props)
+            except ValueError:
+                logger.exception("Could not parse the value of a %s block.", self.name)
+                self._render_courtesy_error(
+                    parent,
+                    f"Could not parse the value of this {self.name} block. "
+                    "Please correct the input.",
+                )
+                return
+        else:
+            obj = data
+
+        try:
+            self.build_html(parent, obj, props)
+        except TypeError:
+            logger.exception("Could not render a %s block.", self.name)
+            self._render_courtesy_error(
+                parent,
+                f"Could not render a {self.name} block. Please correct the input.",
+            )
 
     def get_match(self, pattern, blocks) -> Optional[re.Match]:
         first_block = blocks.pop(0)
@@ -157,7 +177,7 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
             "resolved. If the source is a file, verify the path."
         )
 
-    def read_from_source(self, source: str, props):
+    def read_from_source(self, source: str):
         reader = self.get_data_reader(source)
         return reader.read(source)
 
@@ -167,21 +187,15 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
 
         groups = match.groups()
         raw_props = groups[1]
-        value = groups[2]
+        source = groups[2]
 
         if raw_props:
             props = parse_props(raw_props, bool_attrs=True)
         else:
             props = {}
-        raw_text = self.read_from_source(value, props)
 
-        try:
-            obj = self.parse(raw_text, props)
-        except ValueError:
-            logger.exception("Could not parse the value of a %s block.", self.name)
-            self._render_courtesy_error(parent)
-        else:
-            self.build_html(parent, obj, props)
+        data = self.read_from_source(source)
+        self.render(parent, data, props)
 
 
 class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
@@ -195,6 +209,8 @@ class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
     This class provides base functions to handle the Markdown integration and parsing of
     the input, concrete classes define how to build the HTML once the input has been
     parsed.
+
+    The source of data in this case is always coming as a string.
     """
 
     _start_pattern: Optional[re.Pattern] = None
@@ -221,7 +237,7 @@ class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
             return False
 
     def find_closing_fragment_index(self, blocks) -> int:
-        return _find_closing_fragment_index(self.end_pattern, blocks)
+        return find_closing_fragment_index(self.end_pattern, blocks)
 
     def get_content(self, relevant_blocks):
         raw_text = textwrap.dedent("".join(relevant_blocks))
@@ -256,10 +272,4 @@ class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
             blocks.pop(0)
             raw_text = self.get_content(pop_to_index(blocks, closing_block_index - 1))
 
-        try:
-            obj = self.parse(raw_text, props)
-        except ValueError:
-            logger.exception("Could not parse the value of a %s block.", self.name)
-            self._render_courtesy_error(parent)
-        else:
-            self.build_html(parent, obj, props)
+        self.render(parent, raw_text, props)

@@ -1,32 +1,9 @@
 import logging
 import xml.etree.ElementTree as etree
 
-from .domain import Timeline, TimelineAlignment, TimelineItem
+from .domain import Timeline, TimelineItem
 
 logger = logging.getLogger("MARKDOWN")
-
-
-def aligment_from_props(props):
-    if props.get("center") is True:
-        return TimelineAlignment.CENTER
-
-    if props.get("left") is True:
-        return TimelineAlignment.LEFT
-
-    if props.get("right") is True:
-        return TimelineAlignment.RIGHT
-
-    return try_parse_position(props.get("align", "left"))
-
-
-def try_parse_position(align: str):
-    try:
-        return TimelineAlignment(align)
-    except KeyError:
-        logger.exception(
-            "Invalid timeline align property: %s; ignoring this attribute", align
-        )
-        return TimelineAlignment.LEFT
 
 
 class TimelineHTMLBuilder:

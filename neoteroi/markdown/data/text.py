@@ -37,19 +37,3 @@ class CSVParser(TextParser):
         with StringIO(text) as string_io:
             reader = self.get_reader(string_io)
             return [record for record in reader]
-
-
-DEFAULT_PARSERS: Tuple[TextParser, ...] = (YAMLParser(), JSONParser(), CSVParser())
-
-
-def try_parse_text(text: str, parsers: Optional[Iterable[TextParser]] = None) -> Any:
-    if parsers is None:
-        parsers = DEFAULT_PARSERS
-
-    for parser in parsers:
-        try:
-            return parser.parse(text)
-        except (TypeError, ValueError):
-            pass
-
-    raise ValueError("The input text could not be parsed.")

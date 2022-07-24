@@ -5,11 +5,11 @@
 **/
 @import "./colors.scss";
 
-select.ug-style-select {
-    border: 1px solid #bdb8b8;
-    border-radius: 5px;
-    padding: 0.2rem 1rem;
-    margin-right: 1rem;
+.ug-error {
+    border: 2px dashed darkred;
+    padding: 0 1rem;
+    background: #faf9ba;
+    color: darkred;
 }
 
 .ug-timeline {

@@ -1,12 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
-from enum import Enum
 
-
-class TimelineAlignment(Enum):
-    CENTER = "center"
-    LEFT = "left"
-    RIGHT = "right"
+from neoteroi.markdown.align import Alignment
 
 
 @dataclass
@@ -21,5 +16,5 @@ class TimelineItem:
 @dataclass
 class Timeline:
     items: List[TimelineItem]
-    align: TimelineAlignment = TimelineAlignment.LEFT
+    align: Alignment = Alignment.LEFT
     alternate: bool = False

@@ -1,9 +1,10 @@
 import textwrap
+import xml.etree.ElementTree as etree
 
 import markdown
 import pytest
 
-from neoteroi.timeline import TimelineExtension
+from neoteroi.timeline import BaseTimelineProcessor, TimelineExtension, make_extension
 from tests import get_resource_file_path
 
 EXAMPLE_1 = """
@@ -60,6 +61,18 @@ EXAMPLE_2 = """
 """
 
 
+def test_make_extension():
+    extension = make_extension()
+    assert isinstance(extension, TimelineExtension)
+
+
+def test_base_timeline_processor_raises_for_not_list_input():
+    processor = BaseTimelineProcessor()
+
+    with pytest.raises(TypeError):
+        processor.build_html(etree.Element("div"), "", {})
+
+
 @pytest.mark.parametrize(
     "example,expected_result",
     [
@@ -90,7 +103,7 @@ EXAMPLE_2 = """
         ],
         [
             """
-            ::timeline::
+            ::timeline:: json
 
 
             [
@@ -141,7 +154,7 @@ EXAMPLE_2 = """
     ],
 )
 def test_timeline_extension(example, expected_result):
-    html = markdown.markdown(example, extensions=[TimelineExtension()])
+    html = markdown.markdown(example, extensions=[TimelineExtension(priority=100)])
     assert html.strip() == expected_result.strip()
 
 
@@ -179,9 +192,7 @@ def test_timeline_extension(example, expected_result):
     ],
 )
 def test_timeline_extension_csv_format(example, expected_result):
-    html = markdown.markdown(example, extensions=[TimelineExtension()])
-
-    assert html is not None
+    html = markdown.markdown(example, extensions=[TimelineExtension(priority=100)])
     assert html.strip() == expected_result.strip()
 
 
@@ -199,15 +210,13 @@ def test_timeline_extension_csv_format(example, expected_result):
         [
             textwrap.dedent(
                 f"""
-                ??? note "Phasellus posuere in sem ut cursus"
-                    [timeline({get_resource_file_path('./timeline-1.json')})]
+                [timeline({get_resource_file_path('./timeline-1.yaml')})]
                 """
             ),
             EXAMPLE_1,
         ],
     ],
 )
-def test_timeline_inline_extension(example, expected_result):
-    html = markdown.markdown(example, extensions=[TimelineExtension()])
-    assert html is not None
-    # assert html.strip() == expected_result.strip()
+def test_timeline_from_source(example, expected_result):
+    html = markdown.markdown(example, extensions=[TimelineExtension(priority=100)])
+    assert html.strip() == expected_result.strip()

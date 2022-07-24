@@ -8,11 +8,12 @@ Copyright (c) 2022 to present, Roberto Prevato
 """
 from markdown import Extension
 
+from neoteroi.markdown.align import aligment_from_props
 from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
-from neoteroi.markdown.utils import create_instance
+from neoteroi.markdown.utils import create_instances
 
 from .domain import Timeline, TimelineItem
-from .html import TimelineHTMLBuilder, aligment_from_props
+from .html import TimelineHTMLBuilder
 
 
 class BaseTimelineProcessor:
@@ -29,7 +30,7 @@ class BaseTimelineProcessor:
         builder.build_html(
             parent,
             Timeline(
-                [create_instance(TimelineItem, item) for item in obj],
+                create_instances(TimelineItem, obj),
                 align=aligment_from_props(props),
                 alternate=props.get("alternate", False),
             ),

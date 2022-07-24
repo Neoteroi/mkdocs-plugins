@@ -13,9 +13,6 @@ class FileReader(DataReader):
     encoding = "utf-8"
 
     def test(self, source: str) -> bool:
-        # TODO: qui va meglio controllare se la risorsa >>sembra<< un file,
-        # così l'utente riceve una exception di tipo FileNotFound se non si trova
-        # niente
         source_path = Path(source)
         return source_path.exists() and source_path.is_file()
 
