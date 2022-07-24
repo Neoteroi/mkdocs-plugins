@@ -330,6 +330,14 @@
             left: calc(50% - 12px);
         }
 
+        .ug-timeline.vertical.left .ug-timeline-dot {
+            left: 18px;
+        }
+
+        .ug-timeline.vertical.right .ug-timeline-dot {
+            right: 18px;
+        }
+
         .ug-timeline-dot.bigger {
             width: 28px;
             height: 28px;

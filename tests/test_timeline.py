@@ -215,6 +215,14 @@ def test_timeline_extension_csv_format(example, expected_result):
             ),
             EXAMPLE_1,
         ],
+        [
+            textwrap.dedent(
+                f"""
+                [timeline yaml({get_resource_file_path('./timeline-1.yaml')})]
+                """
+            ),
+            EXAMPLE_1,
+        ],
     ],
 )
 def test_timeline_from_source(example, expected_result):

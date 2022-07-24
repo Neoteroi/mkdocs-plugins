@@ -35,7 +35,7 @@ setup(
         "neoteroi.spantable",
         "neoteroi.timeline",
     ],
-    install_requires=["essentials-openapi[full]", "mkdocs"],
+    install_requires=["essentials-openapi[full]", "mkdocs~=1.3.1", "httpx~=0.22.0"],
     entry_points={
         "mkdocs.plugins": [
             "neoteroi.mkdocsoad = neoteroi.mkdocsoad:MkDocsOpenAPIDocumentationPlugin",

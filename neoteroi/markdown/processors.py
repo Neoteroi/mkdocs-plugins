@@ -24,7 +24,7 @@ from neoteroi.markdown import parse_props
 from neoteroi.markdown.data.files import FileReader
 from neoteroi.markdown.data.source import DataReader
 from neoteroi.markdown.data.text import CSVParser, JSONParser, TextParser, YAMLParser
-from neoteroi.markdown.data.web import HTTPSource
+from neoteroi.markdown.data.web import HTTPDataReader
 
 logger = logging.getLogger("MARKDOWN")
 
@@ -80,7 +80,7 @@ class BaseProcessor(ABC):
 
         return self.parsers
 
-    def _render_courtesy_error(self, parent, message: str):
+    def render_courtesy_error(self, parent, message: str):
         div = etree.SubElement(parent, "div", {"class": "ug-error"})
         p = etree.SubElement(div, "p")
         p.text = message
@@ -100,7 +100,7 @@ class BaseProcessor(ABC):
                 obj = self.parse(data, props)
             except ValueError:
                 logger.exception("Could not parse the value of a %s block.", self.name)
-                self._render_courtesy_error(
+                self.render_courtesy_error(
                     parent,
                     f"Could not parse the value of this {self.name} block. "
                     "Please correct the input.",
@@ -113,7 +113,7 @@ class BaseProcessor(ABC):
             self.build_html(parent, obj, props)
         except TypeError:
             logger.exception("Could not render a %s block.", self.name)
-            self._render_courtesy_error(
+            self.render_courtesy_error(
                 parent,
                 f"Could not render a {self.name} block. Please correct the input.",
             )
@@ -161,7 +161,7 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
         else:
             return False
 
-    data_readers: Iterable[DataReader] = (FileReader(), HTTPSource())
+    data_readers: Iterable[DataReader] = (FileReader(), HTTPDataReader())
 
     def get_data_reader(self, source: str) -> DataReader:
         if not source:

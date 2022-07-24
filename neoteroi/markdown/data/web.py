@@ -30,7 +30,7 @@ def ensure_success(response: httpx.Response) -> None:
         )
 
 
-class HTTPSource(DataReader):
+class HTTPDataReader(DataReader):
     http_client: httpx.Client = default_http_client
 
     def test(self, source: str) -> bool:
@@ -40,7 +40,7 @@ class HTTPSource(DataReader):
     def get(self, url: str) -> httpx.Response:
         try:
             return self.http_client.get(url)
-        except httpx.HTTPError as http_error:
+        except httpx.HTTPError as http_error:  # pragma: no cover
             raise FailedRequestError(str(http_error)) from http_error
 
     def read(self, source: str) -> Any:
