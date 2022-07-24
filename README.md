@@ -102,7 +102,7 @@ extra_css:
 
 ## Timeline
 
-The timeline extension provides and HTML component to display chronological information
+The timeline extension provides a component to display chronological information
 with style.
 
 How to use:
@@ -131,14 +131,20 @@ extra_css:
 
 ```
 ::timeline::
-- title: Project launch!
+
+- title: Project launch
   sub_title: 2022-Q3
-  content: |
-    Better late than never! **Finally,** dolor sit amet. _Does it work?_
-    [https://www.neoteroi.dev/blacksheep/](https://www.neoteroi.dev/blacksheep/)
+  content: Better late than never!
 - title: One
   sub_title: 2022-Q4
   content: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+- title: Two
+  sub_title: 2023-Q1
+  content: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+- title: Three
+  sub_title: 2023-Q2
+  content: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
 ::/timeline::
 ```
 
