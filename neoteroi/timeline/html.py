@@ -50,10 +50,11 @@ class TimelineHTMLBuilder:
             )
             sub_title_element.text = item.sub_title
 
-        content_element = etree.SubElement(
-            item_element, "p", {"class": "nt-timeline-content"}
-        )
-        content_element.text = item.content
+        if item.content:
+            content_element = etree.SubElement(
+                item_element, "p", {"class": "nt-timeline-content"}
+            )
+            content_element.text = item.content
 
         icon_element = etree.SubElement(
             item_element, "div", {"class": self.get_dot_class(item)}

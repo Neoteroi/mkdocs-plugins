@@ -12,10 +12,11 @@ pip install neoteroi-mkdocs
 
 This package includes the following plugins and extensions:
 
-| Name                      | Description                                               | Type                       |
-| :------------------------ | :-------------------------------------------------------- | :------------------------- |
-| [`mkdocsoad`](#mkdocsoad) | Generates documentation from OpenAPI specification files. | MkDocs plugin.             |
-| [`spantable`](#spantable) | Tables supporting colspan and rowspan.                    | Python Markdown extension. |
+| Name                      | Description                                                | Type                       |
+| :------------------------ | :--------------------------------------------------------- | :------------------------- |
+| [`mkdocsoad`](#mkdocsoad) | Generates documentation from OpenAPI specification files.  | MkDocs plugin.             |
+| [`spantable`](#spantable) | Tables supporting colspan and rowspan.                     | Python Markdown extension. |
+| [`timeline`](#timeline)   | Component to display chronological information with style. | Python Markdown extension. |
 
 ## MkDocsOAD
 
@@ -99,6 +100,49 @@ extra_css:
 
 ![Example result](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/06e157c4f49e27a7e488d72d36d199194e28e952/oad-example-2.png)
 
+## Timeline
+
+The timeline extension provides and HTML component to display chronological information
+with style.
+
+How to use:
+
+1. Configure the extension in the MkDocs configuration file:
+
+```yaml
+markdown_extensions:
+  - neoteroi.timeline
+```
+
+2. Download a local copy of the provided [`timeline.css`
+file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/timeline/resources/timeline.css)
+and configure it as extra file in your MkDocs configuration:
+
+```yaml
+extra_css:
+  - css/timeline.css
+```
+
+3. (optional) install Font-Awesome
+
+2. Write a Markdown table like in the following example, use `@span`
+   placeholders for automatic handling of colspan and rowspan depending on
+   adjacent empty cells (separator lines are ignored):
+
+```
+::timeline::
+- title: Project launch!
+  sub_title: 2022-Q3
+  content: |
+    Better late than never! **Finally,** dolor sit amet. _Does it work?_
+    [https://www.neoteroi.dev/blacksheep/](https://www.neoteroi.dev/blacksheep/)
+- title: One
+  sub_title: 2022-Q4
+  content: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+::/timeline::
+```
+
+
 ## SpanTable
 
 Extension for Python Markdown to support tables with `colspan` and `rowspan`,
@@ -178,7 +222,7 @@ Produces an output like the following:
 
 ![SpanTable example 2](https://gist.githubusercontent.com/RobertoPrevato/38a0598b515a2f7257c614938843b99b/raw/6df659decb605cf9d1f6166a8ae5cc6a0ba897bb/spantable-example-02b.png)
 
-### Styling
+### Styling spantable
 
 Download a local copy of the provided [`spantable.css`
 file](https://github.com/Neoteroi/mkdocs-plugins/blob/main/neoteroi/spantable/resources/spantable.css)
