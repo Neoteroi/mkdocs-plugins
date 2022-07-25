@@ -1,5 +1,6 @@
 """
-This module provides an extension to support Markdown tables with colspan and rowspan.
+This module provides an extension for a component to display chronological information
+with style.
 
 neoteroi.timeline
 

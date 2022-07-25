@@ -330,17 +330,7 @@
             left: calc(50% - 12px);
         }
 
-        .nt-timeline.vertical.left .nt-timeline-dot {
-            left: 18px;
-        }
-
-        .nt-timeline.vertical.right .nt-timeline-dot {
-            right: 18px;
-        }
-
         .nt-timeline-dot.bigger {
-            width: 28px;
-            height: 28px;
             font-size: 1rem !important;
         }
     }

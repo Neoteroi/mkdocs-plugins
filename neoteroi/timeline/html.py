@@ -32,6 +32,23 @@ class TimelineHTMLBuilder:
 
         etree.SubElement(root_element, "div", {"class": "nt-timeline-after"})
 
+    def build_icon_html(self, parent, item: TimelineItem):
+        if not item.icon:
+            return
+
+        if item.icon.startswith("http"):
+            etree.SubElement(
+                parent, "img", {"class": "icon", "src": item.icon, "alt": "step icon"}
+            )
+        elif "fa-" in item.icon:
+            # Fontawesome
+            etree.SubElement(parent, "i", {"class": f"{item.icon} icon"})
+        else:
+            # other icon - this integrates with other processors, like the one from
+            # Material for MkDocs!
+            span = etree.SubElement(parent, "span", {"class": "icon"})
+            span.text = item.icon
+
     def build_item_html(self, parent, item: TimelineItem):
         item_element = etree.SubElement(
             parent,
@@ -56,9 +73,9 @@ class TimelineHTMLBuilder:
             )
             content_element.text = item.content
 
-        icon_element = etree.SubElement(
+        dot_element = etree.SubElement(
             item_element, "div", {"class": self.get_dot_class(item)}
         )
 
         if item.icon:
-            etree.SubElement(icon_element, "i", {"class": f"{item.icon} icon"})
+            self.build_icon_html(dot_element, item)

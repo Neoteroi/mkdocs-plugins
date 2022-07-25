@@ -34,6 +34,7 @@ setup(
         "neoteroi.mkdocsoad",
         "neoteroi.spantable",
         "neoteroi.timeline",
+        "neoteroi.cards",
     ],
     install_requires=["essentials-openapi[full]", "mkdocs~=1.3.1", "httpx~=0.22.0"],
     entry_points={
@@ -43,6 +44,7 @@ setup(
         "markdown.extensions": [
             "neoteroi.spantable = neoteroi.spantable:SpanTableExtension",
             "neoteroi.timeline = neoteroi.timeline:TimelineExtension",
+            "neoteroi.cards = neoteroi.cards:CardsExtension",
         ],
     },
     include_package_data=True,

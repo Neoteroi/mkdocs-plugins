@@ -4,6 +4,16 @@ import pytest
 
 from neoteroi.markdown.processors import find_closing_fragment_index
 
+"""
+class MockSourceBlockProcessor(SourceBlockProcessor):
+    @property
+    def name(self) -> str:
+        return "mock"
+
+    def build_html(self, parent, obj, props) -> None:
+        return
+"""
+
 
 @pytest.mark.parametrize(
     "pattern,blocks,expected_result",
