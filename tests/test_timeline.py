@@ -4,7 +4,7 @@ import xml.etree.ElementTree as etree
 import markdown
 import pytest
 
-from neoteroi.timeline import BaseTimelineProcessor, TimelineExtension, make_extension
+from neoteroi.timeline import BaseTimelineProcessor, TimelineExtension
 from tests import get_resource_file_path
 
 EXAMPLE_1 = """
@@ -59,11 +59,6 @@ EXAMPLE_2 = """
 <div class="nt-timeline-after"></div>
 </div>
 """
-
-
-def test_make_extension():
-    extension = make_extension()
-    assert isinstance(extension, TimelineExtension)
 
 
 def test_base_timeline_processor_raises_for_not_list_input():

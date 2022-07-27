@@ -1,26 +1,30 @@
 import logging
 import xml.etree.ElementTree as etree
 
+from neoteroi.markdown.align import aligment_from_props
+
 from .domain import Timeline, TimelineItem
 
 logger = logging.getLogger("MARKDOWN")
 
 
 class TimelineHTMLBuilder:
-    def get_class(self, timeline: Timeline) -> str:
+    def __init__(self, props) -> None:
+        self.align = aligment_from_props(props)
+        self.alternate = props.get("alternate", False)
+
+    def get_class(self) -> str:
         return (
             "nt-timeline vertical "
-            + timeline.align.value
-            + (" alternate" if timeline.alternate else "")
+            + self.align.value
+            + (" alternate" if self.alternate else "")
         )
 
     def get_dot_class(self, item: TimelineItem) -> str:
         return "nt-timeline-dot " + (item.key or "") + (" bigger" if item.icon else "")
 
     def build_html(self, parent, timeline: Timeline):
-        root_element = etree.SubElement(
-            parent, "div", {"class": self.get_class(timeline)}
-        )
+        root_element = etree.SubElement(parent, "div", {"class": self.get_class()})
         etree.SubElement(root_element, "div", {"class": "nt-timeline-before"})
 
         items_element = etree.SubElement(

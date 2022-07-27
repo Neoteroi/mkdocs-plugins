@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from neoteroi.markdown.align import Alignment
-
 
 @dataclass
 class TimelineItem:
@@ -16,5 +14,3 @@ class TimelineItem:
 @dataclass
 class Timeline:
     items: List[TimelineItem]
-    align: Alignment = Alignment.LEFT
-    alternate: bool = False

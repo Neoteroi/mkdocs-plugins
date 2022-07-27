@@ -39,7 +39,11 @@ def parse_props(
 
     if bool_attrs:
         for word in _PROPS_RE.sub("", line).split():
-            props[word] = True
+            if "=" in word:
+                name, value = word.split("=")
+                props[name] = value
+            else:
+                props[word] = True
 
     return props
 

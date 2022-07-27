@@ -2,7 +2,7 @@ import xml.etree.ElementTree as etree
 from dataclasses import dataclass
 from typing import Optional
 
-# TODO: remove this!!
+from .utils import create_instance
 
 
 @dataclass
@@ -11,6 +11,15 @@ class Image:
     height: Optional[int] = None
     width: Optional[int] = None
     alt: Optional[str] = None
+
+    @classmethod
+    def from_obj(cls, obj):
+        if isinstance(obj, str):
+            return cls(obj)
+        elif isinstance(obj, dict):
+            create_instance(cls, obj)
+
+        raise TypeError("The given object is not of a supported type.")
 
     def get_props(self):
         props = {"src": self.url}

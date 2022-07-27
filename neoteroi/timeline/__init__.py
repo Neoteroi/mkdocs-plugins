@@ -9,7 +9,6 @@ Copyright (c) 2022 to present, Roberto Prevato
 """
 from markdown import Extension
 
-from neoteroi.markdown.align import aligment_from_props
 from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
 from neoteroi.markdown.utils import create_instances
 
@@ -27,15 +26,8 @@ class BaseTimelineProcessor:
         if not isinstance(obj, list):
             raise TypeError("Expected a list of items describing timeline parts.")
 
-        builder = TimelineHTMLBuilder()
-        builder.build_html(
-            parent,
-            Timeline(
-                create_instances(TimelineItem, obj),
-                align=aligment_from_props(props),
-                alternate=props.get("alternate", False),
-            ),
-        )
+        builder = TimelineHTMLBuilder(props)
+        builder.build_html(parent, Timeline(create_instances(TimelineItem, obj)))
 
 
 class TimelineEmbeddedProcessor(BaseTimelineProcessor, EmbeddedBlockProcessor):
@@ -69,7 +61,3 @@ class TimelineExtension(Extension):
         md.parser.blockprocessors.register(
             TimelineSourceProcessor(md.parser), "timeline-from-source", priority
         )
-
-
-def make_extension(*args, **kwargs):
-    return TimelineExtension(*args, **kwargs)

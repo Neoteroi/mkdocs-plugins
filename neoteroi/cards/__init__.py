@@ -10,7 +10,7 @@ from markdown import Extension
 
 from neoteroi.markdown.images import Image
 from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
-from neoteroi.markdown.utils import create_instance, create_instances
+from neoteroi.markdown.utils import create_instances
 
 from .domain import CardItem, Cards
 from .html import CardsHTMLBuilder
@@ -24,27 +24,27 @@ class BaseCardsProcessor:
     def norm_obj(self, obj):
         for item in obj:
             if "image" in item:
-                item["image"] = create_instance(Image, item["image"])
+                item["image"] = Image.from_obj(item["image"])
 
     def build_html(self, parent, obj, props) -> None:
         """Builds the HTML for the given input object."""
         if not isinstance(obj, list):
-            raise TypeError("Expected a list of items describing timeline parts.")
+            raise TypeError("Expected a list of items describing cards.")
 
         self.norm_obj(obj)
-        builder = CardsHTMLBuilder()
+        builder = CardsHTMLBuilder(props)
         builder.build_html(parent, Cards(create_instances(CardItem, obj)))
 
 
 class CardsEmbeddedProcessor(BaseCardsProcessor, EmbeddedBlockProcessor):
     """
-    Block processor that can render a timeline using data embedded in the Markdown.
+    Block processor that can render cards using data embedded in the Markdown.
     """
 
 
 class CardsSourceProcessor(BaseCardsProcessor, SourceBlockProcessor):
     """
-    Block processor that can render a timeline using data from a source outside of the
+    Block processor that can render cards using data from a source outside of the
     Markdown (e.g. file, URL, database).
     """
 
@@ -67,7 +67,3 @@ class CardsExtension(Extension):
         md.parser.blockprocessors.register(
             CardsSourceProcessor(md.parser), "cards-from-source", priority
         )
-
-
-def make_extension(*args, **kwargs):
-    return CardsExtension(*args, **kwargs)
