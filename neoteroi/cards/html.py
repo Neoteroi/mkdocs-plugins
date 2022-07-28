@@ -43,7 +43,9 @@ class CardsHTMLBuilder:
         if item.url:
             first_child = etree.SubElement(item_element, "a", {"href": item.url})
         else:
-            raise NotImplementedError()
+            first_child = etree.SubElement(
+                item_element, "div", {"class": "nt-card-wrap"}
+            )
 
         wrapper_element = etree.SubElement(first_child, "div", {})
 
@@ -67,12 +69,14 @@ class CardsHTMLBuilder:
             return
 
         if self.use_image_tags:
-            image_div = etree.SubElement(
-                wrapper_element, "div", {"class": "nt-card-image tags"}
+            build_image_html(
+                etree.SubElement(
+                    wrapper_element, "div", {"class": "nt-card-image tags"}
+                ),
+                item.image,
             )
-            build_image_html(image_div, item.image)
         else:
-            image_div = etree.SubElement(
+            etree.SubElement(
                 wrapper_element,
                 "div",
                 {

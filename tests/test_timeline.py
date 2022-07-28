@@ -60,6 +60,61 @@ EXAMPLE_2 = """
 </div>
 """
 
+EXAMPLE_3 = """
+<div class="nt-timeline vertical left">
+<div class="nt-timeline-before"></div>
+<div class="nt-timeline-items">
+<div class="nt-timeline-item blue">
+<h3 class="nt-timeline-title">Zero</h3>
+<span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
+<div class="nt-timeline-dot blue bigger"><img alt="step icon" class="icon" src="/img/foo-1.png" /></div>
+</div>
+<div class="nt-timeline-item cyan">
+<h3 class="nt-timeline-title">One</h3>
+<span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+<div class="nt-timeline-dot cyan bigger"><img alt="step icon" class="icon" src="/img/foo-2.png" /></div>
+</div>
+</div>
+<div class="nt-timeline-after"></div>
+</div>
+"""
+
+EXAMPLE_4 = """
+<div class="nt-timeline vertical left">
+<div class="nt-timeline-before"></div>
+<div class="nt-timeline-items">
+<div class="nt-timeline-item blue">
+<h3 class="nt-timeline-title">Zero</h3>
+<span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
+<div class="nt-timeline-dot blue bigger"><span class="icon">:fontawesome-regular-face-laugh-wink:</span></div>
+</div>
+<div class="nt-timeline-item cyan">
+<h3 class="nt-timeline-title">One</h3>
+<span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+<div class="nt-timeline-dot cyan bigger"><span class="icon">:octicons-bug-16:</span></div>
+</div>
+</div>
+<div class="nt-timeline-after"></div>
+</div>
+"""
+
+EXAMPLE_5 = """
+<div class="nt-timeline vertical left">
+<div class="nt-timeline-before"></div>
+<div class="nt-timeline-items">
+<div class="nt-timeline-item">
+<h3 class="nt-timeline-title">Zero</h3>
+<div class="nt-timeline-dot "></div>
+</div>
+<div class="nt-timeline-item">
+<h3 class="nt-timeline-title">One</h3>
+<div class="nt-timeline-dot "></div>
+</div>
+</div>
+<div class="nt-timeline-after"></div>
+</div>
+"""
+
 
 def test_base_timeline_processor_raises_for_not_list_input():
     processor = BaseTimelineProcessor()
@@ -145,6 +200,73 @@ def test_base_timeline_processor_raises_for_not_list_input():
             ::/timeline::
             """,
             EXAMPLE_1,
+        ],
+        [
+            """
+            ::timeline::
+
+            [
+                {
+                    "title": "Zero",
+                    "content": "Better late than never! Lorem ipsum dolor sit amet.",
+                    "icon": "/img/foo-1.png",
+                    "key": "blue",
+                    "sub_title": "2022-Q1"
+                },
+                {
+                    "title": "One",
+                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+                    "icon": "/img/foo-2.png",
+                    "key": "cyan",
+                    "sub_title": "2022-Q2"
+                }
+            ]
+
+            ::/timeline::
+            """,
+            EXAMPLE_3,
+        ],
+        [
+            """
+            ::timeline::
+
+            [
+                {
+                    "title": "Zero",
+                    "content": "Better late than never! Lorem ipsum dolor sit amet.",
+                    "icon": ":fontawesome-regular-face-laugh-wink:",
+                    "key": "blue",
+                    "sub_title": "2022-Q1"
+                },
+                {
+                    "title": "One",
+                    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing.",
+                    "icon": ":octicons-bug-16:",
+                    "key": "cyan",
+                    "sub_title": "2022-Q2"
+                }
+            ]
+
+            ::/timeline::
+            """,
+            EXAMPLE_4,
+        ],
+        [
+            """
+            ::timeline::
+
+            [
+                {
+                    "title": "Zero"
+                },
+                {
+                    "title": "One"
+                }
+            ]
+
+            ::/timeline::
+            """,
+            EXAMPLE_5,
         ],
     ],
 )

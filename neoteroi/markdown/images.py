@@ -17,7 +17,7 @@ class Image:
         if isinstance(obj, str):
             return cls(obj)
         elif isinstance(obj, dict):
-            create_instance(cls, obj)
+            return create_instance(cls, obj)
 
         raise TypeError("The given object is not of a supported type.")
 

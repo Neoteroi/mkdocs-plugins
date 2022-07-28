@@ -6,3 +6,4 @@ per-file-ignores =
     tests/test_markdown.py:E501
     tests/test_spantable.py:E501
     tests/test_timeline.py:E501
+    tests/test_cards.py:E501

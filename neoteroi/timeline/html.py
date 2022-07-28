@@ -40,7 +40,7 @@ class TimelineHTMLBuilder:
         if not item.icon:
             return
 
-        if item.icon.startswith("http"):
+        if "/" in item.icon:
             etree.SubElement(
                 parent, "img", {"class": "icon", "src": item.icon, "alt": "step icon"}
             )
@@ -81,5 +81,4 @@ class TimelineHTMLBuilder:
             item_element, "div", {"class": self.get_dot_class(item)}
         )
 
-        if item.icon:
-            self.build_icon_html(dot_element, item)
+        self.build_icon_html(dot_element, item)
