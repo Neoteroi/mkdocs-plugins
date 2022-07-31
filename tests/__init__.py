@@ -1,4 +1,5 @@
 import os
+import pprint
 
 import pkg_resources
 
@@ -15,3 +16,8 @@ def collapse_str(value):
 
 def equal_html(value1, value2):
     return collapse_str(value1) == collapse_str(value2)
+
+
+def debug_pprint(data, file_name: str = "__file_out.py"):
+    with open(file_name, "wt", encoding="utf8") as f:
+        f.write(pprint.pformat(data, width=89))

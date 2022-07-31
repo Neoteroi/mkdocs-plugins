@@ -175,7 +175,7 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
             if reader.test(source):
                 return reader
 
-        logger.warning("Could not resolve the source ")
+        logger.warning("[%s] could not resolve the source: %s", self.name, source)
         raise ValueError(
             f'[{self.name}] invalid source. The source "{source}" could not be '
             "resolved. If the source is a file, please verify the path."

@@ -15,8 +15,9 @@ This package includes the following plugins and extensions:
 | Name                      | Description                                                | Type                       |
 | :------------------------ | :--------------------------------------------------------- | :------------------------- |
 | [`mkdocsoad`](#mkdocsoad) | Generates documentation from OpenAPI specification files.  | MkDocs plugin.             |
-| [`spantable`](#spantable) | Tables supporting colspan and rowspan.                     | Python Markdown extension. |
+| [`cards`](#cards)         | Component to display cards.                                | Python Markdown extension. |
 | [`timeline`](#timeline)   | Component to display chronological information with style. | Python Markdown extension. |
+| [`spantable`](#spantable) | Tables supporting colspan and rowspan.                     | Python Markdown extension. |
 
 ## MkDocsOAD
 

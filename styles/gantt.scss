@@ -1,0 +1,409 @@
+/**
+ *  Extra CSS file for the neoteroi.projects.gantt extension.
+ *
+ *  https://github.com/Neoteroi/mkdocs-plugins
+**/
+
+:root {
+    --nt-scrollbar-color: #2751b0;
+    --nt-plan-actions-height: 24px;
+    --nt-week-primary: #ff9800;
+
+    --nt-group-0-dark: #ba000d;
+    --nt-group-0-primary: #f44336;
+    --nt-group-0-light: #ff7961;
+
+    --nt-group-1-dark: #0039cb;
+    --nt-group-1-primary: #2962ff;
+    --nt-group-1-light: #768fff;
+
+    --nt-group-2-dark: #00675b;
+    --nt-group-2-primary: #009688;
+    --nt-group-2-light: #52c7b8;
+
+    --nt-group-3-dark: #c66900;
+    --nt-group-3-primary: #ff9800;
+    --nt-group-3-light: #ffc947;
+
+    --nt-group-4-dark: #5a9216;
+    --nt-group-4-primary: #8bc34a;
+    --nt-group-4-light: #bef67a;
+
+    --nt-group-5-dark: #007ac1;
+    --nt-group-5-primary: #03a9f4;
+    --nt-group-5-light: #67daff;
+
+    --nt-group-6-dark: #c8b900;
+    --nt-group-6-primary: #ffeb3b;
+    --nt-group-6-light: #ffff72;
+
+
+    --nt-plan-vertical-line-color: #a3a3a3ad;
+}
+
+.nt-plan-root {
+    min-height: 200px;
+
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--nt-scrollbar-color);
+        border-radius: 10px;
+    }
+
+    scrollbar-width: 20px;
+    scrollbar-color: var(--nt-scrollbar-color);
+
+    display: flex;
+
+    // Nota: variante con schema a sinistra sempre visibile (da rimuovere?)
+    .left {
+        background-color: #eeffff;
+        max-width: 200px;
+        flex: 20%;
+    }
+
+    .nt-plan {
+        flex: 80%;
+    }
+}
+
+.nt-plan {
+    white-space: nowrap;
+    overflow-x: auto;
+    display: flex;
+
+    .ug-timeline-dot {
+        left: 368px;
+        top: -8px;
+        cursor: help;
+    }
+}
+
+.months {
+    display: flex;
+}
+
+.month {
+    flex: auto;
+    display: inline-block;
+    box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px inset;
+    background-color: rgb(39 81 176);
+    color: white;
+    text-transform: uppercase;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    padding: 2px 5px;
+    font-size: 12px;
+    border: 1px solid #000;
+    width: 150px;
+    border-radius: 8px;
+}
+
+.nt-plan-group-activities {
+    background-repeat: repeat-y;
+    background: linear-gradient(to right, var(--nt-plan-vertical-line-color), var(--nt-plan-vertical-line-color) 1px, transparent 1px, transparent);
+    background-size: 12.5%;
+}
+
+.nt-plan-activity {
+    display: flex;
+    margin: 2px 0;
+    background-color: #bbbbbb40;
+}
+
+.actions {
+    height: var(--nt-plan-actions-height);
+}
+
+.actions {
+    position: relative;
+}
+
+.period {
+    display: inline-block;
+    height: var(--nt-plan-actions-height);
+    width: 120px;
+    position: absolute;
+    left: 0px;
+    background: #1da1f2;
+    border-radius: 5px;
+    transition: all 0.5s;
+    cursor: help;
+
+    .nt-tooltip {
+        display: none;
+        top: 30px;
+        position: relative;
+        padding: 1rem;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    &:hover {
+        .nt-tooltip {
+            display: inline-block;
+        }
+    }
+}
+
+.period-0 {
+    left: 340px;
+    visibility: visible;
+    background-color: rgb(69, 97, 101);
+}
+
+.period-1 {
+    left: 40px;
+    visibility: visible;
+    background-color: green;
+}
+
+.period-2 {
+    left: 120px;
+    visibility: visible;
+    background-color: pink;
+    width: 80px
+}
+
+.period-3 {
+    left: 190px;
+    visibility: visible;
+    background-color: darkred;
+    width: 150px
+}
+
+.weeks>span {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+
+    .week-text {
+        font-size: 10px;
+        position: absolute;
+        display: inline-block;
+        padding: 3px 4px;
+    }
+}
+
+
+.period {
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    span {
+        font-size: 12px;
+        vertical-align: top;
+        margin-left: 4px;
+        color: white;
+    }
+}
+
+/*
+.nt-plan-activity>div:first-child {
+    position: absolute;
+    z-index: 5;
+    display: none;
+}
+*/
+.weeks {
+    padding-left: calc(calc(100% / 104) * 0.2857);
+    height: 20px;
+    display: flex;
+    box-sizing: content-box;
+}
+
+.months {
+    display: flex;
+}
+
+.week {
+    height: 20px;
+    position: relative;
+    border: 1;
+    flex: auto;
+    border: 2px solid white;
+    border-radius: 4px;
+    background-color: var(--nt-week-primary);
+    cursor: help;
+}
+
+.years {
+    display: flex;
+}
+
+.year {
+    width: 50%;
+    text-align: center;
+    border-right: 1px solid var(--nt-plan-vertical-line-color);
+    color: var(--nt-group-1-dark);
+    font-weight: bold;
+
+    &:first-child {
+        border-left: 1px solid var(--nt-plan-vertical-line-color);
+    }
+}
+
+.quarters {
+    display: flex;
+}
+
+.quarter {
+    width: calc(100% / 8);
+    text-align: center;
+    border-right: 1px solid var(--nt-plan-vertical-line-color);
+    color: var(--nt-group-1-dark);
+    font-weight: bold;
+
+    &:first-child {
+        border-left: 1px solid var(--nt-plan-vertical-line-color);
+    }
+}
+
+.nt-plan-group {
+    margin: 20px 0;
+    position: relative;
+}
+
+.nt-plan-group {
+    display: flex;
+}
+
+.nt-plan-group-summary {
+    background: #2751b0;
+    width: 150px;
+    white-space: normal;
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: #fff;
+    z-index: 10;
+
+    p {
+        margin: 0;
+        padding: 0;
+        font-size: .6rem;
+    }
+}
+
+// style with shadows and white round borders
+.nt-plan-group-summary,
+.month,
+.period,
+.week,
+.nt-tooltip {
+    border: 3px solid white;
+    box-shadow: 0 2px 3px -1px rgb(0 0 0 / 20%), 0 3px 3px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+// neon
+.neon .period {
+    box-shadow: 2px 14px 15px -7px rgb(255 36 201 / 36%);
+}
+
+.nt-plan-periods {
+    padding-left: 150px;
+}
+
+.nt-plan-group-activities {
+    flex: auto;
+}
+
+
+.group-0 {
+    .nt-plan-group-summary {
+        background-color: var(--nt-group-0-dark);
+    }
+
+    .period {
+        background-color: var(--nt-group-0-primary);
+    }
+}
+
+.group-1 {
+    .nt-plan-group-summary {
+        background-color: var(--nt-group-1-dark);
+    }
+
+    .period {
+        background-color: var(--nt-group-1-primary);
+    }
+}
+
+.group-2 {
+    .nt-plan-group-summary {
+        background-color: var(--nt-group-2-dark);
+    }
+
+    .period {
+        background-color: var(--nt-group-2-primary);
+    }
+}
+
+
+.group-3 {
+    .nt-plan-group-summary {
+        background-color: var(--nt-group-3-dark);
+    }
+
+    .period {
+        background-color: var(--nt-group-3-primary);
+    }
+}
+
+
+.group-4 {
+    .nt-plan-group-summary {
+        background-color: var(--nt-group-4-dark);
+    }
+
+    .period {
+        background-color: var(--nt-group-4-primary);
+    }
+}
+
+
+.group-5 {
+    .nt-plan-group-summary {
+        background-color: var(--nt-group-5-dark);
+    }
+
+    .period {
+        background-color: var(--nt-group-5-primary);
+    }
+}
+
+
+.group-6 {
+    .nt-plan-group-summary {
+        background-color: var(--nt-group-6-dark);
+    }
+
+    .period {
+        background-color: var(--nt-group-6-primary);
+    }
+}
+
+.months {
+    z-index: 2;
+    position: relative;
+}
+
+.weeks {
+    position: relative;
+    top: -2px;
+    z-index: 0;
+}
+
+.month,
+.quarter,
+.year,
+.nt-tooltip {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
