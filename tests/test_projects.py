@@ -3,14 +3,8 @@ from datetime import date, datetime
 import pytest
 import yaml
 from dateutil.parser import parse as parse_date
-from dateutil.relativedelta import relativedelta
 
-from neoteroi.projects.domain import (
-    Activity,
-    Plan,
-    get_years_between_dates,
-    parse_lasts,
-)
+from neoteroi.projects.domain import Activity, Plan
 
 EXAMPLE_1 = """
 - title: Definition Phase
