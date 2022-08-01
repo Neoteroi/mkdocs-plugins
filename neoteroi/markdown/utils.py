@@ -15,6 +15,10 @@ def _get_fields(cls):
         return _FIELDS[cls]
 
 
+def _norm_key(key: str) -> str:
+    return key.replace("-", "_").lower()
+
+
 def create_instance(cls, props, field_names=None):
     """
     Creates an instance of a given dataclass type, ignoring extra properties.
@@ -23,7 +27,9 @@ def create_instance(cls, props, field_names=None):
         raise ValueError("The given type is not a dataclass")
     if field_names is None:
         field_names = _get_fields(cls)
-    return cls(**{k: v for k, v in props.items() if k in field_names})
+    return cls(
+        **{_norm_key(k): v for k, v in props.items() if _norm_key(k) in field_names}
+    )
 
 
 def create_instances(cls, items):

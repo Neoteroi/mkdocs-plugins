@@ -2,14 +2,17 @@ import logging
 import sys
 import xml.etree.ElementTree as etree
 from dataclasses import dataclass
-from datetime import date
-from enum import Enum
+from datetime import date, timedelta
+from uuid import uuid4
 
 from ..domain import Activity, Plan
 from ..timeutil import (
-    MONTHS,
+    get_first_day_of_month,
+    get_last_day_of_month,
     get_next_week_date,
-    iter_weeks_of_year,
+    iter_days_between_dates,
+    iter_months_between_dates,
+    iter_weeks_between_dates,
     iter_years_between_dates,
 )
 
@@ -18,36 +21,32 @@ logger = logging.getLogger("MARKDOWN")
 
 @dataclass
 class GanttViewOptions:
-    month_width: int = 150
+    month_width: float = 150
     render_weeks: bool = True
+    render_days: bool = True
+    whole_years: bool = False
+
+    def __post_init__(self):
+        if isinstance(self.month_width, str):
+            self.month_width = float(self.month_width)
+
+    @property
+    def day_width(self) -> float:
+        return self.month_width / 30
 
 
-class GanttScale(Enum):
-    YEARS = "years"
-    MONTHS = "months"
-    WEEKS = "weeks"
-    DAYS = "days"
-    HOURS = "hours"
-
-
-# ???
-def get_best_scale(min_date: date, max_date: date) -> GanttScale:
-    diff = max_date - min_date
-
-    if diff.days >= 365:
-        return GanttScale.YEARS
-
-    if diff.days == 0:
-        return GanttScale.HOURS
-
-    if diff.days > 60:
-        return GanttScale.WEEKS
-
-    return GanttScale.YEARS
+"""
+TODO:
+1. quarters
+2. animazioni
+3. eventi
+4. periodi in attività
+"""
 
 
 class GanttHTMLBuilder:
     def __init__(self, plan: Plan, options: GanttViewOptions) -> None:
+        self._id = uuid4()
         self._plan = plan
         self._options = options
 
@@ -62,13 +61,17 @@ class GanttHTMLBuilder:
         )
 
         # se la scala sono anni:
-        # self._scale_min_date = date(self._min_date.year, 1, 1)
-        # self._scale_max_date = date(self._max_date.year, 12, 31)
+        if options.whole_years:
+            self._scale_min_date = date(self._min_date.year, 1, 1)
+            self._scale_max_date = date(self._max_date.year, 12, 31)
+        else:
+            # se la scala sono mesi:
+            self._scale_min_date = get_first_day_of_month(self._min_date)
+            self._scale_max_date = get_last_day_of_month(self._max_date)
 
-        # se la scala sono mesi:
-        self._scale_min_date = date(self._min_date.year, self._min_date.month, 1)
-        self._scale_max_date = date(self._max_date.year, self._max_date.month, 31)
-
+        self._months_count = len(
+            list(iter_months_between_dates(self._scale_min_date, self._scale_max_date))
+        )
         self._scale_diff_seconds = (
             self._scale_min_date - self._scale_max_date
         ).total_seconds()
@@ -83,8 +86,12 @@ class GanttHTMLBuilder:
         return self._options
 
     @property
+    def client_width(self) -> int:
+        return int(self.options.month_width * self._months_count)
+
+    @property
     def id(self) -> str:
-        return f"nt-plan-{str(id(self.plan))}"
+        return f"nt-plan-{str(self._id)}"
 
     def build_html(self, parent):
         root_element = etree.SubElement(
@@ -102,7 +109,6 @@ class GanttHTMLBuilder:
 
     def build_style(self, parent):
         years_count = len(self._years)
-
         style_element = etree.SubElement(parent, "style")
 
         if years_count > 1:
@@ -124,9 +130,12 @@ class GanttHTMLBuilder:
 
         if min_date and max_date:
             self._build_years(periods_element)
-            self._build_quarters(periods_element)
+            # self._build_quarters(periods_element)
             self._build_months(periods_element)
             self._build_weeks(periods_element)
+
+            if self.options.day_width > 30:
+                self._build_days(periods_element)
 
     def _build_years(self, periods_element):
         """
@@ -175,16 +184,30 @@ class GanttHTMLBuilder:
             <span class="month month-3 march">March 2022</span>
             ...
         """
-        min_date = self._min_date
-        max_date = self._max_date
+        min_date = self._scale_min_date
+        max_date = self._scale_max_date
 
         months_element = etree.SubElement(periods_element, "div", {"class": "months"})
-        for year in range(min_date.year, max_date.year + 1):
-            for i, name in MONTHS:
-                month_element = etree.SubElement(
-                    months_element, "div", {"class": f"month month-{i} month-{name}"}
-                )
-                month_element.text = f"{name} {year}"
+
+        for month_date in iter_months_between_dates(min_date, max_date):
+            name = month_date.strftime("%B").lower()
+            month_element = etree.SubElement(
+                months_element,
+                "div",
+                {
+                    "class": f"month month-{name}",
+                    "style": f"width: {self._get_month_width(month_date)}px;",
+                },
+            )
+            month_element.text = month_date.strftime("%B %Y")
+
+    def _get_month_width(self, month_date) -> float:
+        last_day_of_month = get_last_day_of_month(month_date).day
+
+        if last_day_of_month == 30:
+            return self.options.month_width
+
+        return self.options.day_width * last_day_of_month
 
     def _build_weeks(self, periods_element):
         """
@@ -206,30 +229,73 @@ class GanttHTMLBuilder:
             )
             return
 
-        min_date = self._min_date
-        max_date = self._max_date
+        min_date = self._scale_min_date
+        max_date = self._scale_max_date
 
         weeks_element = etree.SubElement(periods_element, "div", {"class": "weeks"})
 
-        for year in range(min_date.year, max_date.year + 1):
-            for i, week_date in iter_weeks_of_year(year):
-                next_week_date = get_next_week_date(i, week_date)
-                week_element = etree.SubElement(
-                    weeks_element,
-                    "span",
-                    {
-                        "class": f"week week-{i}",
-                        "title": (
-                            f"W{i}: {week_date.strftime('%Y-%m-%d')} "
-                            "&rarr; "
-                            f"{next_week_date.strftime('%Y-%m-%d')}"
-                        ),
-                    },
+        for week_num, week_date in iter_weeks_between_dates(min_date, max_date):
+            next_week_date = get_next_week_date(week_num, week_date)
+            attributes = {
+                "class": f"week week-{week_num}",
+                "title": (
+                    f"W{week_num}: {week_date.strftime('%Y-%m-%d')} "
+                    "&rarr; "
+                    f"{(next_week_date - timedelta(days=1)).strftime('%Y-%m-%d')}"
+                ),
+            }
+            if week_date < self._scale_min_date:
+                # the first week must take into account the number of days in the
+                # first month of the scale
+                element_width = self.options.day_width * (next_week_date.day - 1)
+                attributes.update(
+                    {"style": f"width: {element_width}px; flex: initial;"}
                 )
-                week_text_element = etree.SubElement(
-                    week_element, "span", {"class": "week-text"}
+            elif next_week_date > self._scale_max_date:
+                # the last week must take into account the number of days in the
+                # last month of the scale
+                days_diff = (
+                    self._scale_max_date
+                    - date.fromisocalendar(week_date.year, week_num, 1)
+                ).days
+                element_width = self.options.day_width * (days_diff + 1)
+                attributes.update(
+                    {"style": f"width: {element_width}px; flex: initial;"}
                 )
-                week_text_element.text = f"W{i}"
+            # else:
+            #     element_width = self.options.day_width * 7
+            #     attributes.update(
+            #         {"style": f"width: {element_width}px; flex: initial;"}
+            #     )
+
+            week_element = etree.SubElement(weeks_element, "span", attributes)
+            week_text_element = etree.SubElement(
+                week_element, "span", {"class": "week-text"}
+            )
+            week_text_element.text = f"W{week_num}"
+
+    def _build_days(self, periods_element):
+        if not self.options.render_days:
+            return
+
+        min_date = self._scale_min_date
+        max_date = self._scale_max_date
+
+        days_element = etree.SubElement(periods_element, "div", {"class": "days"})
+
+        for i, day_date in enumerate(iter_days_between_dates(min_date, max_date)):
+            day_element = etree.SubElement(
+                days_element,
+                "span",
+                {
+                    "class": f"day day-{i}",
+                    "title": day_date.strftime("%Y-%m-%d"),
+                },
+            )
+            day_text_element = etree.SubElement(
+                day_element, "span", {"class": "day-text"}
+            )
+            day_text_element.text = str(day_date.day)
 
     def build_groups_html(self, parent):
         plan = self.plan
@@ -312,13 +378,22 @@ class GanttHTMLBuilder:
             </div>
         </div>
         """
+        title_date = (
+            (
+                f" {item.start.strftime('%Y-%m-%d')} "
+                "&rarr; "
+                f"{(item.end + timedelta(days=-1)).strftime('%Y-%m-%d')}"
+            )
+            if item.start and item.end
+            else ""
+        )
         period_element = etree.SubElement(
             actions_element,
             "div",
             {
-                "id": f"nt-plan-period-{id(item)}",
+                # "id": f"nt-plan-period-{id(item)}",
                 "class": "period",
-                "title": item.title,
+                "title": f"{item.title}{title_date}",
                 "style": (
                     f"left: {self._calc_period_left(item)}px; "
                     f"width: {self._calc_period_width(item)}px;"
@@ -330,22 +405,17 @@ class GanttHTMLBuilder:
         # TODO: apply style left and width depending on the size of month!
 
     def _calc_period_left(self, activity: Activity) -> float:
-        start_time = activity.start
-        if start_time is None:
+        if activity.start is None:
             return 0
 
-        diff_seconds = (self._scale_min_date - start_time).total_seconds()
-        return (
-            self._pixels_width * float(diff_seconds) / float(self._scale_diff_seconds)
-        )
+        delta = activity.start - self._scale_min_date
+        pixels_width = delta.days * self.options.day_width
+        return pixels_width
 
     def _calc_period_width(self, activity: Activity) -> float:
-        end_time = activity.end
-        if end_time is None:
-            return 0
+        if activity.end is None or activity.start is None:
+            return 50
 
-        left_perc = self._calc_period_left(activity)
-        diff_seconds = (self._scale_min_date - end_time).total_seconds()
-        return (
-            self._pixels_width * float(diff_seconds) / float(self._scale_diff_seconds)
-        ) - left_perc
+        delta = activity.end - activity.start
+        pixels_width = delta.days * self.options.day_width
+        return pixels_width

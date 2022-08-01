@@ -179,6 +179,11 @@
     width: 150px
 }
 
+.weeks>span,
+.days>span {
+    height: 25px;
+}
+
 .weeks>span {
     display: inline-block;
     margin: 0;
@@ -193,6 +198,17 @@
     }
 }
 
+.days {
+    z-index: -2;
+    position: relative;
+}
+
+.day-text {
+    font-size: 10px;
+    position: absolute;
+    display: inline-block;
+    padding: 3px 4px;
+}
 
 .period {
     text-overflow: ellipsis;
@@ -206,15 +222,8 @@
     }
 }
 
-/*
-.nt-plan-activity>div:first-child {
-    position: absolute;
-    z-index: 5;
-    display: none;
-}
-*/
-.weeks {
-    padding-left: calc(calc(100% / 104) * 0.2857);
+.weeks,
+.days {
     height: 20px;
     display: flex;
     box-sizing: content-box;
@@ -224,7 +233,8 @@
     display: flex;
 }
 
-.week {
+.week,
+.day {
     height: 20px;
     position: relative;
     border: 1;
@@ -297,6 +307,7 @@
 .month,
 .period,
 .week,
+.day,
 .nt-tooltip {
     border: 3px solid white;
     box-shadow: 0 2px 3px -1px rgb(0 0 0 / 20%), 0 3px 3px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
@@ -404,6 +415,9 @@
 .month,
 .quarter,
 .year,
+.week,
+.day,
 .nt-tooltip {
     font-family: Roboto, Helvetica, Arial, sans-serif;
+    box-sizing: border-box; // for exact sizing
 }

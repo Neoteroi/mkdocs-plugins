@@ -1,3 +1,4 @@
+import calendar
 import re
 from datetime import date
 from typing import Iterable, List, Tuple
@@ -91,8 +92,6 @@ def iter_years_between_dates(min_date: date, max_date: date) -> Iterable[int]:
 def iter_months_between_dates(min_date: date, max_date: date) -> Iterable[date]:
     """
     Iterates month dates between two dates.
-
-    TODO: remove?
     """
     start_date = min_date.replace(day=1)
     end_date = max_date.replace(day=1)
@@ -101,11 +100,23 @@ def iter_months_between_dates(min_date: date, max_date: date) -> Iterable[date]:
         yield month_date
 
 
+def iter_days_between_dates(min_date: date, max_date: date) -> Iterable[date]:
+    """
+    Iterates dates between two dates.
+    """
+    start_date = min_date.replace(day=1)
+    end_date = get_last_day_of_month(max_date)
+
+    for day_date in rrule.rrule(rrule.DAILY, dtstart=start_date, until=end_date):
+        yield day_date
+
+
 def this_week() -> int:
     return date.today().isocalendar().week
 
 
 def iter_weeks_of_year(year: int) -> Iterable[Tuple[int, date]]:
+    # TODO: deprecated?
     week_number = 0
     while True:
         week_number += 1
@@ -115,8 +126,44 @@ def iter_weeks_of_year(year: int) -> Iterable[Tuple[int, date]]:
             break
 
 
+def iter_weeks_between_dates(
+    min_date: date, max_date: date
+) -> Iterable[Tuple[int, date]]:
+    current_week = min_date.isocalendar()
+    end_week = max_date.isocalendar()
+
+    while current_week.year < end_week.year or current_week.week <= end_week.week:
+        current_week_date = date.fromisocalendar(
+            current_week.year, current_week.week, 1
+        )
+        yield current_week.week, current_week_date
+        current_week = get_next_week_date(
+            current_week.week, current_week_date
+        ).isocalendar()
+
+
+def iter_week_days_in_month(week_number: int, month_number: int):
+    ...
+
+
 def get_next_week_date(week_number, week_date) -> date:
     try:
         return date.fromisocalendar(week_date.year, week_number + 1, 1)
     except ValueError:
         return date.fromisocalendar(week_date.year + 1, 1, 1)
+
+
+def get_first_day_of_month(value: date) -> date:
+    """
+    Returns the date of the first day of a month from a given date.
+    """
+    return date(value.year, value.month, 1)
+
+
+def get_last_day_of_month(value: date) -> date:
+    """
+    Returns the date of the last day of a month from a given date.
+    """
+    return date(
+        value.year, value.month, calendar.monthrange(value.year, value.month)[1]
+    )
