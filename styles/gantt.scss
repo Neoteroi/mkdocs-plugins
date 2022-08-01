@@ -73,6 +73,20 @@
     .nt-plan {
         flex: 80%;
     }
+
+    &.no-groups {
+        .nt-plan-periods {
+            padding-left: 0;
+        }
+
+        .nt-plan-group-summary {
+            display: none;
+        }
+    }
+
+    .nt-timeline-dot.bigger {
+        top: -10px;
+    }
 }
 
 .nt-plan {
@@ -211,14 +225,18 @@
 }
 
 .period {
-    text-overflow: ellipsis;
-    overflow: hidden;
+    // TODO: opzionale
+    // text-overflow: ellipsis;
+    // overflow: hidden;
 
     span {
         font-size: 12px;
         vertical-align: top;
         margin-left: 4px;
-        color: white;
+        color: black;
+        background: #ffffffa8;
+        border-radius: 6px;
+        padding: 0 4px;
     }
 }
 
@@ -250,7 +268,7 @@
 }
 
 .year {
-    width: 50%;
+
     text-align: center;
     border-right: 1px solid var(--nt-plan-vertical-line-color);
     color: var(--nt-group-1-dark);
@@ -258,6 +276,10 @@
 
     &:first-child {
         border-left: 1px solid var(--nt-plan-vertical-line-color);
+
+        &:last-child {
+            width: 100%;
+        }
     }
 }
 
@@ -290,10 +312,10 @@
     background: #2751b0;
     width: 150px;
     white-space: normal;
-    padding: 0.5rem;
+    padding: 0.1rem 0.5rem;
     border-radius: 5px;
     color: #fff;
-    z-index: 10;
+    z-index: 3;
 
     p {
         margin: 0;

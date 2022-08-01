@@ -38,3 +38,21 @@ class Image:
 
 def build_image_html(parent, image: Image):
     etree.SubElement(parent, "img", image.get_props())
+
+
+def build_icon_html(parent, icon):
+    if not icon:
+        return
+
+    if "/" in icon:
+        etree.SubElement(
+            parent, "img", {"class": "icon", "src": icon, "alt": "step icon"}
+        )
+    elif "fa-" in icon:
+        # Fontawesome
+        etree.SubElement(parent, "i", {"class": f"{icon} icon"})
+    else:
+        # other icon - this integrates with other processors, like the one from
+        # Material for MkDocs!
+        span = etree.SubElement(parent, "span", {"class": "icon"})
+        span.text = icon

@@ -2,7 +2,11 @@ import pytest
 from dateutil.parser import parse as parse_date
 from dateutil.relativedelta import relativedelta
 
-from neoteroi.projects.timeutil import iter_years_between_dates, parse_lasts
+from neoteroi.projects.timeutil import (
+    iter_quarters_between_dates,
+    iter_years_between_dates,
+    parse_lasts,
+)
 
 
 @pytest.mark.parametrize(
@@ -38,3 +42,18 @@ def test_parse_lasts(value, expected_result):
 def test_get_years_between_dates(date_1, date_2, expected_result):
     years = list(iter_years_between_dates(date_1, date_2))
     assert years == expected_result
+
+
+@pytest.mark.parametrize(
+    "date_1,date_2,expected_result",
+    [
+        [parse_date("2022-01-01"), parse_date("2022-12-31"), [1, 2, 3, 4]],
+        [parse_date("2022-03-01"), parse_date("2022-12-31"), [2, 3, 4]],
+        [parse_date("2022-03-01"), parse_date("2022-12-31"), [2, 3, 4]],
+        [parse_date("2022-06-01"), parse_date("2022-12-31"), [3, 4]],
+        [parse_date("2022-09-01"), parse_date("2022-12-31"), [4]],
+    ],
+)
+def test_iter_quarters_between_dates(date_1, date_2, expected_result):
+    quarters = list(iter_quarters_between_dates(date_1, date_2))
+    assert quarters == expected_result

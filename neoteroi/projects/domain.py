@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from typing import Iterable, List, Optional, Union
 
 from dateutil.parser import parse as parse_date
@@ -10,16 +10,28 @@ from neoteroi.projects.timeutil import parse_lasts
 @dataclass(frozen=True)
 class Event:
     title: str
-    description: str
-    time: Optional[date] = None
+    description: Optional[str] = None
+    time: Optional[datetime] = None
+    icon: Optional[str] = None
 
     @classmethod
     def from_obj(cls, obj):
         return cls(
             obj.get("title") or "",
             obj.get("description") or "",
-            _parse_optional_date(obj.get("start")),
+            _parse_optional_datetime(obj.get("time")),
+            icon=obj.get("icon"),
         )
+
+
+def _parse_optional_datetime(value: Union[None, datetime, str]) -> Optional[datetime]:
+    if isinstance(value, date):
+        # YAML parses dates automatically
+        return value
+
+    if value:
+        return parse_date(value)
+    return None
 
 
 def _parse_optional_date(value: Union[None, date, str]) -> Optional[date]:
@@ -39,6 +51,7 @@ class Activity:
     end: Optional[date] = None
     description: Optional[str] = None
     activities: Optional[List["Activity"]] = None
+    events: Optional[List[Event]] = None
 
     def iter_activities(self, include_self: bool = True) -> Iterable["Activity"]:
         """
@@ -99,6 +112,7 @@ class Activity:
         end = _parse_optional_date(obj.get("end"))
         lasts = obj.get("lasts")
         child_activities = obj.get("activities")
+        events = obj.get("events")
         if lasts:
             if start is None:
                 start = date.today()
@@ -112,6 +126,7 @@ class Activity:
             activities=[Activity.from_obj(item) for item in child_activities]
             if child_activities
             else None,
+            events=[Event.from_obj(item) for item in events] if events else None,
         )
 
 

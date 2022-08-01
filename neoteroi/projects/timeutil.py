@@ -1,7 +1,8 @@
 import calendar
 import re
-from datetime import date
-from typing import Iterable, List, Tuple
+from dataclasses import dataclass
+from datetime import date, datetime
+from typing import Dict, Iterable, List, Tuple
 
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
@@ -23,6 +24,65 @@ MONTHS: List[Tuple[int, str]] = [
     (11, "November"),
     (12, "December"),
 ]
+
+QUARTERS_BY_MONTH_NUMBER: Dict[int, int] = {
+    1: 1,
+    2: 1,
+    3: 1,
+    4: 2,
+    5: 2,
+    6: 2,
+    7: 3,
+    8: 3,
+    9: 3,
+    10: 4,
+    11: 4,
+    12: 4,
+}
+
+
+_MIN_MONTHS_BY_QUARTER_NUMBER: Dict[int, int] = {
+    1: 1,
+    2: 4,
+    3: 7,
+    4: 10,
+}
+
+
+_MAX_MONTHS_BY_QUARTER_NUMBER: Dict[int, int] = {
+    1: 3,
+    2: 6,
+    3: 9,
+    4: 12,
+}
+
+
+@dataclass(frozen=True)
+class Quarter:
+    year: int
+    number: int
+
+    @property
+    def min_month(self) -> int:
+        return _MIN_MONTHS_BY_QUARTER_NUMBER[self.number]
+
+    @property
+    def max_month(self) -> int:
+        return _MAX_MONTHS_BY_QUARTER_NUMBER[self.number]
+
+    @property
+    def min_month_date(self) -> date:
+        return date(self.year, self.min_month, 1)
+
+    @property
+    def max_month_date(self) -> date:
+        return date(self.year, self.max_month, 1)
+
+    def iter_dates(self) -> Iterable[date]:
+        for value in iter_months_between_dates(
+            self.min_month_date, self.max_month_date
+        ):
+            yield value.date()
 
 
 class InvalidLastsValue(ValueError):
@@ -89,7 +149,27 @@ def iter_years_between_dates(min_date: date, max_date: date) -> Iterable[int]:
         yield year
 
 
-def iter_months_between_dates(min_date: date, max_date: date) -> Iterable[date]:
+def iter_months_in_year(year: int, start=1, stop=12) -> Iterable[date]:
+    for month in range(start, stop):
+        yield date(year, month, 1)
+
+
+def iter_months_between_dates_of_year(
+    min_date: date, max_date: date, year: int
+) -> Iterable[date]:
+    if min_date.year > year:
+        raise ValueError("Year out of boundary")
+    start_date = min_date.replace(day=1)
+    end_date = get_last_day_of_month(max_date)
+
+    for month_date in rrule.rrule(rrule.MONTHLY, dtstart=start_date, until=end_date):
+        if month_date.year == year:
+            yield month_date.date()
+        if month_date.year > year:
+            break
+
+
+def iter_months_between_dates(min_date: date, max_date: date) -> Iterable[datetime]:
     """
     Iterates month dates between two dates.
     """
@@ -111,6 +191,19 @@ def iter_days_between_dates(min_date: date, max_date: date) -> Iterable[date]:
         yield day_date
 
 
+def iter_quarters_between_dates(min_date: date, max_date: date) -> Iterable[Quarter]:
+    """
+    Iterates quarters numbers between two dates.
+    """
+    current_value: int = -1
+    for month_date in iter_months_between_dates(min_date, max_date):
+        value = QUARTERS_BY_MONTH_NUMBER[month_date.month]
+
+        if value != current_value:
+            current_value = value
+            yield Quarter(month_date.year, value)
+
+
 def this_week() -> int:
     return date.today().isocalendar().week
 
@@ -130,20 +223,14 @@ def iter_weeks_between_dates(
     min_date: date, max_date: date
 ) -> Iterable[Tuple[int, date]]:
     current_week = min_date.isocalendar()
-    end_week = max_date.isocalendar()
+    current_week_date = date.fromisocalendar(current_week.year, current_week.week, 1)
+    end_date = get_last_day_of_month(max_date)
+    week_date: datetime
 
-    while current_week.year < end_week.year or current_week.week <= end_week.week:
-        current_week_date = date.fromisocalendar(
-            current_week.year, current_week.week, 1
-        )
-        yield current_week.week, current_week_date
-        current_week = get_next_week_date(
-            current_week.week, current_week_date
-        ).isocalendar()
-
-
-def iter_week_days_in_month(week_number: int, month_number: int):
-    ...
+    for week_date in rrule.rrule(
+        rrule.WEEKLY, dtstart=current_week_date, until=end_date
+    ):
+        yield week_date.isocalendar().week, week_date.date()
 
 
 def get_next_week_date(week_number, week_date) -> date:

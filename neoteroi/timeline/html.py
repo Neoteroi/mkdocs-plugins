@@ -2,6 +2,7 @@ import logging
 import xml.etree.ElementTree as etree
 
 from neoteroi.markdown.align import aligment_from_props
+from neoteroi.markdown.images import build_icon_html
 
 from .domain import Timeline, TimelineItem
 
@@ -37,21 +38,7 @@ class TimelineHTMLBuilder:
         etree.SubElement(root_element, "div", {"class": "nt-timeline-after"})
 
     def build_icon_html(self, parent, item: TimelineItem):
-        if not item.icon:
-            return
-
-        if "/" in item.icon:
-            etree.SubElement(
-                parent, "img", {"class": "icon", "src": item.icon, "alt": "step icon"}
-            )
-        elif "fa-" in item.icon:
-            # Fontawesome
-            etree.SubElement(parent, "i", {"class": f"{item.icon} icon"})
-        else:
-            # other icon - this integrates with other processors, like the one from
-            # Material for MkDocs!
-            span = etree.SubElement(parent, "span", {"class": "icon"})
-            span.text = item.icon
+        build_icon_html(parent, item.icon)
 
     def build_item_html(self, parent, item: TimelineItem):
         item_element = etree.SubElement(
