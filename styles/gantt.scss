@@ -7,7 +7,8 @@
 :root {
     --nt-scrollbar-color: #2751b0;
     --nt-plan-actions-height: 24px;
-    --nt-week-primary: #ff9800;
+    --nt-units-background: #ff9800;
+    --nt-months-background: #2751b0;
 
     --nt-group-0-dark: #ba000d;
     --nt-group-0-primary: #f44336;
@@ -39,6 +40,10 @@
 
 
     --nt-plan-vertical-line-color: #a3a3a3ad;
+}
+
+[data-md-color-scheme="slate"] {
+    --nt-units-background: #003773;
 }
 
 .nt-plan-root {
@@ -109,7 +114,7 @@
     flex: auto;
     display: inline-block;
     box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px, rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px inset;
-    background-color: rgb(39 81 176);
+    background-color: var(--nt-months-background);
     color: white;
     text-transform: uppercase;
     font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -259,7 +264,7 @@
     flex: auto;
     border: 2px solid white;
     border-radius: 4px;
-    background-color: var(--nt-week-primary);
+    background-color: var(--nt-units-background);
     cursor: help;
 }
 
@@ -271,7 +276,6 @@
 
     text-align: center;
     border-right: 1px solid var(--nt-plan-vertical-line-color);
-    color: var(--nt-group-1-dark);
     font-weight: bold;
 
     &:first-child {
@@ -291,7 +295,6 @@
     width: calc(100% / 8);
     text-align: center;
     border-right: 1px solid var(--nt-plan-vertical-line-color);
-    color: var(--nt-group-1-dark);
     font-weight: bold;
 
     &:first-child {
@@ -350,7 +353,9 @@
 
 
 .group-0 {
-    .nt-plan-group-summary {
+
+    .nt-plan-group-summary,
+    .nt-timeline-dot {
         background-color: var(--nt-group-0-dark);
     }
 
@@ -360,7 +365,9 @@
 }
 
 .group-1 {
-    .nt-plan-group-summary {
+
+    .nt-plan-group-summary,
+    .nt-timeline-dot {
         background-color: var(--nt-group-1-dark);
     }
 
@@ -370,7 +377,9 @@
 }
 
 .group-2 {
-    .nt-plan-group-summary {
+
+    .nt-plan-group-summary,
+    .nt-timeline-dot {
         background-color: var(--nt-group-2-dark);
     }
 
@@ -381,7 +390,9 @@
 
 
 .group-3 {
-    .nt-plan-group-summary {
+
+    .nt-plan-group-summary,
+    .nt-timeline-dot {
         background-color: var(--nt-group-3-dark);
     }
 
@@ -392,7 +403,9 @@
 
 
 .group-4 {
-    .nt-plan-group-summary {
+
+    .nt-plan-group-summary,
+    .nt-timeline-dot {
         background-color: var(--nt-group-4-dark);
     }
 
@@ -403,7 +416,9 @@
 
 
 .group-5 {
-    .nt-plan-group-summary {
+
+    .nt-plan-group-summary,
+    .nt-timeline-dot {
         background-color: var(--nt-group-5-dark);
     }
 
@@ -414,7 +429,9 @@
 
 
 .group-6 {
-    .nt-plan-group-summary {
+
+    .nt-plan-group-summary,
+    .nt-timeline-dot {
         background-color: var(--nt-group-6-dark);
     }
 

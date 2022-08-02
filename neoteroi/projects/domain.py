@@ -69,17 +69,15 @@ class Activity:
         Returns the start date of this activity, including all sub and descendants
         activities.
         """
-        # TODO: is this practical? Maybe it is better to have ActivityGroup?
         if self.activities:
-            return min(
-                [
-                    start
-                    for start in (
-                        activity.get_overall_start() for activity in self.activities
-                    )
-                    if start is not None
-                ]
-            )
+            starts = [
+                start
+                for start in (
+                    activity.get_overall_start() for activity in self.activities
+                )
+                if start is not None
+            ]
+            return min(starts) if starts else None
         return self.start
 
     def get_overall_end(self) -> Optional[date]:
@@ -88,15 +86,12 @@ class Activity:
         activities.
         """
         if self.activities:
-            return max(
-                [
-                    end
-                    for end in (
-                        activity.get_overall_end() for activity in self.activities
-                    )
-                    if end is not None
-                ]
-            )
+            ends = [
+                end
+                for end in (activity.get_overall_end() for activity in self.activities)
+                if end is not None
+            ]
+            return max(ends) if ends else None
         return self.end
 
     @classmethod
