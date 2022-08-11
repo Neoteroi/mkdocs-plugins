@@ -3,7 +3,6 @@ Common utilities for the whole package.
 """
 from dataclasses import fields, is_dataclass
 
-
 _FIELDS = {}
 
 

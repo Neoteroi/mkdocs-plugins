@@ -4,7 +4,6 @@ import pytest
 from neoteroi.projects import ProjectsExtension
 from tests import equal_html, get_resource_file_contents
 
-
 EXAMPLE_1 = get_resource_file_contents("gantt-01.html")
 EXAMPLE_2 = get_resource_file_contents("gantt-02.html")
 
