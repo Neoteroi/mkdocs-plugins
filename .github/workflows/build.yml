@@ -37,10 +37,6 @@ jobs:
           cd dart-sass && chmod +x ./sass
           ./sass --no-source-map ../all.scss ../dist/neoteroi-mkdocs.css
           ./sass --no-source-map --style compressed ../all.scss ../dist/neoteroi-mkdocs.min.css
-          ./sass --no-source-map ../gantt.scss ../dist/neoteroi-gantt.css
-          ./sass --no-source-map ../timeline.scss ../dist/neoteroi-timeline.css
-          ./sass --no-source-map ../cards.scss ../dist/neoteroi-cards.css
-          ./sass --no-source-map ../spantable.scss ../dist/neoteroi-spantable.css
         if: matrix.python-version == '3.10'
 
       - name: Publish CSS files
@@ -126,7 +122,7 @@ jobs:
           path: dist
 
       - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           skip_existing: true
           user: __token__
@@ -134,7 +130,7 @@ jobs:
           repository_url: https://test.pypi.org/legacy/
 
       - name: Publish distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
@@ -151,6 +147,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist-css/dist-package-css.zip
+          asset_path: ./dist-css/neoteroi-mkdocs.css
           asset_name: css-${{ github.event.release.tag_name }}.zip
           asset_content_type: application/zip
+        continue-on-error: true
+
+      - name: Add CSS package to the release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist-css/neoteroi-mkdocs.min.css
+          asset_name: css-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
+        continue-on-error: true
