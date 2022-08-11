@@ -36,9 +36,11 @@ jobs:
           tar -xf dart-sass-1.54.3-linux-x64.tar.gz
           cd dart-sass && chmod +x ./sass
           ./sass --no-source-map ../all.scss ../dist/neoteroi-mkdocs.css
+          ./sass --no-source-map --style compressed ../all.scss ../dist/neoteroi-mkdocs.min.css
           ./sass --no-source-map ../gantt.scss ../dist/neoteroi-gantt.css
           ./sass --no-source-map ../timeline.scss ../dist/neoteroi-timeline.css
           ./sass --no-source-map ../cards.scss ../dist/neoteroi-cards.css
+          ./sass --no-source-map ../spantable.scss ../dist/neoteroi-spantable.css
         if: matrix.python-version == '3.10'
 
       - name: Publish CSS files
