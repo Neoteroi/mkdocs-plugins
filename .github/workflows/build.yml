@@ -119,11 +119,12 @@ jobs:
     needs: build
     if: github.event_name == 'release'
     steps:
-      - name: Download a distribution artifact
+      - name: Download the distribution package
         uses: actions/download-artifact@v2
         with:
-          name: dist-package-3.9
+          name: dist-package-3.10
           path: dist
+
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
@@ -131,8 +132,25 @@ jobs:
           user: __token__
           password: ${{ secrets.test_pypi_password }}
           repository_url: https://test.pypi.org/legacy/
+
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
+
+      - name: Download CSS pack
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-package-css
+          path: dist-css
+
+      - name: Add CSS package to the release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist-css/dist-package-css.zip
+          asset_name: css-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
