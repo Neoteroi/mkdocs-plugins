@@ -5,7 +5,8 @@ To compile:
 1. install `Sass` as described here https://sass-lang.com/install
 2. use it to generate CSS files
 
-## How to distribute
+Example use:
 
-Currently there is no automation to compile SASS code into CSS, compiled files
-are committed to `resources` folders inside package folders.
+```bash
+sass --no-source-map --style compressed styles/all.scss ~/projects/github/mkdocs-plugins-docs/docs/css/neoteroi.css
+```

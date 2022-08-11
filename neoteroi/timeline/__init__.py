@@ -9,11 +9,12 @@ Copyright (c) 2022 to present, Roberto Prevato
 """
 from markdown import Extension
 
+from neoteroi.markdown.align import aligment_from_props
 from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
-from neoteroi.markdown.utils import create_instances
+from neoteroi.markdown.utils import create_instance, create_instances
 
 from .domain import Timeline, TimelineItem
-from .html import TimelineHTMLBuilder
+from .html import TimelineHTMLBuilder, TimelineViewOptions
 
 
 class BaseTimelineProcessor:
@@ -21,12 +22,18 @@ class BaseTimelineProcessor:
     def name(self) -> str:
         return "timeline"
 
+    def _norm_props(self, props) -> None:
+        if "class" in props:
+            props["class_name"] = props["class"]
+        props["align"] = aligment_from_props(props)
+
     def build_html(self, parent, obj, props) -> None:
         """Builds the HTML for the given input object."""
         if not isinstance(obj, list):
             raise TypeError("Expected a list of items describing timeline parts.")
 
-        builder = TimelineHTMLBuilder(props)
+        self._norm_props(props)
+        builder = TimelineHTMLBuilder(create_instance(TimelineViewOptions, props))
         builder.build_html(parent, Timeline(create_instances(TimelineItem, obj)))
 
 

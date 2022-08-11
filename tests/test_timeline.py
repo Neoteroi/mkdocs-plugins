@@ -12,12 +12,12 @@ EXAMPLE_1 = """
 <div class="nt-timeline-before"></div>
 <div class="nt-timeline-items">
 <div class="nt-timeline-item blue">
-<h3 class="nt-timeline-title">Zero</h3>
+<p class="nt-timeline-title">Zero</p>
 <span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
 <div class="nt-timeline-dot blue bigger"><i class="fa-solid fa-archway icon"></i></div>
 </div>
 <div class="nt-timeline-item cyan">
-<h3 class="nt-timeline-title">One</h3>
+<p class="nt-timeline-title">One</p>
 <span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
 <div class="nt-timeline-dot cyan bigger"><i class="fa-solid fa-star icon"></i></div>
 </div>
@@ -31,27 +31,27 @@ EXAMPLE_2 = """
 <div class="nt-timeline-before"></div>
 <div class="nt-timeline-items">
 <div class="nt-timeline-item blue">
-<h3 class="nt-timeline-title">Zero</h3>
+<p class="nt-timeline-title">Zero</p>
 <span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
 <div class="nt-timeline-dot blue bigger"><i class="fa-solid fa-archway icon"></i></div>
 </div>
 <div class="nt-timeline-item cyan">
-<h3 class="nt-timeline-title">One</h3>
+<p class="nt-timeline-title">One</p>
 <span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin felis eros, facilisis sed feugiat a, efficitur ut neque. In vel nulla et nulla aliquet porta ac at est.</p>
 <div class="nt-timeline-dot cyan bigger"><i class="fa-solid fa-star icon"></i></div>
 </div>
 <div class="nt-timeline-item">
-<h3 class="nt-timeline-title">Two</h3>
+<p class="nt-timeline-title">Two</p>
 <span class="nt-timeline-sub-title">2022-Q3</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet.</p>
 <div class="nt-timeline-dot  bigger"><i class="fa-solid fa-meteor icon"></i></div>
 </div>
 <div class="nt-timeline-item pink">
-<h3 class="nt-timeline-title">Three</h3>
+<p class="nt-timeline-title">Three</p>
 <span class="nt-timeline-sub-title">2022-Q4</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet.</p>
 <div class="nt-timeline-dot pink"></div>
 </div>
 <div class="nt-timeline-item cyan">
-<h3 class="nt-timeline-title">Four</h3>
+<p class="nt-timeline-title">Four</p>
 <span class="nt-timeline-sub-title">2023-Q1</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet.</p>
 <div class="nt-timeline-dot cyan bigger"><i class="fa-solid fa-fire icon"></i></div>
 </div>
@@ -65,12 +65,12 @@ EXAMPLE_3 = """
 <div class="nt-timeline-before"></div>
 <div class="nt-timeline-items">
 <div class="nt-timeline-item blue">
-<h3 class="nt-timeline-title">Zero</h3>
+<p class="nt-timeline-title">Zero</p>
 <span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
 <div class="nt-timeline-dot blue bigger"><img alt="step icon" class="icon" src="/img/foo-1.png" /></div>
 </div>
 <div class="nt-timeline-item cyan">
-<h3 class="nt-timeline-title">One</h3>
+<p class="nt-timeline-title">One</p>
 <span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
 <div class="nt-timeline-dot cyan bigger"><img alt="step icon" class="icon" src="/img/foo-2.png" /></div>
 </div>
@@ -84,12 +84,12 @@ EXAMPLE_4 = """
 <div class="nt-timeline-before"></div>
 <div class="nt-timeline-items">
 <div class="nt-timeline-item blue">
-<h3 class="nt-timeline-title">Zero</h3>
+<p class="nt-timeline-title">Zero</p>
 <span class="nt-timeline-sub-title">2022-Q1</span><p class="nt-timeline-content">Better late than never! Lorem ipsum dolor sit amet.</p>
 <div class="nt-timeline-dot blue bigger"><span class="icon">:fontawesome-regular-face-laugh-wink:</span></div>
 </div>
 <div class="nt-timeline-item cyan">
-<h3 class="nt-timeline-title">One</h3>
+<p class="nt-timeline-title">One</p>
 <span class="nt-timeline-sub-title">2022-Q2</span><p class="nt-timeline-content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
 <div class="nt-timeline-dot cyan bigger"><span class="icon">:octicons-bug-16:</span></div>
 </div>
@@ -103,11 +103,11 @@ EXAMPLE_5 = """
 <div class="nt-timeline-before"></div>
 <div class="nt-timeline-items">
 <div class="nt-timeline-item">
-<h3 class="nt-timeline-title">Zero</h3>
+<p class="nt-timeline-title">Zero</p>
 <div class="nt-timeline-dot "></div>
 </div>
 <div class="nt-timeline-item">
-<h3 class="nt-timeline-title">One</h3>
+<p class="nt-timeline-title">One</p>
 <div class="nt-timeline-dot "></div>
 </div>
 </div>

@@ -10,10 +10,10 @@ from markdown import Extension
 
 from neoteroi.markdown.images import Image
 from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
-from neoteroi.markdown.utils import create_instances
+from neoteroi.markdown.utils import create_instance, create_instances
 
 from .domain import CardItem, Cards
-from .html import CardsHTMLBuilder
+from .html import CardsHTMLBuilder, CardsViewOptions
 
 
 class BaseCardsProcessor:
@@ -32,7 +32,7 @@ class BaseCardsProcessor:
             raise TypeError("Expected a list of items describing cards.")
 
         self.norm_obj(obj)
-        builder = CardsHTMLBuilder(props)
+        builder = CardsHTMLBuilder(create_instance(CardsViewOptions, props))
         builder.build_html(parent, Cards(create_instances(CardItem, obj)))
 
 

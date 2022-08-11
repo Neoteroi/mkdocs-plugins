@@ -7,7 +7,7 @@ from typing import Dict, Iterable, List, Tuple
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
 
-_LASTS_PATTERN = re.compile(r"(?P<amount>\d+)\s(?P<unit>\w+)")
+_LASTS_PATTERN = re.compile(r"(?P<amount>\d+)\s?(?P<unit>\w+)")
 
 
 MONTHS: List[Tuple[int, str]] = [
@@ -130,7 +130,7 @@ def parse_lasts(value: str) -> relativedelta:
         return relativedelta(days=amount)
 
     if unit in {"hour", "hours", "h"}:
-        return relativedelta(days=amount)
+        return relativedelta(hours=amount)
 
     raise UnsupportedLastsUnit(value, unit)
 
@@ -147,11 +147,6 @@ def iter_years_between_dates(min_date: date, max_date: date) -> Iterable[int]:
     while year < max_year:
         year += 1
         yield year
-
-
-def iter_months_in_year(year: int, start=1, stop=12) -> Iterable[date]:
-    for month in range(start, stop):
-        yield date(year, month, 1)
 
 
 def iter_months_between_dates_of_year(
@@ -204,21 +199,6 @@ def iter_quarters_between_dates(min_date: date, max_date: date) -> Iterable[Quar
             yield Quarter(month_date.year, value)
 
 
-def this_week() -> int:
-    return date.today().isocalendar().week
-
-
-def iter_weeks_of_year(year: int) -> Iterable[Tuple[int, date]]:
-    # TODO: deprecated?
-    week_number = 0
-    while True:
-        week_number += 1
-        try:
-            yield week_number, date.fromisocalendar(year, week_number, 1)
-        except ValueError:
-            break
-
-
 def iter_weeks_between_dates(
     min_date: date, max_date: date
 ) -> Iterable[Tuple[int, date]]:
@@ -254,3 +234,17 @@ def get_last_day_of_month(value: date) -> date:
     return date(
         value.year, value.month, calendar.monthrange(value.year, value.month)[1]
     )
+
+
+def date_delta(value1: date, value2: date):
+    """
+    Returns the delta between the date components of two dates, supporting
+    datetimes.
+    Note: a simple substraction causes TypeError if any of the two dates
+    is a datetime.
+    """
+    if isinstance(value1, datetime):
+        value1 = value1.date()
+    if isinstance(value2, datetime):
+        value2 = value2.date()
+    return value1 - value2

@@ -1,5 +1,5 @@
 /**
- *  Extra CSS file for the neoteroi.projects.gantt extension.
+ *  Extra CSS for the neoteroi.projects.gantt extension.
  *
  *  https://github.com/Neoteroi/mkdocs-plugins
 **/
@@ -9,41 +9,21 @@
     --nt-plan-actions-height: 24px;
     --nt-units-background: #ff9800;
     --nt-months-background: #2751b0;
-
-    --nt-group-0-dark: #ba000d;
-    --nt-group-0-primary: #f44336;
-    --nt-group-0-light: #ff7961;
-
-    --nt-group-1-dark: #0039cb;
-    --nt-group-1-primary: #2962ff;
-    --nt-group-1-light: #768fff;
-
-    --nt-group-2-dark: #00675b;
-    --nt-group-2-primary: #009688;
-    --nt-group-2-light: #52c7b8;
-
-    --nt-group-3-dark: #c66900;
-    --nt-group-3-primary: #ff9800;
-    --nt-group-3-light: #ffc947;
-
-    --nt-group-4-dark: #5a9216;
-    --nt-group-4-primary: #8bc34a;
-    --nt-group-4-light: #bef67a;
-
-    --nt-group-5-dark: #007ac1;
-    --nt-group-5-primary: #03a9f4;
-    --nt-group-5-light: #67daff;
-
-    --nt-group-6-dark: #c8b900;
-    --nt-group-6-primary: #ffeb3b;
-    --nt-group-6-light: #ffff72;
-
-
     --nt-plan-vertical-line-color: #a3a3a3ad;
+}
+
+.nt-pastello {
+    --nt-scrollbar-color: #9fb8f4;
+    --nt-units-background: #f5dc82;
+    --nt-months-background: #5b7fd1;
 }
 
 [data-md-color-scheme="slate"] {
     --nt-units-background: #003773;
+
+    .nt-pastello {
+        --nt-units-background: #3f4997;
+    }
 }
 
 .nt-plan-root {
@@ -68,13 +48,6 @@
 
     display: flex;
 
-    // Nota: variante con schema a sinistra sempre visibile (da rimuovere?)
-    .left {
-        background-color: #eeffff;
-        max-width: 200px;
-        flex: 20%;
-    }
-
     .nt-plan {
         flex: 80%;
     }
@@ -91,6 +64,10 @@
 
     .nt-timeline-dot.bigger {
         top: -10px;
+
+        &[title] {
+            cursor: help;
+        }
     }
 }
 
@@ -126,9 +103,23 @@
 }
 
 .nt-plan-group-activities {
-    background-repeat: repeat-y;
-    background: linear-gradient(to right, var(--nt-plan-vertical-line-color), var(--nt-plan-vertical-line-color) 1px, transparent 1px, transparent);
-    background-size: 12.5%;
+    flex: auto;
+    position: relative;
+}
+
+.nt-vline {
+    border-left: 1px dashed var(--nt-plan-vertical-line-color);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    margin-left: -0.5px;
+    top: 0;
+    -webkit-transition: all 0.5s linear !important;
+    -moz-transition: all 0.5s linear !important;
+    -ms-transition: all 0.5s linear !important;
+    -o-transition: all 0.5s linear !important;
+    transition: all 0.5s linear !important;
+    z-index: -2;
 }
 
 .nt-plan-activity {
@@ -170,6 +161,11 @@
             display: inline-block;
         }
     }
+
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
 }
 
 .period-0 {
@@ -230,10 +226,6 @@
 }
 
 .period {
-    // TODO: opzionale
-    // text-overflow: ellipsis;
-    // overflow: hidden;
-
     span {
         font-size: 12px;
         vertical-align: top;
@@ -324,10 +316,10 @@
         margin: 0;
         padding: 0;
         font-size: .6rem;
+        color: #fff;
     }
 }
 
-// style with shadows and white round borders
 .nt-plan-group-summary,
 .month,
 .period,
@@ -338,106 +330,8 @@
     box-shadow: 0 2px 3px -1px rgb(0 0 0 / 20%), 0 3px 3px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
 }
 
-// neon
-.neon .period {
-    box-shadow: 2px 14px 15px -7px rgb(255 36 201 / 36%);
-}
-
 .nt-plan-periods {
     padding-left: 150px;
-}
-
-.nt-plan-group-activities {
-    flex: auto;
-}
-
-
-.group-0 {
-
-    .nt-plan-group-summary,
-    .nt-timeline-dot {
-        background-color: var(--nt-group-0-dark);
-    }
-
-    .period {
-        background-color: var(--nt-group-0-primary);
-    }
-}
-
-.group-1 {
-
-    .nt-plan-group-summary,
-    .nt-timeline-dot {
-        background-color: var(--nt-group-1-dark);
-    }
-
-    .period {
-        background-color: var(--nt-group-1-primary);
-    }
-}
-
-.group-2 {
-
-    .nt-plan-group-summary,
-    .nt-timeline-dot {
-        background-color: var(--nt-group-2-dark);
-    }
-
-    .period {
-        background-color: var(--nt-group-2-primary);
-    }
-}
-
-
-.group-3 {
-
-    .nt-plan-group-summary,
-    .nt-timeline-dot {
-        background-color: var(--nt-group-3-dark);
-    }
-
-    .period {
-        background-color: var(--nt-group-3-primary);
-    }
-}
-
-
-.group-4 {
-
-    .nt-plan-group-summary,
-    .nt-timeline-dot {
-        background-color: var(--nt-group-4-dark);
-    }
-
-    .period {
-        background-color: var(--nt-group-4-primary);
-    }
-}
-
-
-.group-5 {
-
-    .nt-plan-group-summary,
-    .nt-timeline-dot {
-        background-color: var(--nt-group-5-dark);
-    }
-
-    .period {
-        background-color: var(--nt-group-5-primary);
-    }
-}
-
-
-.group-6 {
-
-    .nt-plan-group-summary,
-    .nt-timeline-dot {
-        background-color: var(--nt-group-6-dark);
-    }
-
-    .period {
-        background-color: var(--nt-group-6-primary);
-    }
 }
 
 .months {

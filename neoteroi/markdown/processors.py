@@ -115,7 +115,7 @@ class BaseProcessor(ABC):
 
         try:
             self.build_html(parent, obj, props)
-        except TypeError:
+        except (ValueError, TypeError):
             logger.exception("Could not render a %s block.", self.name)
             self.render_courtesy_error(
                 parent,
@@ -257,7 +257,7 @@ class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
         if closing_block_index == -1:
             # unclosed tag, ignore
             logger.warning(
-                f"Unclosed ::{self.name}:: block - expected a ::end-{self.name}::."
+                f"Unclosed ::{self.name}:: block - expected a ::/{self.name}:: block."
             )
             return False
         match = self.start_pattern.match(blocks[0])

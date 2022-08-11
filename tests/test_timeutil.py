@@ -3,6 +3,7 @@ from dateutil.parser import parse as parse_date
 from dateutil.relativedelta import relativedelta
 
 from neoteroi.projects.timeutil import (
+    Quarter,
     iter_quarters_between_dates,
     iter_years_between_dates,
     parse_lasts,
@@ -47,11 +48,37 @@ def test_get_years_between_dates(date_1, date_2, expected_result):
 @pytest.mark.parametrize(
     "date_1,date_2,expected_result",
     [
-        [parse_date("2022-01-01"), parse_date("2022-12-31"), [1, 2, 3, 4]],
-        [parse_date("2022-03-01"), parse_date("2022-12-31"), [2, 3, 4]],
-        [parse_date("2022-03-01"), parse_date("2022-12-31"), [2, 3, 4]],
-        [parse_date("2022-06-01"), parse_date("2022-12-31"), [3, 4]],
-        [parse_date("2022-09-01"), parse_date("2022-12-31"), [4]],
+        [
+            parse_date("2022-01-01"),
+            parse_date("2022-12-31"),
+            [Quarter(2022, 1), Quarter(2022, 2), Quarter(2022, 3), Quarter(2022, 4)],
+        ],
+        [
+            parse_date("2022-03-01"),
+            parse_date("2022-12-31"),
+            [Quarter(2022, 1), Quarter(2022, 2), Quarter(2022, 3), Quarter(2022, 4)],
+        ],
+        [
+            parse_date("2022-04-01"),
+            parse_date("2022-12-31"),
+            [Quarter(2022, 2), Quarter(2022, 3), Quarter(2022, 4)],
+        ],
+        [
+            parse_date("2022-06-01"),
+            parse_date("2022-12-31"),
+            [Quarter(2022, 2), Quarter(2022, 3), Quarter(2022, 4)],
+        ],
+        [
+            parse_date("2022-07-01"),
+            parse_date("2022-12-31"),
+            [Quarter(2022, 3), Quarter(2022, 4)],
+        ],
+        [parse_date("2022-10-01"), parse_date("2022-12-31"), [Quarter(2022, 4)]],
+        [
+            parse_date("2022-10-01"),
+            parse_date("2023-02-20"),
+            [Quarter(2022, 4), Quarter(2023, 1)],
+        ],
     ],
 )
 def test_iter_quarters_between_dates(date_1, date_2, expected_result):

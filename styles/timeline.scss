@@ -3,8 +3,6 @@
  *
  *  https://github.com/Neoteroi/mkdocs-plugins
 **/
-@import "./colors.scss";
-
 .nt-error {
     border: 2px dashed darkred;
     padding: 0 1rem;
@@ -13,6 +11,8 @@
 }
 
 .nt-timeline {
+
+    margin-top: 30px;
 
     .nt-timeline-title {
         font-size: 1.1rem;
@@ -419,164 +419,4 @@
 
 .nt-timeline-item:nth-child(20) .nt-timeline-dot {
     background-color: var(--nt-color-20);
-}
-
-.nt-timeline-item:nth-child(21) .nt-timeline-dot {
-    background-color: var(--nt-color-21);
-}
-
-.nt-timeline-item:nth-child(22) .nt-timeline-dot {
-    background-color: var(--nt-color-22);
-}
-
-.nt-timeline-item:nth-child(23) .nt-timeline-dot {
-    background-color: var(--nt-color-23);
-}
-
-.nt-timeline-item:nth-child(24) .nt-timeline-dot {
-    background-color: var(--nt-color-24);
-}
-
-.nt-timeline-item:nth-child(25) .nt-timeline-dot {
-    background-color: var(--nt-color-25);
-}
-
-.nt-timeline-item:nth-child(26) .nt-timeline-dot {
-    background-color: var(--nt-color-26);
-}
-
-.nt-timeline-item:nth-child(27) .nt-timeline-dot {
-    background-color: var(--nt-color-27);
-}
-
-.nt-timeline-item:nth-child(28) .nt-timeline-dot {
-    background-color: var(--nt-color-28);
-}
-
-.nt-timeline-item:nth-child(29) .nt-timeline-dot {
-    background-color: var(--nt-color-29);
-}
-
-.nt-timeline-item:nth-child(30) .nt-timeline-dot {
-    background-color: var(--nt-color-30);
-}
-
-.nt-timeline-item:nth-child(31) .nt-timeline-dot {
-    background-color: var(--nt-color-31);
-}
-
-.nt-timeline-item:nth-child(32) .nt-timeline-dot {
-    background-color: var(--nt-color-32);
-}
-
-.nt-timeline-item:nth-child(33) .nt-timeline-dot {
-    background-color: var(--nt-color-33);
-}
-
-.nt-timeline-item:nth-child(34) .nt-timeline-dot {
-    background-color: var(--nt-color-34);
-}
-
-.nt-timeline-item:nth-child(35) .nt-timeline-dot {
-    background-color: var(--nt-color-35);
-}
-
-.nt-timeline-item:nth-child(36) .nt-timeline-dot {
-    background-color: var(--nt-color-36);
-}
-
-.nt-timeline-item:nth-child(37) .nt-timeline-dot {
-    background-color: var(--nt-color-37);
-}
-
-.nt-timeline-item:nth-child(38) .nt-timeline-dot {
-    background-color: var(--nt-color-38);
-}
-
-.nt-timeline-item:nth-child(39) .nt-timeline-dot {
-    background-color: var(--nt-color-39);
-}
-
-.nt-timeline-item:nth-child(40) .nt-timeline-dot {
-    background-color: var(--nt-color-40);
-}
-
-.nt-timeline-item:nth-child(41) .nt-timeline-dot {
-    background-color: var(--nt-color-41);
-}
-
-.nt-timeline-item:nth-child(42) .nt-timeline-dot {
-    background-color: var(--nt-color-42);
-}
-
-.nt-timeline-item:nth-child(43) .nt-timeline-dot {
-    background-color: var(--nt-color-43);
-}
-
-.nt-timeline-item:nth-child(44) .nt-timeline-dot {
-    background-color: var(--nt-color-44);
-}
-
-.nt-timeline-item:nth-child(45) .nt-timeline-dot {
-    background-color: var(--nt-color-45);
-}
-
-.nt-timeline-item:nth-child(46) .nt-timeline-dot {
-    background-color: var(--nt-color-46);
-}
-
-.nt-timeline-item:nth-child(47) .nt-timeline-dot {
-    background-color: var(--nt-color-47);
-}
-
-.nt-timeline-item:nth-child(48) .nt-timeline-dot {
-    background-color: var(--nt-color-48);
-}
-
-.nt-timeline-item:nth-child(49) .nt-timeline-dot {
-    background-color: var(--nt-color-49);
-}
-
-.nt-timeline-item:nth-child(50) .nt-timeline-dot {
-    background-color: var(--nt-color-50);
-}
-
-.nt-timeline-item:nth-child(51) .nt-timeline-dot {
-    background-color: var(--nt-color-51);
-}
-
-.nt-timeline-item:nth-child(52) .nt-timeline-dot {
-    background-color: var(--nt-color-52);
-}
-
-.nt-timeline-item:nth-child(53) .nt-timeline-dot {
-    background-color: var(--nt-color-53);
-}
-
-.nt-timeline-item:nth-child(54) .nt-timeline-dot {
-    background-color: var(--nt-color-54);
-}
-
-.nt-timeline-item:nth-child(55) .nt-timeline-dot {
-    background-color: var(--nt-color-55);
-}
-
-.nt-timeline-item:nth-child(56) .nt-timeline-dot {
-    background-color: var(--nt-color-56);
-}
-
-.nt-timeline-item:nth-child(57) .nt-timeline-dot {
-    background-color: var(--nt-color-57);
-}
-
-.nt-timeline-item:nth-child(58) .nt-timeline-dot {
-    background-color: var(--nt-color-58);
-}
-
-.nt-timeline-item:nth-child(59) .nt-timeline-dot {
-    background-color: var(--nt-color-59);
-}
-
-.nt-timeline-item:nth-child(60) .nt-timeline-dot {
-    background-color: var(--nt-color-60);
 }

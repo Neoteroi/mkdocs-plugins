@@ -14,6 +14,11 @@ class Event:
     time: Optional[datetime] = None
     icon: Optional[str] = None
 
+    def __post_init__(self):
+        # Note: datetimes are currently not supported, only the date component is kept
+        if isinstance(self.time, datetime):
+            object.__setattr__(self, "time", self.time.date())
+
     @classmethod
     def from_obj(cls, obj):
         return cls(
@@ -53,6 +58,13 @@ class Activity:
     activities: Optional[List["Activity"]] = None
     events: Optional[List[Event]] = None
 
+    def __post_init__(self):
+        # Note: datetimes are currently not supported, only the date component is kept
+        if isinstance(self.start, datetime):
+            object.__setattr__(self, "start", self.start.date())
+        if isinstance(self.end, datetime):
+            object.__setattr__(self, "end", self.end.date())
+
     def iter_activities(self, include_self: bool = True) -> Iterable["Activity"]:
         """
         Yields self and all descendant activities.
@@ -63,6 +75,30 @@ class Activity:
         if self.activities:
             for activity in self.activities:
                 yield from activity.iter_activities()
+
+    def iter_dates(self) -> Iterable[date]:
+        if self.events:
+            for event in self.events:
+                if event.time:
+                    yield event.time
+        if self.activities:
+            for activity in self.activities:
+                if activity.start:
+                    yield activity.start
+                if activity.end:
+                    yield activity.end
+
+    def _get_event_date(self, fn) -> Optional[date]:
+        if self.events:
+            dates = [event.time for event in self.events if event.time is not None]
+            return fn(dates) if dates else None
+        return None
+
+    def get_first_event_date(self) -> Optional[date]:
+        return self._get_event_date(min)
+
+    def get_last_event_date(self) -> Optional[date]:
+        return self._get_event_date(max)
 
     def get_overall_start(self) -> Optional[date]:
         """
@@ -78,7 +114,10 @@ class Activity:
                 if start is not None
             ]
             return min(starts) if starts else None
-        return self.start
+        first_event_date = self.get_first_event_date()
+        if first_event_date and self.start:
+            return min(first_event_date, self.start)
+        return self.start or first_event_date
 
     def get_overall_end(self) -> Optional[date]:
         """
@@ -92,7 +131,10 @@ class Activity:
                 if end is not None
             ]
             return max(ends) if ends else None
-        return self.end
+        last_event_date = self.get_last_event_date()
+        if last_event_date and self.end:
+            return min(last_event_date, self.end)
+        return self.end or last_event_date
 
     @classmethod
     def from_obj(cls, obj):
@@ -127,8 +169,6 @@ class Activity:
 
 @dataclass(frozen=True)
 class Plan(Activity):
-    events: Optional[List[Event]] = None
-
     def iter_activities(self) -> Iterable["Activity"]:
         """
         Yields all descendant activities.

@@ -1,5 +1,6 @@
 import logging
 import xml.etree.ElementTree as etree
+from dataclasses import dataclass
 
 from neoteroi.markdown.images import build_image_html
 
@@ -8,13 +9,24 @@ from .domain import CardItem, Cards
 logger = logging.getLogger("MARKDOWN")
 
 
+@dataclass
+class CardsViewOptions:
+    id: str = ""
+    cols: int = 3
+    image_bg: bool = False
+
+    def __post_init__(self):
+        if isinstance(self.cols, str):
+            self.cols = int(self.cols)
+
+
 class CardsHTMLBuilder:
-    def __init__(self, props) -> None:
-        self.props = props
+    def __init__(self, options: CardsViewOptions) -> None:
+        self.options = options
 
     @property
     def use_image_tags(self) -> bool:
-        return self.props.get("image-tags", False)
+        return not self.options.image_bg
 
     def get_item_props(self, item: CardItem):
         if item.key:
@@ -22,17 +34,12 @@ class CardsHTMLBuilder:
         else:
             item_props = {"class": "nt-card"}
 
-        flex = self.props.get("flex")
-
-        if flex:
-            if flex.endswith("%"):
-                flex = flex.rstrip("%")
-            item_props["style"] = f"flex: {flex}%;"
-
         return item_props
 
     def build_html(self, parent, cards: Cards):
-        root_element = etree.SubElement(parent, "div", {"class": "nt-cards"})
+        root_element = etree.SubElement(
+            parent, "div", {"class": f"nt-cards nt-grid cols-{self.options.cols}"}
+        )
 
         for item in cards.items:
             self.build_item_html(root_element, item)

@@ -27,6 +27,26 @@ jobs:
           fetch-depth: 9
           submodules: false
 
+      - name: Compile SASS files
+        run: |
+          cd styles
+          mkdir -p dist
+          wget https://github.com/sass/dart-sass/releases/download/1.54.3/dart-sass-1.54.3-linux-x64.tar.gz
+          tar -xf dart-sass-1.54.3-linux-x64.tar.gz
+          cd dart-sass && chmod +x ./sass
+          ./sass --no-source-map ../all.scss ../dist/neoteroi-mkdocs.css
+          ./sass --no-source-map ../gantt.scss ../dist/neoteroi-gantt.css
+          ./sass --no-source-map ../timeline.scss ../dist/neoteroi-timeline.css
+          ./sass --no-source-map ../cards.scss ../dist/neoteroi-cards.css
+        if: matrix.python-version == '3.10'
+
+      - name: Publish CSS files
+        uses: actions/upload-artifact@master
+        with:
+          name: dist-package-css
+          path: styles/dist
+        if: matrix.python-version == '3.10'
+
       - name: Use Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
@@ -78,18 +98,18 @@ jobs:
 
       - name: Install distribution dependencies
         run: pip install --upgrade twine setuptools wheel
-        if: matrix.python-version == 3.9
+        if: matrix.python-version == '3.10'
 
       - name: Create distribution package
         run: python setup.py sdist bdist_wheel
-        if: matrix.python-version == 3.9
+        if: matrix.python-version == '3.10'
 
       - name: Upload distribution package
         uses: actions/upload-artifact@master
         with:
           name: dist-package-${{ matrix.python-version }}
           path: dist
-        if: matrix.python-version == 3.9
+        if: matrix.python-version == '3.10'
 
   publish:
     runs-on: ubuntu-18.04

@@ -1,7 +1,8 @@
 import logging
 import xml.etree.ElementTree as etree
+from dataclasses import dataclass, field
 
-from neoteroi.markdown.align import aligment_from_props
+from neoteroi.markdown.align import Alignment
 from neoteroi.markdown.images import build_icon_html
 
 from .domain import Timeline, TimelineItem
@@ -9,23 +10,36 @@ from .domain import Timeline, TimelineItem
 logger = logging.getLogger("MARKDOWN")
 
 
+@dataclass
+class TimelineViewOptions:
+    id: str = ""
+    class_name: str = ""
+    alternate: bool = False
+    align: Alignment = Alignment.LEFT
+    headings: bool = False
+
+
 class TimelineHTMLBuilder:
-    def __init__(self, props) -> None:
-        self.align = aligment_from_props(props)
-        self.alternate = props.get("alternate", False)
+    def __init__(self, options: TimelineViewOptions) -> None:
+        self.options = options
 
     def get_class(self) -> str:
         return (
             "nt-timeline vertical "
-            + self.align.value
-            + (" alternate" if self.alternate else "")
+            + self.options.align.value
+            + (" alternate" if self.options.alternate else "")
+            + (f" {self.options.class_name}" if self.options.class_name else "")
         )
 
     def get_dot_class(self, item: TimelineItem) -> str:
         return "nt-timeline-dot " + (item.key or "") + (" bigger" if item.icon else "")
 
     def build_html(self, parent, timeline: Timeline):
-        root_element = etree.SubElement(parent, "div", {"class": self.get_class()})
+        root_props = {"class": self.get_class()}
+        if self.options.id:
+            root_props["id"] = self.options.id
+
+        root_element = etree.SubElement(parent, "div", root_props)
         etree.SubElement(root_element, "div", {"class": "nt-timeline-before"})
 
         items_element = etree.SubElement(
@@ -48,7 +62,9 @@ class TimelineHTMLBuilder:
         )
 
         title_element = etree.SubElement(
-            item_element, "h3", {"class": "nt-timeline-title"}
+            item_element,
+            "h3" if self.options.headings else "p",
+            {"class": "nt-timeline-title"},
         )
         title_element.text = item.title
 
