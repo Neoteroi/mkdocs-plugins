@@ -1,7 +1,13 @@
 .vscode
 venv
+venv38
 htmlcov
 .coverage
 __pycache__
 *.egg-info
 *.tar.gz
+
+styles/*.css
+styles/*.css.map
+__*.html
+__*.py

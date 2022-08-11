@@ -6,8 +6,6 @@
  *   https://github.com/Neoteroi/mkdocs-plugins
 **/
 
-/* For large screens, make better use of the horizontal space */
-
 :root {
     --http-get-color: green;
     --http-delete-color: #dc0101;
@@ -25,6 +23,7 @@
 }
 
 @media screen {
+
     /* Slate theme, i.e. dark mode */
     [data-md-color-scheme="slate"] {
         --http-get-color: #2ea82e;
@@ -33,6 +32,8 @@
         --oad-small-note-color: #afafaf;
     }
 }
+
+/* For large screens, make better use of the horizontal space */
 
 @media screen and (min-width: 2000px) {
     .md-grid {
@@ -93,36 +94,36 @@ span[class^="http-"] {
     color: var(--http-route-param-color);
 }
 
-.operation-separator + h3[id^="get"] .route-param {
+.operation-separator+h3[id^="get"] .route-param {
     color: var(--http-get-color);
 }
 
-.operation-separator + h3[id^="delete"] .route-param {
+.operation-separator+h3[id^="delete"] .route-param {
     color: var(--http-delete-color);
 }
 
 
-.operation-separator + h3[id^="post"] .route-param {
+.operation-separator+h3[id^="post"] .route-param {
     color: var(--http-post-color);
 }
 
-.operation-separator + h3[id^="patch"] .route-param {
+.operation-separator+h3[id^="patch"] .route-param {
     color: var(--http-patch-color);
 }
 
-.operation-separator + h3[id^="trace"] .route-param {
+.operation-separator+h3[id^="trace"] .route-param {
     color: var(--http-trace-color);
 }
 
-.operation-separator + h3[id^="put"] .route-param {
+.operation-separator+h3[id^="put"] .route-param {
     color: var(--http-put-color);
 }
 
-.operation-separator + h3[id^="head"] .route-param {
+.operation-separator+h3[id^="head"] .route-param {
     color: var(--http-head-color);
 }
 
-.operation-separator + h3[id^="options"] .route-param {
+.operation-separator+h3[id^="options"] .route-param {
     color: var(--http-options-color);
 }
 
@@ -136,7 +137,7 @@ span[class^="http-"] {
     padding-top: .5rem;
 }
 
-.operation-separator + h3 {
+.operation-separator+h3 {
     margin-top: 1rem;
 }
 
@@ -144,7 +145,8 @@ span[class^="http-"] {
     color: var(--md-code-hl-string-color);
 }
 
-.integer-type, .number-type {
+.integer-type,
+.number-type {
     color: var(--md-code-hl-number-color);
 }
 
@@ -164,7 +166,7 @@ a.ref-link {
     color: var(--md-code-hl-special-color);
 }
 
-.request-block + div {
+.request-block+div {
     padding-left: 1rem;
     border-left: 2px dashed var(--oad-block-border-color);
 }
@@ -178,9 +180,9 @@ a.ref-link {
     margin-bottom: 4px;
 }
 
-.request-body-title + .tabbed-set,
-.response-title + .tabbed-set,
-.message-separator + .tabbed-set,
+.request-body-title+.tabbed-set,
+.response-title+.tabbed-set,
+.message-separator+.tabbed-set,
 .common-response,
 .response-section {
     margin-top: 2px;

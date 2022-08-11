@@ -11,11 +11,17 @@ _PROPS_RE = re.compile(
 )
 
 
-def parse_props(line: str, prefix: str = "") -> Dict[str, str]:
+def parse_props(
+    line: str, prefix: str = "", bool_attrs: bool = False
+) -> Dict[str, str]:
     """
     Parses a line describing properties, in this form:
 
     prop1="value1" prop2="value2"
+
+    It also parses boolean attributes, if bool_attrs is set to true:
+
+    id="example" class="foo another" multiple
 
     into a dictionary of names and values. It accepts an optional prefix, to filter
     properties names.
@@ -30,6 +36,14 @@ def parse_props(line: str, prefix: str = "") -> Dict[str, str]:
                 props[name[len(prefix) :]] = value
         else:
             props[name] = value
+
+    if bool_attrs:
+        for word in _PROPS_RE.sub("", line).split():
+            if "=" in word:
+                name, value = word.split("=")
+                props[name] = value
+            else:
+                props[word] = True
 
     return props
 

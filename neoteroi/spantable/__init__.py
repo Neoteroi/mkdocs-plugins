@@ -3,7 +3,8 @@ This module provides an extension to support Markdown tables with colspan and ro
 
 neoteroi.spantable
 
-MIT license.
+MIT License
+Copyright (c) 2022 to present, Roberto Prevato
 """
 import logging
 import re

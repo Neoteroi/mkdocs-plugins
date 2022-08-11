@@ -18,14 +18,37 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9, "3.10"]
+        python-version: [3.8, 3.9, "3.10"]
 
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 9
           submodules: false
+
+      - name: Compile SASS files
+        run: |
+          cd styles
+          mkdir -p dist
+          wget https://github.com/sass/dart-sass/releases/download/1.54.3/dart-sass-1.54.3-linux-x64.tar.gz
+          tar -xf dart-sass-1.54.3-linux-x64.tar.gz
+          cd dart-sass && chmod +x ./sass
+          ./sass --no-source-map ../all.scss ../dist/neoteroi-mkdocs.css
+          ./sass --no-source-map --style compressed ../all.scss ../dist/neoteroi-mkdocs.min.css
+          ./sass --no-source-map ../gantt.scss ../dist/neoteroi-gantt.css
+          ./sass --no-source-map ../timeline.scss ../dist/neoteroi-timeline.css
+          ./sass --no-source-map ../cards.scss ../dist/neoteroi-cards.css
+          ./sass --no-source-map ../spantable.scss ../dist/neoteroi-spantable.css
+        if: matrix.python-version == '3.10'
+
+      - name: Publish CSS files
+        uses: actions/upload-artifact@master
+        with:
+          name: dist-package-css
+          path: styles/dist
+        if: matrix.python-version == '3.10'
 
       - name: Use Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
@@ -78,29 +101,30 @@ jobs:
 
       - name: Install distribution dependencies
         run: pip install --upgrade twine setuptools wheel
-        if: matrix.python-version == 3.9
+        if: matrix.python-version == '3.10'
 
       - name: Create distribution package
         run: python setup.py sdist bdist_wheel
-        if: matrix.python-version == 3.9
+        if: matrix.python-version == '3.10'
 
       - name: Upload distribution package
         uses: actions/upload-artifact@master
         with:
           name: dist-package-${{ matrix.python-version }}
           path: dist
-        if: matrix.python-version == 3.9
+        if: matrix.python-version == '3.10'
 
   publish:
     runs-on: ubuntu-18.04
     needs: build
     if: github.event_name == 'release'
     steps:
-      - name: Download a distribution artifact
+      - name: Download the distribution package
         uses: actions/download-artifact@v2
         with:
-          name: dist-package-3.9
+          name: dist-package-3.10
           path: dist
+
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
@@ -108,8 +132,25 @@ jobs:
           user: __token__
           password: ${{ secrets.test_pypi_password }}
           repository_url: https://test.pypi.org/legacy/
+
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
           user: __token__
           password: ${{ secrets.pypi_password }}
+
+      - name: Download CSS pack
+        uses: actions/download-artifact@v2
+        with:
+          name: dist-package-css
+          path: dist-css
+
+      - name: Add CSS package to the release
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist-css/dist-package-css.zip
+          asset_name: css-${{ github.event.release.tag_name }}.zip
+          asset_content_type: application/zip
