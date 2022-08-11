@@ -1,6 +1,6 @@
 import logging
 import xml.etree.ElementTree as etree
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from neoteroi.markdown.align import Alignment
 from neoteroi.markdown.images import build_icon_html
