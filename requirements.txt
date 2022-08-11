@@ -5,3 +5,4 @@ mkdocs
 flake8
 black
 isort
+flask
