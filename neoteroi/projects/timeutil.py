@@ -202,15 +202,15 @@ def iter_quarters_between_dates(min_date: date, max_date: date) -> Iterable[Quar
 def iter_weeks_between_dates(
     min_date: date, max_date: date
 ) -> Iterable[Tuple[int, date]]:
-    current_week = min_date.isocalendar()
-    current_week_date = date.fromisocalendar(current_week.year, current_week.week, 1)
+    current_week_year, current_week_number, _ = min_date.isocalendar()
+    current_week_date = date.fromisocalendar(current_week_year, current_week_number, 1)
     end_date = get_last_day_of_month(max_date)
     week_date: datetime
 
     for week_date in rrule.rrule(
         rrule.WEEKLY, dtstart=current_week_date, until=end_date
     ):
-        yield week_date.isocalendar().week, week_date.date()
+        yield week_date.isocalendar()[1], week_date.date()
 
 
 def get_next_week_date(week_number, week_date) -> date:
