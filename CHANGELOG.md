@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.7] - 2022-08-18
+- Improves the Gantt extension:
+- - now supports activities obtaining the start date from the previous activity
+
 ## [0.0.6] - 2022-08-11 :gem:
 - Adds common classes to enable custom extensions reading configuration from:
 - - YAML, JSON, or CSV embedded in the markdown source

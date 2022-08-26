@@ -244,3 +244,52 @@ def test_plan_from_object():
             activities=None,
         ),
     ]
+
+
+def test_activities_auto_start_1():
+    configuration = """
+- title: Beginning
+  start: 2022-01-01
+  activities:
+  - title: Activity 1
+    lasts: 1 day
+  - title: Activity 2
+    lasts: 1 week
+  - title: Activity 3
+    lasts: 2 days
+    """
+    obj = yaml.safe_load(configuration)
+    plan = Plan.from_obj(obj)
+
+    assert plan.activities is not None
+    assert len(plan.activities) == 1
+    assert plan.get_overall_start() == date(2022, 1, 1)
+    assert plan.get_overall_end() == date(2022, 1, 11)
+
+
+def test_activities_auto_start_2():
+    configuration = """
+- title: Beginning
+  start: 2022-01-01
+  activities:
+  - title: Activity 1
+    lasts: 1 day
+    activities:
+    - title: Activity 1.1
+      lasts: 3 days
+  - title: Activity 2
+    lasts: 1 week
+  - title: Activity 3
+    lasts: 2 days
+    """
+    obj = yaml.safe_load(configuration)
+    plan = Plan.from_obj(obj)
+
+    from . import debug_pprint
+
+    debug_pprint(plan)
+
+    assert plan.activities is not None
+    assert len(plan.activities) == 1
+    assert plan.get_overall_start() == date(2022, 1, 1)
+    assert plan.get_overall_end() == date(2022, 1, 11)

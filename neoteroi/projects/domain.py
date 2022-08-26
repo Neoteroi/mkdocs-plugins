@@ -49,6 +49,19 @@ def _parse_optional_date(value: Union[None, date, str]) -> Optional[date]:
     return None
 
 
+def _resolve_activities(
+    activities, preceding_date: Optional[date] = None
+) -> Iterable["Activity"]:
+    """
+    Iterates through a list of objects representing activities and yields
+    activities, handling automatic start date when the preceding activity specifies one.
+    """
+    for item in activities:
+        activity = Activity.from_obj(item, preceding_date)
+        preceding_date = activity.end or activity.start
+        yield activity
+
+
 @dataclass(frozen=True)
 class Activity:
     title: str
@@ -57,6 +70,7 @@ class Activity:
     description: Optional[str] = None
     activities: Optional[List["Activity"]] = None
     events: Optional[List[Event]] = None
+    hidden: Optional[bool] = None
 
     def __post_init__(self):
         # Note: datetimes are currently not supported, only the date component is kept
@@ -75,6 +89,14 @@ class Activity:
         if self.activities:
             for activity in self.activities:
                 yield from activity.iter_activities()
+
+    def iter_events(self, include_self: bool = True) -> Iterable[Event]:
+        """
+        Yields all events in the activity and descendants.
+        """
+        for activity in self.iter_activities(include_self):
+            if activity.events:
+                yield from activity.events
 
     def iter_dates(self) -> Iterable[date]:
         if self.events:
@@ -105,39 +127,27 @@ class Activity:
         Returns the start date of this activity, including all sub and descendants
         activities.
         """
-        if self.activities:
-            starts = [
-                start
-                for start in (
-                    activity.get_overall_start() for activity in self.activities
-                )
-                if start is not None
-            ]
-            return min(starts) if starts else None
-        first_event_date = self.get_first_event_date()
-        if first_event_date and self.start:
-            return min(first_event_date, self.start)
-        return self.start or first_event_date
+        all_starts = [
+            activity.start
+            for activity in self.iter_activities()
+            if activity.start is not None
+        ] + [event.time for event in self.iter_events() if event.time is not None]
+        return min(all_starts)
 
     def get_overall_end(self) -> Optional[date]:
         """
         Returns the end date of this activity, including all sub and descendants
         activities.
         """
-        if self.activities:
-            ends = [
-                end
-                for end in (activity.get_overall_end() for activity in self.activities)
-                if end is not None
-            ]
-            return max(ends) if ends else None
-        last_event_date = self.get_last_event_date()
-        if last_event_date and self.end:
-            return min(last_event_date, self.end)
-        return self.end or last_event_date
+        all_ends = [
+            activity.end
+            for activity in self.iter_activities()
+            if activity.end is not None
+        ] + [event.time for event in self.iter_events() if event.time is not None]
+        return max(all_ends)
 
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, preceding_date: Optional[date] = None):
         if isinstance(obj, str):
             return cls(title=obj)
         if not isinstance(obj, dict):
@@ -147,53 +157,59 @@ class Activity:
         description = obj.get("description")
         start = _parse_optional_date(obj.get("start"))
         end = _parse_optional_date(obj.get("end"))
-        lasts = obj.get("lasts")
-        child_activities = obj.get("activities")
+        skip = obj.get("skip")
+        if skip:
+            lasts = skip
+            hidden = True
+        else:
+            lasts = obj.get("lasts")
+            hidden = obj.get("hidden")
+        child_activities = obj.get("activities") or []
         events = obj.get("events")
         if lasts:
             if start is None:
-                start = date.today()
+                start = date.today() if preceding_date is None else preceding_date
             end = start + parse_lasts(lasts)
+        preceding_date = end or start
+
+        if child_activities and end is None:
+            # avoid displaying a parent activity that would last anyway from the
+            # beginning to the end of the last descendant
+            hidden = True
 
         return cls(
             title,
             start,
             end,
             description=description,
-            activities=[Activity.from_obj(item) for item in child_activities]
+            activities=list(_resolve_activities(child_activities, end or start))
             if child_activities
             else None,
             events=[Event.from_obj(item) for item in events] if events else None,
+            hidden=hidden,
         )
 
 
 @dataclass(frozen=True)
 class Plan(Activity):
-    def iter_activities(self) -> Iterable["Activity"]:
-        """
-        Yields all descendant activities.
-        """
-
-        if self.activities:
-            for activity in self.activities:
-                yield from activity.iter_activities()
-
     @classmethod
     def from_obj(cls, obj):
         if isinstance(obj, list):
             return cls(
-                title="Plan", activities=[Activity.from_obj(item) for item in obj]
+                title="Plan",
+                activities=[Activity.from_obj(item) for item in obj],
             )
 
         if not isinstance(obj, dict):
             raise TypeError("Expected a list or a dict.")
 
-        activities = obj.get("activities")
+        plan_start = _parse_optional_date(obj.get("start"))
+        activities = obj.get("activities") or []
         events = obj.get("events")
 
         return cls(
             title=obj.get("title") or "Plan",
-            activities=[Activity.from_obj(item) for item in activities]
+            activities=[Activity.from_obj(item, plan_start) for item in activities]
             if activities
             else [],
             events=[Event.from_obj(item) for item in events] if events else [],
