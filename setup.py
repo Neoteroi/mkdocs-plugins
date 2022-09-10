@@ -38,7 +38,7 @@ setup(
         "neoteroi.projects",
         "neoteroi.projects.gantt",
     ],
-    install_requires=["essentials-openapi[full]", "mkdocs~=1.3.1", "httpx~=0.22.0"],
+    install_requires=["essentials-openapi[full]", "mkdocs~=1.3.1", "httpx~=0.23.0"],
     entry_points={
         "mkdocs.plugins": [
             "neoteroi.mkdocsoad = neoteroi.mkdocsoad:MkDocsOpenAPIDocumentationPlugin",
