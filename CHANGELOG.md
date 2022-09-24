@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.7] - 2022-08-18
 - Improves the Gantt extension:
-- - now supports activities obtaining the start date from the previous activity
+- - now supports multiple periods in the same row
+- - now supports activities using the start date from the previous activity (automatic dates)
 
 ## [0.0.6] - 2022-08-11 :gem:
 - Adds common classes to enable custom extensions reading configuration from:

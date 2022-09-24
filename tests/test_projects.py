@@ -97,6 +97,8 @@ def test_plan_from_object():
                     end=date(2022, 3, 2),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
                 Activity(
                     title="Graphic Design Research",
@@ -104,6 +106,8 @@ def test_plan_from_object():
                     end=date(2022, 3, 16),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
                 Activity(
                     title="Brainstorming / Mood Boarding",
@@ -111,8 +115,12 @@ def test_plan_from_object():
                     end=date(2022, 3, 20),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
             ],
+            events=None,
+            hidden=True,
         ),
         Activity(
             title="Creative Brief",
@@ -120,6 +128,8 @@ def test_plan_from_object():
             end=date(2022, 3, 2),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Graphic Design Research",
@@ -127,6 +137,8 @@ def test_plan_from_object():
             end=date(2022, 3, 16),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Brainstorming / Mood Boarding",
@@ -134,6 +146,8 @@ def test_plan_from_object():
             end=date(2022, 3, 20),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Creation Phase",
@@ -147,6 +161,8 @@ def test_plan_from_object():
                     end=date(2022, 4, 1),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
                 Activity(
                     title="Design Building",
@@ -154,6 +170,8 @@ def test_plan_from_object():
                     end=date(2022, 4, 20),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
                 Activity(
                     title="Refining",
@@ -161,8 +179,12 @@ def test_plan_from_object():
                     end=date(2022, 4, 30),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
             ],
+            events=None,
+            hidden=True,
         ),
         Activity(
             title="Sketching",
@@ -170,6 +192,8 @@ def test_plan_from_object():
             end=date(2022, 4, 1),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Design Building",
@@ -177,6 +201,8 @@ def test_plan_from_object():
             end=date(2022, 4, 20),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Refining",
@@ -184,6 +210,8 @@ def test_plan_from_object():
             end=date(2022, 4, 30),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Feedback Phase",
@@ -197,6 +225,8 @@ def test_plan_from_object():
                     end=date(2022, 5, 1),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
                 Activity(
                     title="Revisions",
@@ -204,8 +234,12 @@ def test_plan_from_object():
                     end=date(2022, 5, 10),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 ),
             ],
+            events=None,
+            hidden=True,
         ),
         Activity(
             title="Presenting",
@@ -213,6 +247,8 @@ def test_plan_from_object():
             end=date(2022, 5, 1),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Revisions",
@@ -220,6 +256,8 @@ def test_plan_from_object():
             end=date(2022, 5, 10),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
         Activity(
             title="Delivery Phase",
@@ -233,8 +271,12 @@ def test_plan_from_object():
                     end=date(2022, 5, 12),
                     description=None,
                     activities=None,
+                    events=None,
+                    hidden=None,
                 )
             ],
+            events=None,
+            hidden=True,
         ),
         Activity(
             title="Final delivery",
@@ -242,6 +284,8 @@ def test_plan_from_object():
             end=date(2022, 5, 12),
             description=None,
             activities=None,
+            events=None,
+            hidden=None,
         ),
     ]
 
@@ -284,10 +328,6 @@ def test_activities_auto_start_2():
     """
     obj = yaml.safe_load(configuration)
     plan = Plan.from_obj(obj)
-
-    from . import debug_pprint
-
-    debug_pprint(plan)
 
     assert plan.activities is not None
     assert len(plan.activities) == 1

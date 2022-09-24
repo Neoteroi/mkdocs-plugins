@@ -155,7 +155,7 @@ class Activity:
 
         title = obj.get("title", "")
         description = obj.get("description")
-        start = _parse_optional_date(obj.get("start"))
+        start = _parse_optional_date(obj.get("start", preceding_date))
         end = _parse_optional_date(obj.get("end"))
         skip = obj.get("skip")
         if skip:
@@ -170,7 +170,8 @@ class Activity:
             if start is None:
                 start = date.today() if preceding_date is None else preceding_date
             end = start + parse_lasts(lasts)
-        preceding_date = end or start
+        if preceding_date is None:
+            preceding_date = end or start
 
         if child_activities and end is None:
             # avoid displaying a parent activity that would last anyway from the
@@ -192,6 +193,9 @@ class Activity:
 
 @dataclass(frozen=True)
 class Plan(Activity):
+    def iter_activities(self, include_self: bool = False) -> Iterable["Activity"]:
+        yield from super().iter_activities(include_self)
+
     @classmethod
     def from_obj(cls, obj):
         if isinstance(obj, list):
