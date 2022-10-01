@@ -10,4 +10,4 @@ __pycache__
 styles/*.css
 styles/*.css.map
 __*.html
-__*.py
+__file_out.py
