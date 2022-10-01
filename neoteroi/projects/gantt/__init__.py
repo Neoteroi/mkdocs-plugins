@@ -20,7 +20,7 @@ class BaseGanttProcessor:
 
     def build_html(self, parent, obj, props) -> None:
         """Builds the HTML for the given input object."""
-        if not isinstance(obj, list):
+        if not isinstance(obj, (dict, list)):
             raise TypeError("Expected a list of items describing Gantt.")
 
         builder = GanttHTMLBuilder(

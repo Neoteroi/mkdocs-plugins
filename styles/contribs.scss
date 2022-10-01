@@ -1,0 +1,267 @@
+$dot-size: 40px;
+
+.nt-contribs {
+    margin-top: 2rem;
+    font-size: small;
+    border-top: 1px dotted lightgray;
+    padding-top: 0.5rem;
+
+    .nt-contributors {
+        padding-top: .5rem;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .nt-contributor {
+        background: lightgrey;
+        background-size: cover;
+        width: $dot-size;
+        height: $dot-size;
+        border-radius: 100%;
+        margin: 0 6px 6px 0;
+        cursor: help;
+
+        opacity: .7;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .nt-initials {
+        text-transform: uppercase;
+        font-size: 24px;
+        text-align: center;
+        width: $dot-size;
+        height: $dot-size;
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        top: 2px;
+        color: inherit;
+        font-weight: bold;
+    }
+
+
+    .nt-group-0 {
+        background-color: var(--nt-color-0);
+    }
+
+    .nt-group-1 {
+        background-color: var(--nt-color-1);
+    }
+
+    .nt-group-2 {
+        background-color: var(--nt-color-2);
+    }
+
+    .nt-group-3 {
+        background-color: var(--nt-color-3);
+    }
+
+    .nt-group-4 {
+        background-color: var(--nt-color-4);
+    }
+
+    .nt-group-5 {
+        background-color: var(--nt-color-5);
+    }
+
+    .nt-group-6 {
+        background-color: var(--nt-color-6);
+    }
+
+    .nt-group-7 {
+        color: #000;
+        background-color: var(--nt-color-7);
+    }
+
+    .nt-group-8 {
+        color: #000;
+        background-color: var(--nt-color-8);
+    }
+
+    .nt-group-9 {
+        background-color: var(--nt-color-9);
+    }
+
+    .nt-group-10 {
+        background-color: var(--nt-color-10);
+    }
+
+    .nt-group-11 {
+        background-color: var(--nt-color-11);
+    }
+
+    .nt-group-12 {
+        background-color: var(--nt-color-12);
+    }
+
+    .nt-group-13 {
+        background-color: var(--nt-color-13);
+    }
+
+    .nt-group-14 {
+        background-color: var(--nt-color-14);
+    }
+
+    .nt-group-15 {
+        color: #000;
+        background-color: var(--nt-color-15);
+    }
+
+    .nt-group-16 {
+        background-color: var(--nt-color-16);
+    }
+
+    .nt-group-17 {
+        color: #000;
+        background-color: var(--nt-color-17);
+    }
+
+    .nt-group-18 {
+        background-color: var(--nt-color-18);
+    }
+
+    .nt-group-19 {
+        background-color: var(--nt-color-19);
+    }
+
+    .nt-group-20 {
+        color: #000;
+        background-color: var(--nt-color-20);
+    }
+
+    .nt-group-21 {
+        color: #000;
+        background-color: var(--nt-color-21);
+    }
+
+    .nt-group-22 {
+        color: #000;
+        background-color: var(--nt-color-22);
+    }
+
+    .nt-group-23 {
+        color: #000;
+        background-color: var(--nt-color-23);
+    }
+
+    .nt-group-24 {
+        color: #000;
+        background-color: var(--nt-color-24);
+    }
+
+    .nt-group-25 {
+        color: #000;
+        background-color: var(--nt-color-25);
+    }
+
+    .nt-group-26 {
+        color: #000;
+        background-color: var(--nt-color-26);
+    }
+
+    .nt-group-27 {
+        background-color: var(--nt-color-27);
+    }
+
+    .nt-group-28 {
+        color: #000;
+        background-color: var(--nt-color-28);
+    }
+
+    .nt-group-29 {
+        color: #000;
+        background-color: var(--nt-color-29);
+    }
+
+    .nt-group-30 {
+        background-color: var(--nt-color-30);
+    }
+
+    .nt-group-31 {
+        background-color: var(--nt-color-31);
+    }
+
+    .nt-group-32 {
+        color: #000;
+        background-color: var(--nt-color-32);
+    }
+
+    .nt-group-33 {
+        background-color: var(--nt-color-33);
+    }
+
+    .nt-group-34 {
+        background-color: var(--nt-color-34);
+    }
+
+    .nt-group-35 {
+        background-color: var(--nt-color-35);
+    }
+
+    .nt-group-36 {
+        background-color: var(--nt-color-36);
+    }
+
+    .nt-group-37 {
+        background-color: var(--nt-color-37);
+    }
+
+    .nt-group-38 {
+        background-color: var(--nt-color-38);
+    }
+
+    .nt-group-39 {
+        color: #000;
+        background-color: var(--nt-color-39);
+    }
+
+    .nt-group-40 {
+        color: #000;
+        background-color: var(--nt-color-40);
+    }
+
+    .nt-group-41 {
+        color: #000;
+        background-color: var(--nt-color-41);
+    }
+
+    .nt-group-42 {
+        color: #000;
+        background-color: var(--nt-color-42);
+    }
+
+    .nt-group-43 {
+        color: #000;
+        background-color: var(--nt-color-43);
+    }
+
+    .nt-group-44 {
+        color: #000;
+        background-color: var(--nt-color-44);
+    }
+
+    .nt-group-45 {
+        background-color: var(--nt-color-45);
+    }
+
+    .nt-group-46 {
+        color: #000;
+        background-color: var(--nt-color-46);
+    }
+
+    .nt-group-47 {
+        background-color: var(--nt-color-47);
+    }
+
+    .nt-group-48 {
+        background-color: var(--nt-color-48);
+    }
+
+    .nt-group-49 {
+        background-color: var(--nt-color-49);
+    }
+
+}

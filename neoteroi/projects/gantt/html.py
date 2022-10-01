@@ -351,13 +351,27 @@ class GanttHTMLBuilder:
                 for event in item.events:
                     self.build_event(actions_element, event)
 
-            for activity in item.iter_activities(False):
+            # for activity in item.iter_activities(False):
+            for activity in item.activities or []:
                 self._build_item_html(activities_element, activity)
 
     def _build_item_html(self, parent, item: Activity):
         item_element = etree.SubElement(parent, "div", {"class": "nt-plan-activity"})
         actions_element = etree.SubElement(item_element, "div", {"class": "actions"})
 
+        for activity in item.iter_activities():
+            # don't render parent activities: they would be overlapped by their children
+            # anyway
+            #  activity.activities or  ?? quando?
+            if activity.hidden is True:
+                continue
+            self._build_period_html(actions_element, activity)
+
+        if item.events:
+            for event in item.events:
+                self.build_event(actions_element, event)
+
+    def _build_period_html(self, parent, item: Activity):
         title_date = (
             (
                 f" {item.start.strftime('%Y-%m-%d')} "
@@ -368,7 +382,7 @@ class GanttHTMLBuilder:
             else ""
         )
         period_element = etree.SubElement(
-            actions_element,
+            parent,
             "div",
             {
                 "class": "period",
@@ -381,10 +395,6 @@ class GanttHTMLBuilder:
         )
         span_el = etree.SubElement(period_element, "span")
         span_el.text = item.title
-
-        if item.events:
-            for event in item.events:
-                self.build_event(actions_element, event)
 
     def _format_time(self, value: Union[None, date, datetime]):
         if value is None:
