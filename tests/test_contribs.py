@@ -1,4 +1,5 @@
 import pytest
+
 from neoteroi.contribs.domain import Contributor
 from neoteroi.contribs.git import GitContributionsReader
 
