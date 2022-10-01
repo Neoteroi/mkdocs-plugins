@@ -32,16 +32,18 @@ setup(
         "neoteroi.markdown.data",
         "neoteroi.markdown.tables",
         "neoteroi.mkdocsoad",
+        "neoteroi.contribs",
         "neoteroi.spantable",
         "neoteroi.timeline",
         "neoteroi.cards",
         "neoteroi.projects",
         "neoteroi.projects.gantt",
     ],
-    install_requires=["essentials-openapi[full]", "mkdocs~=1.3.1", "httpx~=0.23.0"],
+    install_requires=["essentials-openapi[full]", "mkdocs~=1.4.0", "httpx~=0.23.0"],
     entry_points={
         "mkdocs.plugins": [
             "neoteroi.mkdocsoad = neoteroi.mkdocsoad:MkDocsOpenAPIDocumentationPlugin",
+            "neoteroi.contribs = neoteroi.contribs:ContribsPlugin",
         ],
         "markdown.extensions": [
             "neoteroi.spantable = neoteroi.spantable:SpanTableExtension",

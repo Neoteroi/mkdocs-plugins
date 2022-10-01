@@ -14,13 +14,14 @@ pip install neoteroi-mkdocs
 
 This package includes the following plugins and extensions:
 
-| Name                                                              | Description                                                |
-| :---------------------------------------------------------------- | :--------------------------------------------------------- |
-| [`mkdocsoad`](https://www.neoteroi.dev/mkdocs-plugins/web/oad/)   | Generates documentation from OpenAPI specification files.  |
-| [`cards`](https://www.neoteroi.dev/mkdocs-plugins/cards/)         | Component to display cards.                                |
-| [`timeline`](https://www.neoteroi.dev/mkdocs-plugins/timeline/)   | Component to display chronological information with style. |
-| [`gantt`](https://www.neoteroi.dev/mkdocs-plugins/gantt/)         | Component to display Gantt diagrams.                       |
-| [`spantable`](https://www.neoteroi.dev/mkdocs-plugins/spantable/) | Tables supporting colspan and rowspan.                     |
+| Name                                                              | Description                                                               |
+| :---------------------------------------------------------------- | :------------------------------------------------------------------------ |
+| [`mkdocsoad`](https://www.neoteroi.dev/mkdocs-plugins/web/oad/)   | Generates documentation from OpenAPI specification files.                 |
+| [`cards`](https://www.neoteroi.dev/mkdocs-plugins/cards/)         | Component to display cards.                                               |
+| [`timeline`](https://www.neoteroi.dev/mkdocs-plugins/timeline/)   | Component to display chronological information with style.                |
+| [`gantt`](https://www.neoteroi.dev/mkdocs-plugins/gantt/)         | Component to display Gantt diagrams.                                      |
+| [`spantable`](https://www.neoteroi.dev/mkdocs-plugins/spantable/) | Tables supporting colspan and rowspan.                                    |
+| [`contribs`](https://www.neoteroi.dev/mkdocs-plugins/contribs/)   | MkDocs plugin to display last commit time and contributors for each file. |
 
 ## Documentation
 Refer to the [documentation site](https://www.neoteroi.dev/mkdocs-plugins/). :rocket:
