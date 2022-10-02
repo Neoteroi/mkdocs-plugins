@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="neoteroi-mkdocs",
-    version="0.0.8",
+    version="0.0.9",
     description="Plugins for MkDocs and Python Markdown",
     long_description=readme(),
     long_description_content_type="text/markdown",
@@ -39,7 +39,14 @@ setup(
         "neoteroi.projects",
         "neoteroi.projects.gantt",
     ],
-    install_requires=["essentials-openapi[full]", "mkdocs~=1.4.0", "httpx~=0.23.0"],
+    install_requires=[
+        "essentials-openapi",
+        "mkdocs~=1.4.0",
+        "httpx<1",
+        "click~=8.0.3",
+        "Jinja2~=3.0.2",
+        "rich~=12.2.0",
+    ],
     entry_points={
         "mkdocs.plugins": [
             "neoteroi.mkdocsoad = neoteroi.mkdocsoad:MkDocsOpenAPIDocumentationPlugin",

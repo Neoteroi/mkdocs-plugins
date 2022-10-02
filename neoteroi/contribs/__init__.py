@@ -9,7 +9,7 @@ contributors list for each page, assuming that:
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from mkdocs.config import config_options as c
 from mkdocs.plugins import BasePlugin
@@ -37,7 +37,38 @@ class ContribsPlugin(BasePlugin):
         super().__init__()
         self._contribs_reader = GitContributionsReader()
 
+    def _read_contributor_merge_with(self, contributor_info) -> Optional[str]:
+        return contributor_info.get("merge_with")
+
+    def _handle_merge_contributor_info(
+        self,
+        contributors: List[Contributor],
+        contributor: Contributor,
+        contributor_info: dict,
+    ) -> bool:
+        """
+        Handles an optional "merge_with" property in the contributor info object
+        (from configuration), returning true if the given contributor (from repo
+        information) should be discarded (its commits count was merged with another
+        one).
+        """
+        assert contributor.email == contributor_info.get(
+            "email"
+        ), "The contributor info object must match the contributor object."
+        merge_with = contributor_info.get("merge_with")
+
+        if merge_with:
+            parent = next(
+                (item for item in contributors if item.email == merge_with),
+                None,
+            )
+            if parent:
+                parent.count += contributor.count
+                return True
+        return False
+
     def _get_contributors(self, page_file: File) -> List[Contributor]:
+        results = []
         contributors = self._contribs_reader.get_contributors(
             Path("docs") / page_file.src_path
         )
@@ -53,7 +84,20 @@ class ContribsPlugin(BasePlugin):
             if contributor_info:
                 contributor.image = contributor_info.get("image")
 
-        return contributors
+                if contributor_info.get("ignore"):
+                    # ignore the contributor's information (can be useful for bots)
+                    continue
+
+                # should contributor information be merged with another object?
+                if self._handle_merge_contributor_info(
+                    contributors, contributor, contributor_info
+                ):
+                    # skip this item as it was merged with another one
+                    continue
+
+            results.append(contributor)
+
+        return results
 
     def _get_last_commit_date(self, page_file: File) -> datetime:
         return self._contribs_reader.get_last_commit_date(
