@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     contributions from bots).
 - - Adds the possibility to merge contributors' information
     for cases in which the same person commits using two different email addresses.
+- - Adds the possibility to display an element with the count of contributors.
 - Resolves a small issue in pip package resolution.
 
 ## [0.0.8] - 2022-10-01

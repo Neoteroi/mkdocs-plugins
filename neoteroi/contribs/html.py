@@ -19,6 +19,7 @@ class ContribsViewOptions:
     contributors_label: str
     last_modified_label: str
     show_last_modified_time: bool
+    show_contributors_title: bool
     time_format: str
 
 
@@ -42,6 +43,12 @@ def contribution_stats_to_element(
             )
         else:
             last_modified_time.text = last_commit_date.strftime(options.time_format)
+
+    if options.show_contributors_title:
+        contributors_title = etree.SubElement(
+            element, "p", {"class": "nt-contributors-title"}
+        )
+        contributors_title.text = f"{options.contributors_label} ({len(contributors)})"
 
     contributors_parent = etree.SubElement(element, "div", {"class": "nt-contributors"})
 

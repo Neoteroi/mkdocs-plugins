@@ -28,9 +28,10 @@ class ContribsPlugin(BasePlugin):
     config_scheme = (
         ("contributors_label", c.Type(str, default="Contributors")),
         ("last_modified_label", c.Type(str, default="Last modified on")),
-        ("last_modified_time", c.Type(bool, default=True)),
         ("time_format", c.Type(str, default="%Y-%m-%d %H:%M:%S")),
         ("contributors", c.Type(list, default=[])),
+        ("show_last_modified_time", c.Type(bool, default=True)),
+        ("show_contributors_title", c.Type(bool, default=False)),
     )
 
     def __init__(self) -> None:
@@ -114,7 +115,8 @@ class ContribsPlugin(BasePlugin):
             ContribsViewOptions(
                 self.config["contributors_label"],
                 self.config["last_modified_label"],
-                self.config["last_modified_time"],
+                self.config["show_last_modified_time"],
+                self.config["show_contributors_title"],
                 self.config["time_format"],
             ),
         )
