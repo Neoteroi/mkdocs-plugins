@@ -33,7 +33,7 @@ def contribution_stats_to_element(
     if options.show_last_modified_time:
         last_modified_time = etree.SubElement(
             element,
-            "em",
+            "p",
             {"class": "nt-mod-time"},
         )
         if options.last_modified_label:
@@ -56,7 +56,8 @@ def contribution_stats_to_element(
         sorted(contributors, key=lambda item: item.count, reverse=True)
     ):
         props = {
-            "class": "nt-contributor",
+            "class": "nt-contributor"
+            + (f" {contributor.key}" if contributor.key else ""),
             "title": (
                 f"{contributor.name} <{contributor.email}> ({contributor.count})"
             ),

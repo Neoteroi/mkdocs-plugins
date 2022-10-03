@@ -11,6 +11,7 @@ class Contributor:
     email: str
     count: int = -1
     image: Optional[str] = None
+    key: Optional[str] = None
 
 
 class ContributionsReader(ABC):

@@ -84,6 +84,7 @@ class ContribsPlugin(BasePlugin):
             )
             if contributor_info:
                 contributor.image = contributor_info.get("image")
+                contributor.key = contributor_info.get("key")
 
                 if contributor_info.get("ignore"):
                     # ignore the contributor's information (can be useful for bots)
