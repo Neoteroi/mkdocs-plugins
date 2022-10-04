@@ -56,7 +56,7 @@ def test_contribs_plugin_success():
     handler.config = _get_contribs_config()
 
     example = textwrap.dedent(
-        f"""
+        """
         # Hello World!
 
         Lorem ipsum dolor sit amet.
@@ -106,7 +106,7 @@ def test_contribs_plugin_new_file_ignore():
     handler.config = _get_contribs_config()
 
     example = textwrap.dedent(
-        f"""
+        """
         # Hello World!
 
         Lorem ipsum dolor sit amet.
