@@ -40,7 +40,7 @@ class GitContributionsReader(ContributionsReader):
         using the Git CLI.
         """
         in_process = subprocess.Popen(
-            ["git", "log", "--pretty=short"], stdout=subprocess.PIPE
+            ["git", "log", "--pretty=short", str(file_path)], stdout=subprocess.PIPE
         )
         result = self._decode(
             subprocess.check_output(
@@ -50,7 +50,6 @@ class GitContributionsReader(ContributionsReader):
                     "--summary",
                     "--numbered",
                     "--email",
-                    str(file_path),
                 ],
                 stdin=in_process.stdout,
             )
