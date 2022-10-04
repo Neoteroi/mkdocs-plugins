@@ -125,10 +125,11 @@ class ContribsPlugin(BasePlugin):
     def on_page_markdown(self, markdown, *args, **kwargs):
         try:
             markdown = self._set_contributors(markdown, kwargs["page"])
-        except ValueError:
+        except ValueError as value_error:
             logger.error(
                 "Failed to display contributors list for page: %s",
                 kwargs["page"].title,
+                exc_info=value_error
             )
             pass
         return markdown
