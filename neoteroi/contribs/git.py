@@ -11,7 +11,7 @@ from neoteroi.contribs.domain import ContributionsReader, Contributor
 
 class GitContributionsReader(ContributionsReader):
 
-    _name_email_rx = re.compile(r"(?P<name>[\w\s]+)\s<(?P<email>[^\>]+)>")
+    _name_email_rx = re.compile(r"(?P<name>[^\<]+)<(?P<email>[^\>]+)>")
 
     def _decode(self, value: bytes) -> str:
         try:
@@ -22,10 +22,10 @@ class GitContributionsReader(ContributionsReader):
     def _parse_name_and_email(self, name_and_email) -> Tuple[str, str]:
         match = self._name_email_rx.search(name_and_email)
         if match:
-            name = match.groupdict()["name"]
-            email = match.groupdict()["email"]
+            name = match.groupdict()["name"].strip()
+            email = match.groupdict()["email"].strip()
         else:
-            name, email = ""
+            name, email = ("", "")
         return name, email
 
     def parse_committers(self, output: str) -> Iterable[Contributor]:

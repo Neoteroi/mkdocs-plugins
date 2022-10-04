@@ -11,3 +11,5 @@ styles/*.css
 styles/*.css.map
 __*.html
 __file_out.py
+
+docs/res/contribs-new.html

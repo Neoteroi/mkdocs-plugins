@@ -9,6 +9,7 @@ contributors list for each page, assuming that:
 import logging
 from datetime import datetime
 from pathlib import Path
+from subprocess import CalledProcessError
 from typing import List, Optional
 
 from mkdocs.config import config_options as c
@@ -125,10 +126,11 @@ class ContribsPlugin(BasePlugin):
     def on_page_markdown(self, markdown, *args, **kwargs):
         try:
             markdown = self._set_contributors(markdown, kwargs["page"])
-        except ValueError:
+        except (CalledProcessError, ValueError) as operation_error:
             logger.error(
                 "Failed to display contributors list for page: %s",
                 kwargs["page"].title,
+                exc_info=operation_error,
             )
             pass
         return markdown
