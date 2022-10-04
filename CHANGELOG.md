@@ -5,8 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2022-10-04
+- Corrects the pattern handling name and email for the `contribs` plugin
+- Adds tests for the `contribs` plugin
+
 ## [0.1.1] - 2022-10-04
-- Corrects bug in the `contributors` plugin, causing failures in certain CI/CD
+- Corrects bug in the `contribs` plugin, causing failures in certain CI/CD
   solutions and improves its safety and performance (removes `shell=True`!)
 - Adds option to apply a class to specific contributors, for simpler styling
 - Minor improvements to styles
