@@ -8,9 +8,12 @@ Copyright (c) 2022 to present, Roberto Prevato
 """
 from markdown import Extension
 
-from neoteroi.markdown.images import Image
-from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
-from neoteroi.markdown.utils import create_instance, create_instances
+from neoteroi.mkdocs.markdown.images import Image
+from neoteroi.mkdocs.markdown.processors import (
+    EmbeddedBlockProcessor,
+    SourceBlockProcessor,
+)
+from neoteroi.mkdocs.markdown.utils import create_instance, create_instances
 
 from .domain import CardItem, Cards
 from .html import CardsHTMLBuilder, CardsViewOptions

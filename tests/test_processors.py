@@ -6,7 +6,7 @@ import markdown
 import pytest
 from markdown.blockparser import BlockParser
 
-from neoteroi.markdown.processors import (
+from neoteroi.mkdocs.markdown.processors import (
     EmbeddedBlockProcessor,
     SourceBlockProcessor,
     find_closing_fragment_index,

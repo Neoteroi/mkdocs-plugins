@@ -1,7 +1,7 @@
 import pytest
 
-from neoteroi.markdown import extract_props, parse_props
-from neoteroi.markdown.tables import Table, read_table
+from neoteroi.mkdocs.markdown import extract_props, parse_props
+from neoteroi.mkdocs.markdown.tables import Table, read_table
 
 
 def test_markdown_table():

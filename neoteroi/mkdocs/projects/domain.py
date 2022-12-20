@@ -4,7 +4,7 @@ from typing import Iterable, List, Optional, Union
 
 from dateutil.parser import parse as parse_date
 
-from neoteroi.projects.timeutil import parse_lasts
+from neoteroi.mkdocs.projects.timeutil import parse_lasts
 
 
 @dataclass(frozen=True)

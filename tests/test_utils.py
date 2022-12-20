@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import pytest
 
-from neoteroi.markdown.utils import create_instance, create_instances
+from neoteroi.mkdocs.markdown.utils import create_instance, create_instances
 
 
 @dataclass

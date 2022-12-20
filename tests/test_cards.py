@@ -3,7 +3,7 @@ import xml.etree.ElementTree as etree
 import markdown
 import pytest
 
-from neoteroi.cards import BaseCardsProcessor, CardsExtension
+from neoteroi.mkdocs.cards import BaseCardsProcessor, CardsExtension
 from tests import equal_html
 
 EXAMPLE_1 = """

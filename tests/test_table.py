@@ -1,6 +1,6 @@
 import pytest
 
-from neoteroi.markdown.tables import Matrix, Table
+from neoteroi.mkdocs.markdown.tables import Matrix, Table
 
 
 def test_table_slice():

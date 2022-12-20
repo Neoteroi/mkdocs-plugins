@@ -6,8 +6,11 @@ neoteroi.gantt
 MIT License
 Copyright (c) 2022 to present, Roberto Prevato
 """
-from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
-from neoteroi.markdown.utils import create_instance
+from neoteroi.mkdocs.markdown.processors import (
+    EmbeddedBlockProcessor,
+    SourceBlockProcessor,
+)
+from neoteroi.mkdocs.markdown.utils import create_instance
 
 from ..domain import Plan
 from .html import GanttHTMLBuilder, GanttViewOptions

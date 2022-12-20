@@ -4,9 +4,9 @@ import pytest
 from mkdocs.structure.files import File
 from mkdocs.structure.pages import Page
 
-from neoteroi.contribs import ContribsPlugin
-from neoteroi.contribs.domain import Contributor
-from neoteroi.contribs.git import GitContributionsReader
+from neoteroi.mkdocs.contribs import ContribsPlugin
+from neoteroi.mkdocs.contribs.domain import Contributor
+from neoteroi.mkdocs.contribs.git import GitContributionsReader
 
 
 @pytest.mark.parametrize(
@@ -86,6 +86,8 @@ def test_contribs_plugin_success():
         == """# Hello World!
 
 Lorem ipsum dolor sit amet.
+
+
 
 <div class="nt-contribs"><p class="nt-mod-time">Last modified on: 2022-10-04 21"""
         + """:01:05</p><div class="nt-contributors"><div class="nt-contributor """

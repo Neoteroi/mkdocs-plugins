@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from neoteroi.markdown.images import Image
+from neoteroi.mkdocs.markdown.images import Image
 
 
 @dataclass

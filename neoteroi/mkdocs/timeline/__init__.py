@@ -9,9 +9,9 @@ Copyright (c) 2022 to present, Roberto Prevato
 """
 from markdown import Extension
 
-from neoteroi.markdown.align import aligment_from_props
-from neoteroi.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
-from neoteroi.markdown.utils import create_instance, create_instances
+from neoteroi.mkdocs.markdown.align import aligment_from_props
+from neoteroi.mkdocs.markdown.processors import EmbeddedBlockProcessor, SourceBlockProcessor
+from neoteroi.mkdocs.markdown.utils import create_instance, create_instances
 
 from .domain import Timeline, TimelineItem
 from .html import TimelineHTMLBuilder, TimelineViewOptions

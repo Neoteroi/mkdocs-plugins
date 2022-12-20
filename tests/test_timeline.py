@@ -4,7 +4,7 @@ import xml.etree.ElementTree as etree
 import markdown
 import pytest
 
-from neoteroi.timeline import BaseTimelineProcessor, TimelineExtension
+from neoteroi.mkdocs.timeline import BaseTimelineProcessor, TimelineExtension
 from tests import get_resource_file_path
 
 EXAMPLE_1 = """

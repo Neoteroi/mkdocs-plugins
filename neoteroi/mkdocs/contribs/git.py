@@ -6,7 +6,7 @@ from typing import Iterable, List, Tuple
 
 from dateutil.parser import parse as parse_date
 
-from neoteroi.contribs.domain import ContributionsReader, Contributor
+from neoteroi.mkdocs.contribs.domain import ContributionsReader, Contributor
 
 
 class GitContributionsReader(ContributionsReader):

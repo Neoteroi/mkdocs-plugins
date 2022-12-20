@@ -1,7 +1,7 @@
 import markdown
 import pytest
 
-from neoteroi.spantable import SpanTableExtension, make_extension
+from neoteroi.mkdocs.spantable import SpanTableExtension, make_extension
 
 
 @pytest.mark.parametrize(

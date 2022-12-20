@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import List
 from xml.etree.ElementTree import tostring as xml_to_str
 
-from neoteroi.contribs.domain import Contributor
+from neoteroi.mkdocs.contribs.domain import Contributor
 
 
 def _get_initials(value: str) -> str:
