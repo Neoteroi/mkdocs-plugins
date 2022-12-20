@@ -111,16 +111,20 @@ class ContribsPlugin(BasePlugin):
         page_file = page.file
         last_commit_date = self._get_last_commit_date(page_file)
         contributors = self._get_contributors(page_file)
-        return markdown + render_contribution_stats(
-            contributors,
-            last_commit_date,
-            ContribsViewOptions(
-                self.config["contributors_label"],
-                self.config["last_modified_label"],
-                self.config["show_last_modified_time"],
-                self.config["show_contributors_title"],
-                self.config["time_format"],
-            ),
+        return (
+            markdown
+            + "\n\n"
+            + render_contribution_stats(
+                contributors,
+                last_commit_date,
+                ContribsViewOptions(
+                    self.config["contributors_label"],
+                    self.config["last_modified_label"],
+                    self.config["show_last_modified_time"],
+                    self.config["show_contributors_title"],
+                    self.config["time_format"],
+                ),
+            )
         )
 
     def on_page_markdown(self, markdown, *args, **kwargs):

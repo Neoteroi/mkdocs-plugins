@@ -12,6 +12,7 @@ logger = logging.getLogger("MARKDOWN")
 @dataclass
 class CardsViewOptions:
     id: str = ""
+    class_name: str = ""
     cols: int = 3
     image_bg: bool = False
 
@@ -36,9 +37,16 @@ class CardsHTMLBuilder:
 
         return item_props
 
+    def _get_root_class(self):
+        base_class = f"nt-cards nt-grid cols-{self.options.cols}"
+
+        if self.options.class_name:
+            return base_class + " " + self.options.class_name
+        return base_class
+
     def build_html(self, parent, cards: Cards):
         root_element = etree.SubElement(
-            parent, "div", {"class": f"nt-cards nt-grid cols-{self.options.cols}"}
+            parent, "div", {"class": self._get_root_class()}
         )
 
         for item in cards.items:
