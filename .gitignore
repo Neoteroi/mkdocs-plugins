@@ -13,3 +13,4 @@ __*.html
 __file_out.py
 
 docs/res/contribs-new.html
+dist/

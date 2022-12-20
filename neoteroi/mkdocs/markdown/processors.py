@@ -203,6 +203,8 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
         else:
             props = {}
 
+        props["__source"] = source
+
         try:
             data = self.read_from_source(source)
         except ValueError as value_error:

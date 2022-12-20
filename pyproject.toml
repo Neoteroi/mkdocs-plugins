@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "neoteroi-mkdocs"
+dynamic = ["version"]
+authors = [
+    { name = "Roberto Prevato", email = "roberto.prevato@gmail.com" },
+]
+description = "Plugins for MkDocs and Python Markdown"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+]
+keywords = ["MkDocs", "OpenAPI", "Swagger", "Markdown", "plugins", "extensions", "documentation"]
+dependencies = [
+    "essentials-openapi",
+    "mkdocs~=1.4.0",
+    "httpx<1",
+    "click",
+    "Jinja2",
+    "rich",
+]
+
+[tool.hatch.version]
+path = "neoteroi/mkdocs/__init__.py"
+
+[project.urls]
+"Homepage" = "https://github.com/Neoteroi/mkdocs-plugins"
+"Bug Tracker" = "https://github.com/Neoteroi/mkdocs-plugins/issues"
+
+[project.entry-points."mkdocs.plugins"]
+"neoteroi.mkdocsoad" = "neoteroi.mkdocs.oad:MkDocsOpenAPIDocumentationPlugin"
+"neoteroi.contribs" = "neoteroi.mkdocs.contribs:ContribsPlugin"
+
+[project.entry-points."markdown.extensions"]
+"neoteroi.spantable" = "neoteroi.mkdocs.spantable:SpanTableExtension"
+"neoteroi.timeline" = "neoteroi.mkdocs.timeline:TimelineExtension"
+"neoteroi.cards" = "neoteroi.mkdocs.cards:CardsExtension"
+"neoteroi.projects" = "neoteroi.mkdocs.projects:ProjectsExtension"
