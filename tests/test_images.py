@@ -1,6 +1,6 @@
 import pytest
 
-from neoteroi.markdown.images import Image
+from neoteroi.mkdocs.markdown.images import Image
 
 
 def test_image_from_str():

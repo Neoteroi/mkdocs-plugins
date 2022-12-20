@@ -20,11 +20,16 @@ from typing import Iterable, List, Optional
 
 from markdown.blockprocessors import BlockProcessor
 
-from neoteroi.markdown import parse_props
-from neoteroi.markdown.data.files import FileReader
-from neoteroi.markdown.data.source import DataReader
-from neoteroi.markdown.data.text import CSVParser, JSONParser, TextParser, YAMLParser
-from neoteroi.markdown.data.web import HTTPDataReader
+from neoteroi.mkdocs.markdown import parse_props
+from neoteroi.mkdocs.markdown.data.files import FileReader
+from neoteroi.mkdocs.markdown.data.source import DataReader
+from neoteroi.mkdocs.markdown.data.text import (
+    CSVParser,
+    JSONParser,
+    TextParser,
+    YAMLParser,
+)
+from neoteroi.mkdocs.markdown.data.web import HTTPDataReader
 
 logger = logging.getLogger("MARKDOWN")
 
@@ -197,6 +202,8 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
             props = parse_props(raw_props, bool_attrs=True)
         else:
             props = {}
+
+        props["__source"] = source
 
         try:
             data = self.read_from_source(source)

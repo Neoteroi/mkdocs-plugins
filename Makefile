@@ -1,20 +1,23 @@
 .PHONY: release test annotate
 
 
-artifacts: test
-	python setup.py sdist
+artifacts: test build
 
 
 prepforbuild:
-	pip install --upgrade twine setuptools wheel
+	pip install build
 
 
-testrelease:
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+build:
+	python -m build
 
 
-release: artifacts
-	twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+test-release:
+	twine upload --repository testpypi dist/*
+
+
+release:
+	twine upload --repository pypi dist/*
 
 
 test:

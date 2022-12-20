@@ -2,8 +2,8 @@ import logging
 import xml.etree.ElementTree as etree
 from dataclasses import dataclass
 
-from neoteroi.markdown.align import Alignment
-from neoteroi.markdown.images import build_icon_html
+from neoteroi.mkdocs.markdown.align import Alignment
+from neoteroi.mkdocs.markdown.images import build_icon_html
 
 from .domain import Timeline, TimelineItem
 

@@ -4,7 +4,7 @@ import pytest
 import yaml
 from dateutil.parser import parse as parse_date
 
-from neoteroi.projects.domain import Activity, Plan
+from neoteroi.mkdocs.projects.domain import Activity, Plan
 
 EXAMPLE_1 = """
 - title: Definition Phase

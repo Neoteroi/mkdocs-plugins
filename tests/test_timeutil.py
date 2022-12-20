@@ -2,7 +2,7 @@ import pytest
 from dateutil.parser import parse as parse_date
 from dateutil.relativedelta import relativedelta
 
-from neoteroi.projects.timeutil import (
+from neoteroi.mkdocs.projects.timeutil import (
     Quarter,
     iter_quarters_between_dates,
     iter_years_between_dates,

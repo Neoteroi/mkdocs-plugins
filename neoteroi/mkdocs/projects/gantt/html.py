@@ -7,7 +7,7 @@ from enum import Enum
 from typing import List, Union
 from uuid import uuid4
 
-from neoteroi.markdown.images import build_icon_html
+from neoteroi.mkdocs.markdown.images import build_icon_html
 
 from ..domain import Activity, Event, Plan
 from ..timeutil import (

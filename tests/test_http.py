@@ -1,12 +1,12 @@
 import markdown
 import pytest
 
-from neoteroi.markdown.data.web import (
+from neoteroi.mkdocs.markdown.data.web import (
     FailedRequestError,
     HTTPDataReader,
     ensure_success,
 )
-from neoteroi.timeline import TimelineExtension
+from neoteroi.mkdocs.timeline import TimelineExtension
 from tests.test_timeline import EXAMPLE_1
 
 from .serverfixtures import *  # noqa

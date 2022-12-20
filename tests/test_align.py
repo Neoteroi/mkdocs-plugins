@@ -1,6 +1,10 @@
 import pytest
 
-from neoteroi.markdown.align import Alignment, aligment_from_props, try_parse_align
+from neoteroi.mkdocs.markdown.align import (
+    Alignment,
+    aligment_from_props,
+    try_parse_align,
+)
 
 
 @pytest.mark.parametrize(

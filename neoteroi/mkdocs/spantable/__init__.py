@@ -14,9 +14,9 @@ from typing import Dict, Optional
 from markdown import Extension
 from markdown.blockprocessors import BlockProcessor
 
-from neoteroi.markdown import parse_props
-from neoteroi.markdown.tables import read_table
-from neoteroi.markdown.tables.spantable import Cell, SpanTable
+from neoteroi.mkdocs.markdown import parse_props
+from neoteroi.mkdocs.markdown.tables import read_table
+from neoteroi.mkdocs.markdown.tables.spantable import Cell, SpanTable
 
 logger = logging.getLogger("MARKDOWN")
 

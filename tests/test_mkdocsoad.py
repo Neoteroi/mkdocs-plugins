@@ -2,7 +2,7 @@ import textwrap
 
 import pytest
 
-from neoteroi.mkdocsoad import MkDocsOpenAPIDocumentationPlugin
+from neoteroi.mkdocs.oad import MkDocsOpenAPIDocumentationPlugin
 
 from . import get_resource_file_path
 

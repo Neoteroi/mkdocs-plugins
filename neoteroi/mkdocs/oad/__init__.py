@@ -6,7 +6,7 @@ from OpenAPI Documentation files, using essentials-openapi
 
 The markdown requires by default
 
-neoteroi.mkdocsoad
+neoteroi.mkdocs.oad
 """
 import re
 
