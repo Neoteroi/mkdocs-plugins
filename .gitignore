@@ -14,3 +14,6 @@ __file_out.py
 
 docs/res/contribs-new.html
 dist/
+
+# for downloaded dependencies
+deps/
