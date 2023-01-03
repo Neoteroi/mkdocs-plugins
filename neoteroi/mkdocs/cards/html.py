@@ -84,11 +84,13 @@ class CardsHTMLBuilder:
             return
 
         if self.use_image_tags:
+            #If the card is a link, mark the image to be skipped by glightbox.
+            skip = item.url != ""
             build_image_html(
                 etree.SubElement(
                     wrapper_element, "div", {"class": "nt-card-image tags"}
                 ),
-                item.image,
+                item.image, skip_glightbox=skip
             )
         else:
             etree.SubElement(

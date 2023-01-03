@@ -36,8 +36,13 @@ class Image:
         return props
 
 
-def build_image_html(parent, image: Image):
-    etree.SubElement(parent, "img", image.get_props())
+def build_image_html(parent, image: Image, skip_glightbox: bool = False):
+    props = image.get_props()
+    # adds the "skip-lightbox" class to the image
+    if skip_glightbox:
+        props["class"] = "skip-lightbox"
+
+    etree.SubElement(parent, "img", props)
 
 
 def build_icon_html(parent, icon):
