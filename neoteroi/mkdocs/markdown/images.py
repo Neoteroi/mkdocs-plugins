@@ -40,7 +40,7 @@ def build_image_html(parent, image: Image, skip_glightbox: bool = False):
     props = image.get_props()
     # adds the "skip-lightbox" class to the image
     if skip_glightbox:
-        props["class"] = "skip-lightbox"
+        props["class"] = "off-glb"
 
     etree.SubElement(parent, "img", props)
 
