@@ -8,6 +8,7 @@ contributors list for each page, assuming that:
 """
 import logging
 from datetime import datetime
+from fnmatch import fnmatch
 from pathlib import Path
 from subprocess import CalledProcessError
 from typing import List, Optional
@@ -33,6 +34,7 @@ class ContribsPlugin(BasePlugin):
         ("contributors", c.Type(list, default=[])),
         ("show_last_modified_time", c.Type(bool, default=True)),
         ("show_contributors_title", c.Type(bool, default=False)),
+        ("exclude", c.Type(list, default=[])),
     )
 
     def __init__(self) -> None:
@@ -127,7 +129,18 @@ class ContribsPlugin(BasePlugin):
             )
         )
 
+    def _is_ignored_page(self, page: Page) -> bool:
+        if not self.config["exclude"]:
+            return False
+
+        return any(
+            fnmatch(page.file.src_path, ignored_pattern)
+            for ignored_pattern in self.config["exclude"]
+        )
+
     def on_page_markdown(self, markdown, *args, **kwargs):
+        if self._is_ignored_page(kwargs["page"]):
+            return markdown
         try:
             markdown = self._set_contributors(markdown, kwargs["page"])
         except (CalledProcessError, ValueError) as operation_error:
