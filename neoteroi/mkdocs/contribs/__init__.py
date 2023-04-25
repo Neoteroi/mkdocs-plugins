@@ -20,8 +20,8 @@ from mkdocs.structure.pages import Page
 
 from neoteroi.mkdocs.contribs.domain import ContributionsReader, Contributor
 from neoteroi.mkdocs.contribs.git import GitContributionsReader
-from neoteroi.mkdocs.contribs.txt import TXTContributionsReader
 from neoteroi.mkdocs.contribs.html import ContribsViewOptions, render_contribution_stats
+from neoteroi.mkdocs.contribs.txt import TXTContributionsReader
 
 logger = logging.getLogger("MARKDOWN")
 
@@ -68,42 +68,6 @@ class ContribsPlugin(BasePlugin):
 
     def _read_contributor_merge_with(self, contributor_info) -> Optional[str]:
         return contributor_info.get("merge_with")
-
-    def _merge_contributor_by_name(
-        self,
-        contributors: List[Contributor],
-        contributor: Contributor,
-        contributors_info: dict,
-    ) -> bool:
-        """
-        Support merging contributors objects when the same user committed using
-        different names but the same email.
-        """
-        contributor_info_by_name = next(
-            (
-                item
-                for item in contributors_info
-                if any(
-                    alt_name == contributor.name
-                    for alt_name in item.get("alt_names", [])
-                )
-            ),
-            None,
-        )
-
-        if contributor_info_by_name:
-            parent = next(
-                (
-                    item
-                    for item in contributors
-                    if item.email == contributor_info_by_name["email"]
-                ),
-                None,
-            )
-            if parent:
-                parent.count += contributor.count
-                return True
-        return False
 
     def _merge_contributor_by_email(
         self,
@@ -156,9 +120,21 @@ class ContribsPlugin(BasePlugin):
                     # ignore the contributor's information (can be useful for bots)
                     continue
 
-                if self._merge_contributor_by_name(contributors, contributor, info):
-                    # skip this item as it was merged with another one
-                    continue
+                if (
+                    "name" in contributor_info
+                    and contributor_info["name"] != contributor.name
+                ):
+                    parent = next(
+                        (
+                            other
+                            for other in contributors
+                            if other.name == contributor_info["name"]
+                        ),
+                        None,
+                    )
+                    if parent:
+                        parent.count += contributor.count
+                        continue
 
                 # should contributor information be merged with another object?
                 if self._merge_contributor_by_email(

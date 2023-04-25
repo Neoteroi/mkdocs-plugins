@@ -1,12 +1,13 @@
-from pathlib import Path
 import textwrap
+from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 from mkdocs.structure.files import File
 from mkdocs.structure.pages import Page
 
 from neoteroi.mkdocs.contribs import ContribsPlugin
-from neoteroi.mkdocs.contribs.domain import Contributor
+from neoteroi.mkdocs.contribs.domain import ContributionsReader, Contributor
 from neoteroi.mkdocs.contribs.git import GitContributionsReader
 from neoteroi.mkdocs.contribs.txt import TXTContributionsReader
 from tests import get_resource_file_path
@@ -157,3 +158,40 @@ def test_txt_reader_last_modified_time():
     lmt = reader.get_last_modified_date(Path(get_resource_file_path("contribs.md")))
 
     assert lmt is not None
+
+
+def test_contributor_alt_names():
+    """
+    When the same person commits using the same email address but different names,
+    Git returns two different contributors. In such scenario, it is desirable to merge
+    two items into one.
+    """
+    plugin = ContribsPlugin()
+
+    contributors = [
+        Contributor("Charlie Brown", "charlie.brown@neoteroi.xyz", count=1),
+        Contributor("Charlie Marrone", "charlie.brown@neoteroi.xyz", count=2),
+    ]
+
+    reader_mock = Mock(ContributionsReader)
+    reader_mock.get_contributors.return_value = contributors
+
+    file_mock = Mock(File)
+    file_mock.src_path = Path("foo.txt")
+    plugin._contribs_reader = reader_mock
+    result = plugin._get_contributors(file_mock)
+
+    assert result == contributors
+
+    # setting
+    plugin.config = {
+        "contributors": [
+            {"email": "charlie.brown@neoteroi.xyz", "name": "Charlie Brown"}
+        ]
+    }
+
+    result = plugin._get_contributors(file_mock)
+
+    assert result == [
+        Contributor("Charlie Brown", "charlie.brown@neoteroi.xyz", count=3),
+    ]
