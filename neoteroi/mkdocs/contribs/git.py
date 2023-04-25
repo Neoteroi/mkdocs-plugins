@@ -1,3 +1,9 @@
+"""
+This module defines a ContributionsReader that obtains contributors' list for a page
+from the Git history. Note that this ContributionsReader won't work well in case of
+history rewrites or files renamed without keeping contributor's history.
+For this reason, it should be used together with a
+"""
 import re
 import subprocess
 from datetime import datetime
@@ -57,7 +63,7 @@ class GitContributionsReader(ContributionsReader):
 
         return list(self.parse_committers(result))
 
-    def get_last_commit_date(self, file_path: Path) -> datetime:
+    def get_last_modified_date(self, file_path: Path) -> datetime:
         """Reads the last commit on a file."""
         result = self._decode(
             subprocess.check_output(

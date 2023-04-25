@@ -20,9 +20,34 @@ from mkdocs.structure.pages import Page
 
 from neoteroi.mkdocs.contribs.domain import ContributionsReader, Contributor
 from neoteroi.mkdocs.contribs.git import GitContributionsReader
+from neoteroi.mkdocs.contribs.txt import TXTContributionsReader
 from neoteroi.mkdocs.contribs.html import ContribsViewOptions, render_contribution_stats
 
 logger = logging.getLogger("MARKDOWN")
+
+
+class DefaultContributionsReader(ContributionsReader):
+    """
+    Supports both contributors obtained from Git history and from configuration files.
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._git_reader = GitContributionsReader()
+        self._txt_reader = TXTContributionsReader()
+
+    def get_contributors(self, file_path: Path) -> List[Contributor]:
+        git_history_contributors = self._git_reader.get_contributors(file_path)
+        configured_contributors = self._txt_reader.get_contributors(file_path)
+        return list(
+            {
+                item.email: item
+                for item in configured_contributors + git_history_contributors
+            }.values()
+        )
+
+    def get_last_modified_date(self, file_path: Path) -> datetime:
+        return self._git_reader.get_last_modified_date(file_path)
 
 
 class ContribsPlugin(BasePlugin):
@@ -39,12 +64,48 @@ class ContribsPlugin(BasePlugin):
 
     def __init__(self) -> None:
         super().__init__()
-        self._contribs_reader = GitContributionsReader()
+        self._contribs_reader = DefaultContributionsReader()
 
     def _read_contributor_merge_with(self, contributor_info) -> Optional[str]:
         return contributor_info.get("merge_with")
 
-    def _handle_merge_contributor_info(
+    def _merge_contributor_by_name(
+        self,
+        contributors: List[Contributor],
+        contributor: Contributor,
+        contributors_info: dict,
+    ) -> bool:
+        """
+        Support merging contributors objects when the same user committed using
+        different names but the same email.
+        """
+        contributor_info_by_name = next(
+            (
+                item
+                for item in contributors_info
+                if any(
+                    alt_name == contributor.name
+                    for alt_name in item.get("alt_names", [])
+                )
+            ),
+            None,
+        )
+
+        if contributor_info_by_name:
+            parent = next(
+                (
+                    item
+                    for item in contributors
+                    if item.email == contributor_info_by_name["email"]
+                ),
+                None,
+            )
+            if parent:
+                parent.count += contributor.count
+                return True
+        return False
+
+    def _merge_contributor_by_email(
         self,
         contributors: List[Contributor],
         contributor: Contributor,
@@ -69,6 +130,7 @@ class ContribsPlugin(BasePlugin):
             if parent:
                 parent.count += contributor.count
                 return True
+
         return False
 
     def _get_contributors(self, page_file: File) -> List[Contributor]:
@@ -85,6 +147,7 @@ class ContribsPlugin(BasePlugin):
             contributor_info = next(
                 (item for item in info if item.get("email") == contributor.email), None
             )
+
             if contributor_info:
                 contributor.image = contributor_info.get("image")
                 contributor.key = contributor_info.get("key")
@@ -93,8 +156,12 @@ class ContribsPlugin(BasePlugin):
                     # ignore the contributor's information (can be useful for bots)
                     continue
 
+                if self._merge_contributor_by_name(contributors, contributor, info):
+                    # skip this item as it was merged with another one
+                    continue
+
                 # should contributor information be merged with another object?
-                if self._handle_merge_contributor_info(
+                if self._merge_contributor_by_email(
                     contributors, contributor, contributor_info
                 ):
                     # skip this item as it was merged with another one
@@ -105,7 +172,7 @@ class ContribsPlugin(BasePlugin):
         return results
 
     def _get_last_commit_date(self, page_file: File) -> datetime:
-        return self._contribs_reader.get_last_commit_date(
+        return self._contribs_reader.get_last_modified_date(
             Path("docs") / page_file.src_path
         )
 
@@ -130,7 +197,7 @@ class ContribsPlugin(BasePlugin):
         )
 
     def _is_ignored_page(self, page: Page) -> bool:
-        if not self.config["exclude"]:
+        if not self.config.get("exclude"):
             return False
 
         return any(

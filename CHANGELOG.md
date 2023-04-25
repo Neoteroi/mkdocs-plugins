@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2023-04-25
+- Improves the `contribs` plugin, adding the possibility to document
+  contributors for a page also using `.txt` files close to `.md` files. This
+  can be useful in several cases:
+- - To document contributors who worked outside of Git, for example when providing
+    pictures for the page, or written content provided to someone who is
+    adding content to the MkDocs site.
+- - To document contributors following a Git history re-write
+- Improves the `contribs` plugin, adding the possibility to exclude files by
+  glob patterns (fix #33).
+- Improves the `contribs` plugin, adding the possibility to merge contributors
+  by name, for scenarios when the same person commits using different names
+  (Git reports different contributors in such cases) and it is preferred
+  displaying information aggregated as single contributor.
+
 ## [1.0.0] - 2022-12-20
 - Adds the possibility to specify a `class` for the root HTML element of `cards`.
 - Fixes a bug in the `contribs` plugin (adds a carriage return before the

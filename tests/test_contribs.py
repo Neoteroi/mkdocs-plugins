@@ -1,3 +1,4 @@
+from pathlib import Path
 import textwrap
 
 import pytest
@@ -7,6 +8,8 @@ from mkdocs.structure.pages import Page
 from neoteroi.mkdocs.contribs import ContribsPlugin
 from neoteroi.mkdocs.contribs.domain import Contributor
 from neoteroi.mkdocs.contribs.git import GitContributionsReader
+from neoteroi.mkdocs.contribs.txt import TXTContributionsReader
+from tests import get_resource_file_path
 
 
 @pytest.mark.parametrize(
@@ -137,3 +140,20 @@ def test_contribs_plugin_new_file_ignore():
 
     assert result is not None
     assert result == example
+
+
+def test_txt_reader_contributors():
+    reader = TXTContributionsReader()
+    contributors = reader.get_contributors(Path(get_resource_file_path("contribs.md")))
+
+    assert contributors == [
+        Contributor("Charlie Brown", "charlie.brown@peanuts.com", 3),
+        Contributor("Sally Brown", "sally.brown@peanuts.com", 1),
+    ]
+
+
+def test_txt_reader_last_modified_time():
+    reader = TXTContributionsReader()
+    lmt = reader.get_last_modified_date(Path(get_resource_file_path("contribs.md")))
+
+    assert lmt is not None
