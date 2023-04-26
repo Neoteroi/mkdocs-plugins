@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, "3.10"]
+        python-version: [3.8, 3.9, "3.10", "3.11"]
 
     steps:
       - uses: actions/checkout@v1
@@ -47,7 +47,7 @@ jobs:
         if: matrix.python-version == '3.10'
 
       - name: Use Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -97,18 +97,18 @@ jobs:
 
       - name: Install distribution dependencies
         run: pip install build
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.11'
 
       - name: Create distribution package
         run: python -m build
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.11'
 
       - name: Upload distribution package
         uses: actions/upload-artifact@master
         with:
           name: dist
           path: dist
-        if: matrix.python-version == '3.10'
+        if: matrix.python-version == '3.11'
 
   publish:
     runs-on: ubuntu-latest
@@ -121,19 +121,28 @@ jobs:
           name: dist
           path: dist
 
-      - name: Publish distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Use Python 3.11
+        uses: actions/setup-python@v1
         with:
-          skip_existing: true
-          user: __token__
-          password: ${{ secrets.test_pypi_password }}
-          repository_url: https://test.pypi.org/legacy/
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install twine
+
+      - name: Publish distribution 📦 to Test PyPI
+        run: |
+          twine upload -r testpypi dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.test_pypi_password }}
 
       - name: Publish distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.pypi_password }}
+        run: |
+          twine upload -r pypi dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.pypi_password }}
 
       - name: Download CSS pack
         uses: actions/download-artifact@v2
