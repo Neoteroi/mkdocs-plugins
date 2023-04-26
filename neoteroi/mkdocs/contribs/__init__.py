@@ -66,9 +66,6 @@ class ContribsPlugin(BasePlugin):
         super().__init__()
         self._contribs_reader = DefaultContributionsReader()
 
-    def _read_contributor_merge_with(self, contributor_info) -> Optional[str]:
-        return contributor_info.get("merge_with")
-
     def _merge_contributor_by_email(
         self,
         contributors: List[Contributor],

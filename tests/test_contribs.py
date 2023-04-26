@@ -195,3 +195,44 @@ def test_contributor_alt_names():
     assert result == [
         Contributor("Charlie Brown", "charlie.brown@neoteroi.xyz", count=3),
     ]
+
+
+def test_contributors_exclude():
+    handler = ContribsPlugin()
+    handler.config = _get_contribs_config()
+    handler.config["exclude"] = ["res/contribs-01*"]
+
+    example = textwrap.dedent(
+        """
+        # Hello World!
+
+        Lorem ipsum dolor sit amet.
+
+        """.strip(
+            "\n"
+        )
+    )
+
+    result = handler.on_page_markdown(
+        example,
+        page=Page(
+            "Example",
+            File(
+                path="res/contribs-01.html",
+                src_dir="tests/res",
+                dest_dir="tests",
+                use_directory_urls=True,
+            ),
+            {},
+        ),
+    )
+
+    assert result is not None
+    assert (
+        result
+        == """# Hello World!
+
+Lorem ipsum dolor sit amet.
+
+"""
+    )
