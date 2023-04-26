@@ -12,7 +12,6 @@ from .gantt import register_extension
 
 
 class ProjectsExtension(Extension):
-
     config = {
         "priority": [12, "The priority to be configured for the extension."],
     }

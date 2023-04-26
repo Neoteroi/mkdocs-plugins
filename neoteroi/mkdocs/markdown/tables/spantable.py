@@ -24,7 +24,6 @@ class Cell:
 def _iter_coords(
     x: int, y: int, colspan: int, rowspan: int
 ) -> Iterable[Tuple[int, int]]:
-
     for x_increment in range(colspan):
         for y_increment in range(rowspan):
             yield (x + x_increment, y + y_increment)

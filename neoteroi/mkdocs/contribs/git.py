@@ -16,7 +16,6 @@ from neoteroi.mkdocs.contribs.domain import ContributionsReader, Contributor
 
 
 class GitContributionsReader(ContributionsReader):
-
     _name_email_rx = re.compile(r"(?P<name>[^\<]+)<(?P<email>[^\>]+)>")
 
     def _decode(self, value: bytes) -> str:

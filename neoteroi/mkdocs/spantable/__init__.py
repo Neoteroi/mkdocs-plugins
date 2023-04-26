@@ -22,7 +22,6 @@ logger = logging.getLogger("MARKDOWN")
 
 
 class SpanTableProcessor(BlockProcessor):
-
     START_RE = re.compile(r"""(?P<indent>\s*)::spantable::[\w\s]*""", re.DOTALL)
 
     END_RE = re.compile(r"\s*:{2}end-spantable:{2}\s*\n?")
