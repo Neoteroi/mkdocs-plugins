@@ -11,7 +11,7 @@ from datetime import datetime
 from fnmatch import fnmatch
 from pathlib import Path
 from subprocess import CalledProcessError
-from typing import List, Optional
+from typing import List
 
 from mkdocs.config import config_options as c
 from mkdocs.plugins import BasePlugin
