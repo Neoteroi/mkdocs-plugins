@@ -1,3 +1,4 @@
+import os
 import re
 from datetime import datetime
 from pathlib import Path
@@ -41,7 +42,8 @@ class TXTContributionsReader(ContributionsReader):
         return name, email, count
 
     def _get_txt_file_path(self, file_path: Path) -> Path:
-        return Path(str(file_path).replace(".md", "") + ".contribs.txt")
+        path_without_extension = os.path.splitext(file_path)[0]
+        return Path(path_without_extension + ".contribs.txt")
 
     def _get_contributors_from_txt_file(self, file_path: Path) -> Iterable[Contributor]:
         for line in _read_lines_strip_comments(file_path):

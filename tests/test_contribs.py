@@ -145,7 +145,7 @@ def test_contribs_plugin_new_file_ignore():
 
 def test_txt_reader_contributors():
     reader = TXTContributionsReader()
-    contributors = reader.get_contributors(Path(get_resource_file_path("contribs.md")))
+    contributors = reader.get_contributors(Path(get_resource_file_path("example.md")))
 
     assert contributors == [
         Contributor("Charlie Brown", "charlie.brown@peanuts.com", 3),
@@ -155,7 +155,7 @@ def test_txt_reader_contributors():
 
 def test_txt_reader_last_modified_time():
     reader = TXTContributionsReader()
-    lmt = reader.get_last_modified_date(Path(get_resource_file_path("contribs.md")))
+    lmt = reader.get_last_modified_date(Path(get_resource_file_path("example.md")))
 
     assert lmt is not None
 
