@@ -20,5 +20,5 @@ class ContributionsReader(ABC):
         """Obtains the list of contributors for a file with the given path."""
 
     @abstractmethod
-    def get_last_commit_date(self, file_path: Path) -> datetime:
+    def get_last_modified_date(self, file_path: Path) -> datetime:
         """Reads the last commit date of a file."""

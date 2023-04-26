@@ -14,7 +14,6 @@ from neoteroi.mkdocs.markdown.processors import (
 
 
 class BaseMockProcessor:
-
     last_obj = None
 
     @property
@@ -38,7 +37,6 @@ class MockEmbeddedProcessor(BaseMockProcessor, EmbeddedBlockProcessor):
 
 
 class MockExtension(markdown.Extension):
-
     config = {
         "priority": [12, "The priority to be configured for the extension."],
     }

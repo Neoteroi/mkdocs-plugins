@@ -37,7 +37,7 @@ test-cov-unit:
 
 
 test-cov:
-	pytest --cov-report html --cov=neoteroi
+	pytest --cov-report html --cov=neoteroi tests
 
 
 format:
