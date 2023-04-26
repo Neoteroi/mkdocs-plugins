@@ -197,6 +197,40 @@ def test_contributor_alt_names():
     ]
 
 
+def test_contributor_name_set():
+    """
+    When a name is specified for a contributor by email, it is used.
+    """
+    plugin = ContribsPlugin()
+
+    contributors = [
+        Contributor("Charlie Marrone", "charlie.brown@neoteroi.xyz", count=2),
+    ]
+
+    reader_mock = Mock(ContributionsReader)
+    reader_mock.get_contributors.return_value = contributors
+
+    file_mock = Mock(File)
+    file_mock.src_path = Path("foo.txt")
+    plugin._contribs_reader = reader_mock
+    result = plugin._get_contributors(file_mock)
+
+    assert result == contributors
+
+    # setting
+    plugin.config = {
+        "contributors": [
+            {"email": "charlie.brown@neoteroi.xyz", "name": "Charlie Brown"}
+        ]
+    }
+
+    result = plugin._get_contributors(file_mock)
+
+    assert result == [
+        Contributor("Charlie Brown", "charlie.brown@neoteroi.xyz", count=2),
+    ]
+
+
 def test_contributors_exclude():
     handler = ContribsPlugin()
     handler.config = _get_contribs_config()

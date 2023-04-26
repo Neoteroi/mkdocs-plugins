@@ -35,20 +35,14 @@ dependencies = [
 [tool.hatch.version]
 path = "neoteroi/mkdocs/__init__.py"
 
+[tool.hatch.build.targets.wheel]
+packages = ["neoteroi"]
+
 [tool.hatch.build.targets.sdist]
-exclude = [
-  "/.github",
-  "/docs",
-  "/deps",
-  "/styles",
-  "/tests",
-  "mkdocs-plugins.code-workspace",
-  "Makefile",
-  "CODE_OF_CONDUCT.md",
-  ".isort.cfg",
-  ".gitignore",
-  ".flake8"
-]
+exclude = ["tests"]
+
+[tool.hatch.build]
+only-packages = true
 
 [project.urls]
 "Homepage" = "https://github.com/Neoteroi/mkdocs-plugins"

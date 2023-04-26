@@ -132,6 +132,9 @@ class ContribsPlugin(BasePlugin):
                     if parent:
                         parent.count += contributor.count
                         continue
+                    else:
+                        # use configured name
+                        contributor.name = contributor_info["name"]
 
                 # should contributor information be merged with another object?
                 if self._merge_contributor_by_email(
