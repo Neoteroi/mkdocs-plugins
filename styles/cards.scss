@@ -112,6 +112,16 @@
     margin-top: 5px;
 }
 
+.nt-card .nt-card-icon {
+  text-align: center;
+  padding-top: 12px;
+  min-height: 120px;
+}
+
+.nt-card .nt-card-icon .icon {
+  font-size: 95px;
+  line-height: 1;
+}
 
 .nt-card a:hover,
 .nt-card a:focus {

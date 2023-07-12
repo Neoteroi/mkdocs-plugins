@@ -67,6 +67,14 @@ EXAMPLE_5 = """
 </div>
 """
 
+EXAMPLE_6 = """
+<div class="nt-cards nt-grid cols-3">
+<div class="nt-card"><a href="/some-path/a"><div><div class="nt-card-icon"><img alt="step icon" class="icon" src="/img/icons/icon.svg" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/b"><div><div class="nt-card-icon"><i class="fa-solid fa-star icon"></i></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/c"><div><div class="nt-card-icon"><span class="icon">:octicons-bug-16:</span></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
+</div>
+"""
+
 
 def test_base_cards_processor_raises_for_not_list_input():
     processor = BaseCardsProcessor()
@@ -248,3 +256,36 @@ def test_cards_extension_image_tags(example, expected_result):
 def test_cards_extension(example, expected_result):
     html = markdown.markdown(example, extensions=[CardsExtension(priority=100)])
     assert equal_html(html, expected_result)
+
+
+@pytest.mark.parametrize(
+    "example,expected_result",
+    [
+        [
+            """
+            ::cards::
+
+            - title: Title A
+              url: /some-path/a
+              content: Lorem ipsum dolor sit amet 1.
+              icon: /img/icons/icon.svg
+
+            - title: Title B
+              url: /some-path/b
+              content: Lorem ipsum dolor sit amet 2.
+              icon: "fa-solid fa-star"
+
+            - title: Title C
+              url: /some-path/c
+              content: Lorem ipsum dolor sit amet 3.
+              icon: ":octicons-bug-16:"
+
+            ::/cards::
+            """,
+            EXAMPLE_6,
+        ],
+    ],
+)
+def test_cards_extension_icons(example, expected_result):
+    html = markdown.markdown(example, extensions=[CardsExtension(priority=100)])
+    assert html.strip() == expected_result.strip()

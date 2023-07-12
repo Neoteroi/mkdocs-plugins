@@ -2,6 +2,7 @@ import logging
 import xml.etree.ElementTree as etree
 from dataclasses import dataclass
 
+from neoteroi.mkdocs.markdown.images import build_icon_html
 from neoteroi.mkdocs.markdown.images import build_image_html
 
 from .domain import CardItem, Cards
@@ -64,7 +65,12 @@ class CardsHTMLBuilder:
 
         wrapper_element = etree.SubElement(first_child, "div", {})
 
-        self.build_image_html(wrapper_element, item)
+        if item.image:
+            self.build_image_html(wrapper_element, item)
+        elif item.icon:
+            build_icon_html(etree.SubElement(
+                wrapper_element, "div", {"class": "nt-card-icon"}
+            ), item.icon)
 
         text_wrapper = etree.SubElement(
             wrapper_element, "div", {"class": "nt-card-content"}
