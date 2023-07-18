@@ -59,6 +59,7 @@ def pop_to_index(items, index):
 
 
 class BaseProcessor(ABC):
+    root_config: dict = {}
     parsers: Iterable[TextParser] = (YAMLParser(), JSONParser(), CSVParser())
 
     @property
@@ -142,6 +143,10 @@ class BaseProcessor(ABC):
             blocks.insert(0, "\n".join(new_lines))
 
         return match
+
+    def with_root_config(self, props):
+        self.__dict__["root_config"] = props
+        return self
 
 
 class SourceBlockProcessor(BlockProcessor, BaseProcessor):

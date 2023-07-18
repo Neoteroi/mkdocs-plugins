@@ -15,6 +15,15 @@ EXAMPLE_1 = """
 </div>
 """
 
+EXAMPLE_1_b = """
+<div class="nt-cards nt-grid cols-3">
+<div class="nt-card"><a href="/some-path/a" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/b" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/c" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/d" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
+</div>
+"""
+
 EXAMPLE_2 = """
 <div class="nt-cards nt-grid cols-3">
 <div class="nt-card"><a href="/some-path/a"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
@@ -114,10 +123,78 @@ def test_base_cards_processor_raises_for_not_list_input():
             """,
             EXAMPLE_1,
         ],
+        [
+            """
+            ::cards:: flex=25 image-tags blank_target
+
+            - title: Title A
+              url: /some-path/a
+              content: Lorem ipsum dolor sit amet 1.
+              image: /img/icons/lorem-ipsum-1.png
+
+            - title: Title B
+              url: /some-path/b
+              content: Lorem ipsum dolor sit amet 2.
+              image: /img/icons/lorem-ipsum-2.png
+
+            - title: Title C
+              url: /some-path/c
+              content: Lorem ipsum dolor sit amet 3.
+              image: /img/icons/lorem-ipsum-3.png
+
+            - title: Title D
+              url: /some-path/d
+              content: Lorem ipsum dolor sit amet 4.
+              image: /img/icons/lorem-ipsum-4.png
+
+            ::/cards::
+            """,
+            EXAMPLE_1_b,
+        ],
     ],
 )
 def test_cards_extension_image_tags(example, expected_result):
     html = markdown.markdown(example, extensions=[CardsExtension(priority=100)])
+    assert html.strip() == expected_result.strip()
+
+
+@pytest.mark.parametrize(
+    "example,expected_result",
+    [
+        [
+            """
+            ::cards:: flex=25 image-tags
+
+            - title: Title A
+              url: /some-path/a
+              content: Lorem ipsum dolor sit amet 1.
+              image: /img/icons/lorem-ipsum-1.png
+
+            - title: Title B
+              url: /some-path/b
+              content: Lorem ipsum dolor sit amet 2.
+              image: /img/icons/lorem-ipsum-2.png
+
+            - title: Title C
+              url: /some-path/c
+              content: Lorem ipsum dolor sit amet 3.
+              image: /img/icons/lorem-ipsum-3.png
+
+            - title: Title D
+              url: /some-path/d
+              content: Lorem ipsum dolor sit amet 4.
+              image: /img/icons/lorem-ipsum-4.png
+
+            ::/cards::
+            """,
+            EXAMPLE_1_b,
+        ],
+    ],
+)
+def test_cards_extension_target_blank_config(example, expected_result):
+    html = markdown.markdown(
+        example, extensions=[CardsExtension(priority=100, blank_target=True)]
+    )
     assert html.strip() == expected_result.strip()
 
 
