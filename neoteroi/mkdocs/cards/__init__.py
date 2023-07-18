@@ -34,6 +34,11 @@ class BaseCardsProcessor:
         if not isinstance(obj, list):
             raise TypeError("Expected a list of items describing cards.")
 
+        if self.root_config:
+            new_props = dict(**self.root_config)
+            new_props.update(props)
+            props = new_props
+
         self.norm_obj(obj)
         builder = CardsHTMLBuilder(create_instance(CardsViewOptions, props))
         builder.build_html(parent, Cards(create_instances(CardItem, obj)))
@@ -55,18 +60,28 @@ class CardsSourceProcessor(BaseCardsProcessor, SourceBlockProcessor):
 class CardsExtension(Extension):
     """Extension that includes cards."""
 
-    config = {
-        "priority": [12, "The priority to be configured for the extension."],
-    }
+    def __init__(self, *args, **kwargs):
+        self.config = {
+            "priority": [12, "The priority to be configured for the extension."],
+            "blank_target": [False, 'Whether to generate links with target="_blank"'],
+        }
+        super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md):
         md.registerExtension(self)
         priority = self.getConfig("priority")
 
+        configs = self.getConfigs()
+        del configs["priority"]
+
         md.parser.blockprocessors.register(
-            CardsEmbeddedProcessor(md.parser), "cards", priority + 0.1
+            CardsEmbeddedProcessor(md.parser).with_root_config(configs),
+            "cards",
+            priority + 0.1,
         )
 
         md.parser.blockprocessors.register(
-            CardsSourceProcessor(md.parser), "cards-from-source", priority
+            CardsSourceProcessor(md.parser).with_root_config(configs),
+            "cards-from-source",
+            priority,
         )

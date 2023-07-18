@@ -2,8 +2,7 @@ import logging
 import xml.etree.ElementTree as etree
 from dataclasses import dataclass
 
-from neoteroi.mkdocs.markdown.images import build_icon_html
-from neoteroi.mkdocs.markdown.images import build_image_html
+from neoteroi.mkdocs.markdown.images import build_icon_html, build_image_html
 
 from .domain import CardItem, Cards
 
@@ -16,6 +15,7 @@ class CardsViewOptions:
     class_name: str = ""
     cols: int = 3
     image_bg: bool = False
+    blank_target: bool = False
 
     def __post_init__(self):
         if isinstance(self.cols, str):
@@ -45,6 +45,14 @@ class CardsHTMLBuilder:
             return base_class + " " + self.options.class_name
         return base_class
 
+    def _get_link_properties(self, item: CardItem):
+        assert item.url is not None
+        props = {"href": item.url}
+
+        if self.options.blank_target:
+            props.update(target="_blank", rel="noopener")
+        return props
+
     def build_html(self, parent, cards: Cards):
         root_element = etree.SubElement(
             parent, "div", {"class": self._get_root_class()}
@@ -57,7 +65,9 @@ class CardsHTMLBuilder:
         item_element = etree.SubElement(parent, "div", self.get_item_props(item))
 
         if item.url:
-            first_child = etree.SubElement(item_element, "a", {"href": item.url})
+            first_child = etree.SubElement(
+                item_element, "a", self._get_link_properties(item)
+            )
         else:
             first_child = etree.SubElement(
                 item_element, "div", {"class": "nt-card-wrap"}
@@ -68,9 +78,10 @@ class CardsHTMLBuilder:
         if item.image:
             self.build_image_html(wrapper_element, item)
         elif item.icon:
-            build_icon_html(etree.SubElement(
-                wrapper_element, "div", {"class": "nt-card-icon"}
-            ), item.icon)
+            build_icon_html(
+                etree.SubElement(wrapper_element, "div", {"class": "nt-card-icon"}),
+                item.icon,
+            )
 
         text_wrapper = etree.SubElement(
             wrapper_element, "div", {"class": "nt-card-content"}
