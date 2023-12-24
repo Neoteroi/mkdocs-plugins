@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2023-12-24
+
+- Adds support for running tests using Python 3.12, and adds Python 3.12 to the
+  build matrix. Note: only tests code did not support Python 3.12 because it
+  used `pkg_resources`.
+
 ## [1.0.4] - 2023-07-28 :parasol_on_ground:
 
 - Unpins the dependencies on `mkdocs` and `httpx`, to fix

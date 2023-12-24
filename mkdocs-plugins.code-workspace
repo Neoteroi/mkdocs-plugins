@@ -7,7 +7,11 @@
     "settings": {
         "yaml.schemas": {
             "https://json.schemastore.org/github-workflow.json": "file:///home/ra/projects/github/mkdocs-oad-plugin/.github/workflows/build.yml"
-        }
+        },
+        "[python]": {
+            "editor.defaultFormatter": "ms-python.black-formatter"
+        },
+        "python.formatting.provider": "none"
     },
     "launch": {
         "version": "0.2.0",

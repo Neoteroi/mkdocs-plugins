@@ -5,9 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "neoteroi-mkdocs"
 dynamic = ["version"]
-authors = [
-    { name = "Roberto Prevato", email = "roberto.prevato@gmail.com" },
-]
+authors = [{ name = "Roberto Prevato", email = "roberto.prevato@gmail.com" }]
 description = "Plugins for MkDocs and Python Markdown"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -20,9 +18,18 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent",
 ]
-keywords = ["MkDocs", "OpenAPI", "Swagger", "Markdown", "plugins", "extensions", "documentation"]
+keywords = [
+    "MkDocs",
+    "OpenAPI",
+    "Swagger",
+    "Markdown",
+    "plugins",
+    "extensions",
+    "documentation",
+]
 dependencies = [
     "essentials-openapi",
     "mkdocs",

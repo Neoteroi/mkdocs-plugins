@@ -410,7 +410,7 @@ class GanttHTMLBuilder:
             {
                 "class": "nt-timeline-dot bigger",
                 "title": f"{event.title} {self._format_time(event.time)}",
-                "style": f"left: {self._calc_time_left(event.time)-4}px;"
+                "style": f"left: {self._calc_time_left(event.time) - 4}px;"
                 if event.time
                 else "",
             },
