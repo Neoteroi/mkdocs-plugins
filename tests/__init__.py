@@ -1,13 +1,17 @@
-import os
 import pprint
 
-import pkg_resources
+try:
+    from importlib.resources import files
 
+    def get_resource_file_path(file_name: str) -> str:
+        return str(files("tests.res") / file_name)
 
-def get_resource_file_path(file_name: str) -> str:
-    return os.path.abspath(
-        pkg_resources.resource_filename(__name__, os.path.join(".", "res", file_name))
-    )
+except ImportError:
+    # Python 3.8
+    import pkg_resources
+
+    def get_resource_file_path(file_name: str) -> str:
+        return pkg_resources.resource_filename("tests.res", file_name)
 
 
 def get_resource_file_contents(file_name: str) -> str:
