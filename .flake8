@@ -8,3 +8,6 @@ per-file-ignores =
     tests/test_timeline.py:E501
     tests/test_cards.py:E501
     tests/test_gantt.py:E501
+exclude =
+    venv
+    dist
