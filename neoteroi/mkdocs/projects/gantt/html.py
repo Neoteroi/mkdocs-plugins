@@ -419,6 +419,15 @@ class GanttHTMLBuilder:
         if event.icon:
             build_icon_html(dot_element, event.icon)
 
+        if event.description:
+            try:
+                des = etree.fromstring(event.description)
+            except etree.ParseError:
+                des = etree.fromstring(f"<span>{event.description}</span>")
+            
+            des.set("class", f"description {des.get('class') or ''}")
+            dot_element.append(des)
+
     def _calc_time_left(self, time: Union[date, datetime]) -> float:
         delta = (
             time
