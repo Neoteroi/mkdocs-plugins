@@ -1,6 +1,7 @@
 """
 This module defines a base class for types that can read text from a source.
 """
+
 from abc import ABC, abstractmethod
 from typing import Any
 

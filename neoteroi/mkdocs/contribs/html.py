@@ -1,6 +1,7 @@
 """
 This module contains methods to render the contributions stats.
 """
+
 import xml.etree.ElementTree as etree
 from dataclasses import dataclass
 from datetime import datetime

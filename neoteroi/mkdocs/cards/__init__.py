@@ -6,6 +6,7 @@ neoteroi.cards
 MIT License
 Copyright (c) 2022 to present, Roberto Prevato
 """
+
 from markdown import Extension
 
 from neoteroi.mkdocs.markdown.images import Image

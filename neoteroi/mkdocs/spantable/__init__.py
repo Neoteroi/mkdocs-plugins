@@ -6,6 +6,7 @@ neoteroi.spantable
 MIT License
 Copyright (c) 2022 to present, Roberto Prevato
 """
+
 import logging
 import re
 import xml.etree.ElementTree as etree

@@ -6,6 +6,7 @@ neoteroi.projects
 MIT License
 Copyright (c) 2022 to present, Roberto Prevato
 """
+
 from markdown import Extension
 
 from .gantt import register_extension

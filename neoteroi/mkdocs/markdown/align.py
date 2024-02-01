@@ -1,6 +1,7 @@
 """
 Objects to describe alignment of elements.
 """
+
 import logging
 from enum import Enum
 
