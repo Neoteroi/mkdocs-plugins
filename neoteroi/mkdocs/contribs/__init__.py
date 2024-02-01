@@ -6,6 +6,7 @@ contributors list for each page, assuming that:
 - the Git CLI can be used during the build.
 
 """
+
 import logging
 from datetime import datetime
 from fnmatch import fnmatch

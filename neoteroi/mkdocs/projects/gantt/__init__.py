@@ -6,6 +6,7 @@ neoteroi.gantt
 MIT License
 Copyright (c) 2022 to present, Roberto Prevato
 """
+
 from neoteroi.mkdocs.markdown.processors import (
     EmbeddedBlockProcessor,
     SourceBlockProcessor,

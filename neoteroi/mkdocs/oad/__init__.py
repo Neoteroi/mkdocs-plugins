@@ -8,6 +8,7 @@ The markdown requires by default
 
 neoteroi.mkdocs.oad
 """
+
 import re
 
 from mkdocs.config.config_options import Type

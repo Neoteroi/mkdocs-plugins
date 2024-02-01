@@ -2,6 +2,7 @@
 This module defines a base class for types that can deserialize text into Python
 objects, and implementations for common formats.
 """
+
 import csv
 import json
 from abc import ABC, abstractmethod

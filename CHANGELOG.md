@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] 2024-02-01 :mage:
+
+- Show event description in Gantt diagrams, by @changbowen
+- Add possibility to configure months time format in Gantt diagrams, by @yasamoka
+
 ## 2023-12-24
 
 - Adds support for running tests using Python 3.12, and adds Python 3.12 to the

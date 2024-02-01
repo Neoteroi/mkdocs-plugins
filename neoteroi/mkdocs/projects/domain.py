@@ -183,9 +183,11 @@ class Activity:
             start,
             end,
             description=description,
-            activities=list(_resolve_activities(child_activities, end or start))
-            if child_activities
-            else None,
+            activities=(
+                list(_resolve_activities(child_activities, end or start))
+                if child_activities
+                else None
+            ),
             events=[Event.from_obj(item) for item in events] if events else None,
             hidden=hidden,
         )
@@ -213,8 +215,10 @@ class Plan(Activity):
 
         return cls(
             title=obj.get("title") or "Plan",
-            activities=[Activity.from_obj(item, plan_start) for item in activities]
-            if activities
-            else [],
+            activities=(
+                [Activity.from_obj(item, plan_start) for item in activities]
+                if activities
+                else []
+            ),
             events=[Event.from_obj(item) for item in events] if events else [],
         )

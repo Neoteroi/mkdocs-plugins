@@ -7,6 +7,7 @@ neoteroi.timeline
 MIT License
 Copyright (c) 2022 to present, Roberto Prevato
 """
+
 from markdown import Extension
 
 from neoteroi.mkdocs.markdown.align import aligment_from_props

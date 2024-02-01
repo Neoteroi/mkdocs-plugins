@@ -4,6 +4,7 @@ from the Git history. Note that this ContributionsReader won't work well in case
 history rewrites or files renamed without keeping contributor's history.
 For this reason, it should be used together with a
 """
+
 import re
 import subprocess
 from datetime import datetime

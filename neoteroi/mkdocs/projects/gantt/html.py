@@ -411,9 +411,11 @@ class GanttHTMLBuilder:
             {
                 "class": "nt-timeline-dot bigger",
                 "title": f"{event.title} {self._format_time(event.time)}",
-                "style": f"left: {self._calc_time_left(event.time) - 4}px;"
-                if event.time
-                else "",
+                "style": (
+                    f"left: {self._calc_time_left(event.time) - 4}px;"
+                    if event.time
+                    else ""
+                ),
             },
         )
 
@@ -425,7 +427,7 @@ class GanttHTMLBuilder:
                 des = etree.fromstring(event.description)
             except etree.ParseError:
                 des = etree.fromstring(f"<span>{event.description}</span>")
-            
+
             des.set("class", f"description {des.get('class') or ''}")
             dot_element.append(des)
 
