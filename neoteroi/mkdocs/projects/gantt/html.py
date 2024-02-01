@@ -35,6 +35,7 @@ class VerticalLinesPace(Enum):
 class GanttViewOptions:
     id: str = ""
     month_width: float = 150
+    month_format: str = "%B %Y"
     whole_years: bool = False
     no_groups: bool = False
     no_years: bool = False
@@ -221,7 +222,7 @@ class GanttHTMLBuilder:
                     "style": f"width: {month_width}px;",
                 },
             )
-            month_element.text = month_date.strftime("%B %Y")
+            month_element.text = month_date.strftime(self.options.month_format)
 
             # add vertical line
             if self.options.vlines_pace == VerticalLinesPace.MONTHLY:
