@@ -13,6 +13,10 @@ class CardItem:
     key: Optional[str] = None
     image: Optional[Image] = None
 
+    def __post_init__(self):
+        if self.image and not self.image.alt:
+            self.image.alt = self.title
+
 
 @dataclass
 class Cards:

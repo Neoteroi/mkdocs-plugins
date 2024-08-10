@@ -4,41 +4,43 @@ import markdown
 import pytest
 
 from neoteroi.mkdocs.cards import BaseCardsProcessor, CardsExtension
+from neoteroi.mkdocs.cards.domain import CardItem
+from neoteroi.mkdocs.markdown.images import Image
 from tests import equal_html
 
 EXAMPLE_1 = """
 <div class="nt-cards nt-grid cols-3">
-<div class="nt-card"><a href="/some-path/a"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/b"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/c"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/d"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/a"><div><div class="nt-card-image tags"><img alt="Title A" src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/b"><div><div class="nt-card-image tags"><img alt="Title B" src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/c"><div><div class="nt-card-image tags"><img alt="Title C" src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/d"><div><div class="nt-card-image tags"><img alt="Title D" src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
 </div>
 """
 
 EXAMPLE_1_b = """
 <div class="nt-cards nt-grid cols-3">
-<div class="nt-card"><a href="/some-path/a" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/b" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/c" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/d" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/a" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img alt="Title A" src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/b" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img alt="Title B" src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/c" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img alt="Title C" src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/d" rel="noopener" target="_blank"><div><div class="nt-card-image tags"><img alt="Title D" src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
 </div>
 """
 
 EXAMPLE_2 = """
 <div class="nt-cards nt-grid cols-3">
-<div class="nt-card"><a href="/some-path/a"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/b"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/c"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
-<div class="nt-card"><a href="/some-path/d"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/a"><div><div class="nt-card-image tags"><img alt="Title A" src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/b"><div><div class="nt-card-image tags"><img alt="Title B" src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/c"><div><div class="nt-card-image tags"><img alt="Title C" src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
+<div class="nt-card"><a href="/some-path/d"><div><div class="nt-card-image tags"><img alt="Title D" src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
 </div>
 """
 
 EXAMPLE_3 = """
 <div class="nt-cards nt-grid cols-4">
-<div class="nt-card aaa"><a href="/some-path/a"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
-<div class="nt-card bbb"><a href="/some-path/b"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
-<div class="nt-card ccc"><a href="/some-path/c"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
-<div class="nt-card ddd"><a href="/some-path/d"><div><div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
+<div class="nt-card aaa"><a href="/some-path/a"><div><div class="nt-card-image tags"><img alt="Title A" src="/img/icons/lorem-ipsum-1.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title A</p><p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p></div></div></a></div>
+<div class="nt-card bbb"><a href="/some-path/b"><div><div class="nt-card-image tags"><img alt="Title B" src="/img/icons/lorem-ipsum-2.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title B</p><p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p></div></div></a></div>
+<div class="nt-card ccc"><a href="/some-path/c"><div><div class="nt-card-image tags"><img alt="Title C" src="/img/icons/lorem-ipsum-3.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title C</p><p class="nt-card-text">Lorem ipsum dolor sit amet 3.</p></div></div></a></div>
+<div class="nt-card ddd"><a href="/some-path/d"><div><div class="nt-card-image tags"><img alt="Title D" src="/img/icons/lorem-ipsum-4.png" /></div><div class="nt-card-content"><p class="nt-card-title">Title D</p><p class="nt-card-text">Lorem ipsum dolor sit amet 4.</p></div></div></a></div>
 </div>
 """
 
@@ -47,7 +49,7 @@ EXAMPLE_4 = """
 <div class="nt-card aaa">
 <div class="nt-card-wrap">
 <div>
-<div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-1.png" /></div>
+<div class="nt-card-image tags"><img alt="Title A" src="/img/icons/lorem-ipsum-1.png" /></div>
 <div class="nt-card-content">
 <p class="nt-card-title">Title A</p>
 <p class="nt-card-text">Lorem ipsum dolor sit amet 1.</p>
@@ -58,7 +60,7 @@ EXAMPLE_4 = """
 <div class="nt-card bbb">
 <div class="nt-card-wrap">
 <div>
-<div class="nt-card-image tags"><img src="/img/icons/lorem-ipsum-2.png" /></div>
+<div class="nt-card-image tags"><img alt="Title B" src="/img/icons/lorem-ipsum-2.png" /></div>
 <div class="nt-card-content">
 <p class="nt-card-title">Title B</p>
 <p class="nt-card-text">Lorem ipsum dolor sit amet 2.</p>
@@ -366,3 +368,19 @@ def test_cards_extension(example, expected_result):
 def test_cards_extension_icons(example, expected_result):
     html = markdown.markdown(example, extensions=[CardsExtension(priority=100)])
     assert html.strip() == expected_result.strip()
+
+
+def test_card_item_image_alt_default():
+    """
+    When a CardItem is instantiated and its image does not have an alt value, the image
+    alt value is set to match the title.
+    """
+
+    card = CardItem("A nice Example", image=Image("example.jpg"))
+
+    assert card.image is not None
+    assert card.image.alt == card.title
+
+    card = CardItem("A nice Example", image=Image("example.jpg", alt="Different alt"))
+    assert card.image is not None
+    assert card.image.alt == "Different alt"
