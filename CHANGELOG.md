@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] 2024-08-10 🐢
+
+- Improve the `cards` plugin to automatically use cards' titles for the `alt`
+  property of their images, when `alt` is not specified.
+  See [#63](https://github.com/Neoteroi/mkdocs-plugins/issues/63), reported by
+  @Valerie-ts.
+
 ## [1.0.5] 2024-02-01 :mage:
 
 - Show event description in Gantt diagrams, by @changbowen
