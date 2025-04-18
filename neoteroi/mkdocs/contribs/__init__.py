@@ -158,6 +158,11 @@ class ContribsPlugin(BasePlugin):
     def _set_contributors(self, markdown: str, page: Page) -> str:
         page_file = page.file
         last_commit_date = self._get_last_commit_date(page_file)
+
+        if last_commit_date.replace(tzinfo=None) == datetime.min:
+            # The page was never committed, skip
+            return markdown
+
         contributors = self._get_contributors(page_file)
         return (
             markdown

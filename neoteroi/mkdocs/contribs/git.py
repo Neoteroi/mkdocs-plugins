@@ -11,7 +11,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterable, List, Tuple
 
-from dateutil.parser import parse as parse_date, ParserError
+from dateutil.parser import ParserError
+from dateutil.parser import parse as parse_date
 
 from neoteroi.mkdocs.contribs.domain import ContributionsReader, Contributor
 
