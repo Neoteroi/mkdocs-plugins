@@ -57,26 +57,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: actions/cache@v1
-        id: depcache
-        with:
-          path: deps
-          key: requirements-pip-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
-
-      - name: Download dependencies
-        if: steps.depcache.outputs.cache-hit != 'true'
-        run: |
-          pip download --dest=deps -r requirements.txt
-
       - name: Install dependencies
         run: |
-          PYVER=`python -V 2>&1`
-
-          if [ "${PYVER:0:-2}" == "Python 3.10" ]; then
-            pip install -r requirements.txt
-          else
-            pip install -U --no-index --find-links=deps deps/*
-          fi
+          pip install -r requirements.txt
 
       - name: Run tests
         run: |
