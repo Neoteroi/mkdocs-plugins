@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, "3.10", "3.11", "3.12"]
+        python-version: [3.9, "3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v1
@@ -57,26 +57,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - uses: actions/cache@v1
-        id: depcache
-        with:
-          path: deps
-          key: requirements-pip-${{ matrix.python-version }}-${{ hashFiles('requirements.txt') }}
-
-      - name: Download dependencies
-        if: steps.depcache.outputs.cache-hit != 'true'
-        run: |
-          pip download --dest=deps -r requirements.txt
-
       - name: Install dependencies
         run: |
-          PYVER=`python -V 2>&1`
-
-          if [ "${PYVER:0:-2}" == "Python 3.10" ]; then
-            pip install -r requirements.txt
-          else
-            pip install -U --no-index --find-links=deps deps/*
-          fi
+          pip install -r requirements.txt
 
       - name: Run tests
         run: |
@@ -103,18 +86,18 @@ jobs:
 
       - name: Install distribution dependencies
         run: pip install build
-        if: matrix.python-version == '3.11'
+        if: matrix.python-version == '3.12'
 
       - name: Create distribution package
         run: python -m build
-        if: matrix.python-version == '3.11'
+        if: matrix.python-version == '3.12'
 
       - name: Upload distribution package
         uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.os }}-${{ matrix.python-version }}
           path: dist
-        if: matrix.python-version == '3.11'
+        if: matrix.python-version == '3.12'
 
   publish:
     runs-on: ubuntu-latest
@@ -128,10 +111,10 @@ jobs:
           merge-multiple: true
           path: dist
 
-      - name: Use Python 3.11
+      - name: Use Python 3.12
         uses: actions/setup-python@v1
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |

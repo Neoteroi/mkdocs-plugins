@@ -8,6 +8,7 @@ contributors list for each page, assuming that:
 """
 
 import logging
+import os
 from datetime import datetime
 from fnmatch import fnmatch
 from pathlib import Path
@@ -60,6 +61,7 @@ class ContribsPlugin(BasePlugin):
         ("contributors", c.Type(list, default=[])),
         ("show_last_modified_time", c.Type(bool, default=True)),
         ("show_contributors_title", c.Type(bool, default=False)),
+        ("enabled_by_env", c.Type(str, default="")),
         ("exclude", c.Type(list, default=[])),
     )
 
@@ -156,6 +158,11 @@ class ContribsPlugin(BasePlugin):
     def _set_contributors(self, markdown: str, page: Page) -> str:
         page_file = page.file
         last_commit_date = self._get_last_commit_date(page_file)
+
+        if last_commit_date.replace(tzinfo=None) == datetime.min:
+            # The page was never committed, skip
+            return markdown
+
         contributors = self._get_contributors(page_file)
         return (
             markdown
@@ -182,7 +189,25 @@ class ContribsPlugin(BasePlugin):
             for ignored_pattern in self.config["exclude"]
         )
 
+    def _is_enabled_by_env(self):
+        """
+        Returns a value indicating if the plugin is enabled by env variable
+        (default True if there is no env variable).
+        If the user specified in the plugin configuration an env variable that controls
+        if the plugin is enabled, read the env variable by that name and check if its
+        value is (ci) {"1", "true"} to continue.
+        """
+        enabled_by_env = self.config.get("enabled_by_env")
+        if enabled_by_env:
+            env_var = os.environ.get(enabled_by_env)
+            if env_var is None:
+                return False
+            return env_var.lower() in {"1", "true"}
+        return True  # enabled since the user did not specify `enabled_by_env` setting
+
     def on_page_markdown(self, markdown, *args, **kwargs):
+        if not self._is_enabled_by_env():
+            return
         if self._is_ignored_page(kwargs["page"]):
             return markdown
         try:
