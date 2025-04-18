@@ -17,3 +17,4 @@ dist/
 
 # for downloaded dependencies
 deps/
+.local

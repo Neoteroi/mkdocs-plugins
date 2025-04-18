@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterable, List, Tuple
 
-from dateutil.parser import parse as parse_date
+from dateutil.parser import parse as parse_date, ParserError
 
 from neoteroi.mkdocs.contribs.domain import ContributionsReader, Contributor
 
@@ -70,4 +70,7 @@ class GitContributionsReader(ContributionsReader):
                 ["git", "log", "-1", "--pretty=format:%ci", str(file_path)]
             )
         )
-        return parse_date(result)
+        try:
+            return parse_date(result)
+        except ParserError:
+            return datetime.min

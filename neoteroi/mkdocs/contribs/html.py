@@ -31,7 +31,10 @@ def contribution_stats_to_element(
 ) -> etree.Element:
     element = etree.Element("div", {"class": "nt-contribs"})
 
-    if options.show_last_modified_time:
+    if (
+        options.show_last_modified_time
+        and last_commit_date.replace(tzinfo=None) > datetime.min
+    ):
         last_modified_time = etree.SubElement(
             element,
             "p",

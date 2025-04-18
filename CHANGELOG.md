@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] 2025-04-18 🌵
+
+- Improve the `contribs` plugin to not pollute the logs with
+  `dateutil.parser.ParseError` while working on a new file that is not
+  committed in Git, yet.
+- Add the possibility to enable and disable the `contribs` plugin by env
+  variable, through plugin configuration. To use, specify the following
+  setting:
+
+```yaml
+  - neoteroi.contribs:
+      enabled_by_env: "GIT_CONTRIBS_ON"  # Use the name you wish here for the env var
+```
+
+- When `enabled_by_env` is not empty, the Git contributors plugin is only
+  enabled if such variable exists and its value is a value in `{"1", "true"}`
+  (case insensitive). This is useful to disable the plugin by default during
+  local development, and enable it only during an automated build that builds
+  the documentation for publishing. The rationale for this setting is that
+  this plugin has an heavy impact on the build performance as it uses the Git
+  CLI to obtain the list of contributors who worked on each page.
+- Remove Python 3.8 from the build matrix, add 3.13.
+
 ## [1.1.0] 2024-08-10 🐢
 
 - Improve the `cards` plugin to automatically use cards' titles for the `alt`
