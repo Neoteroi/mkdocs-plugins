@@ -47,17 +47,12 @@ class GitContributionsReader(ContributionsReader):
         using the Git CLI.
         """
         in_process = subprocess.Popen(
-            ["git", "log", "--pretty=short", str(file_path)], stdout=subprocess.PIPE
+            ["git", "log", "--pretty=short", "--follow", str(file_path)],
+            stdout=subprocess.PIPE,
         )
         result = self._decode(
             subprocess.check_output(
-                [
-                    "git",
-                    "shortlog",
-                    "--summary",
-                    "--numbered",
-                    "--email",
-                ],
+                ["git", "shortlog", "--summary", "--numbered", "--email"],
                 stdin=in_process.stdout,
             )
         )
