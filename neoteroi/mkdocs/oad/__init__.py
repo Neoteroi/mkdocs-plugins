@@ -9,6 +9,7 @@ The markdown requires by default
 neoteroi.mkdocs.oad
 """
 
+from pathlib import Path
 import re
 
 from mkdocs.config.config_options import Type
@@ -25,16 +26,20 @@ class MkDocsOpenAPIDocumentationPlugin(BasePlugin):
     def _get_style(self) -> str:
         return "MKDOCS" if self.config.get("use_pymdownx", False) else "MARKDOWN"
 
-    def _replacer(self, match) -> str:
-        source = match.group(1).strip("'\"")
-        data = read_from_source(source)
+    def _replacer(self, cwd):
+        def replace(match) -> str:
+            source = match.group(1).strip("'\"")
 
-        handler = OpenAPIV3DocumentationHandler(
-            data, style=self._get_style(), source=source
-        )
-        return handler.write()
+            data = read_from_source(source, cwd)
 
-    def on_page_markdown(self, markdown, *args, **kwargs):
+            handler = OpenAPIV3DocumentationHandler(
+                data, style=self._get_style(), source=source
+            )
+            return handler.write()
+
+        return replace
+
+    def on_page_markdown(self, markdown, page, *args, **kwargs):
         """
         Replaces the tag [OAD(...)] in markdown with markdown generated from an
         OpenAPI Documentation, using essentials-openapi
@@ -42,5 +47,6 @@ class MkDocsOpenAPIDocumentationPlugin(BasePlugin):
         https://github.com/Neoteroi/essentials-openapi
         """
         if "[OAD(" in markdown:
-            return self.rx.sub(self._replacer, markdown)
+            cwd = (Path(page.file.src_dir) / page.file.src_path).parent
+            return self.rx.sub(self._replacer(cwd), markdown)
         return markdown
