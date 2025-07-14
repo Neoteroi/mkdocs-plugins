@@ -327,6 +327,81 @@ from neoteroi.mkdocs.spantable import SpanTableExtension, make_extension
 </div>
             """,
         ],
+        [
+            """
+            ::spantable::"
+
+            | Class             | Power Source      |
+            | ----------------- | ----------------- |
+            | Warlock @span=0:0 | 1                 |
+
+            ::end-spantable::
+            """,
+            """
+<div class="span-table-wrapper">
+<table class="span-table">
+<tr>
+<td>Class</td>
+<td>Power Source</td>
+</tr>
+<tr>
+<td>Warlock</td>
+<td>1</td>
+</tr>
+</table>
+</div>
+            """,
+        ],
+        [
+            """
+            ::spantable::"
+
+            | Class             | Power Source      |
+            | ----------------- | ----------------- |
+            | Warlock @span=0:1 | 2                 |
+
+            ::end-spantable::
+            """,
+            """
+<div class="span-table-wrapper">
+<table class="span-table">
+<tr>
+<td>Class</td>
+<td>Power Source</td>
+</tr>
+<tr>
+<td rowspan="1">Warlock</td>
+<td>2</td>
+</tr>
+</table>
+</div>
+            """,
+        ],
+        [
+            """
+            ::spantable::"
+
+            | Class             | Power Source      |
+            | ----------------- | ----------------- |
+            | Warlock @span=1:0 | 3                 |
+
+            ::end-spantable::
+            """,
+            """
+<div class="span-table-wrapper">
+<table class="span-table">
+<tr>
+<td>Class</td>
+<td>Power Source</td>
+</tr>
+<tr>
+<td colspan="1">Warlock</td>
+<td>3</td>
+</tr>
+</table>
+</div>
+            """,
+        ],
     ],
 )
 def test_spantable_extension(example, expected_result):

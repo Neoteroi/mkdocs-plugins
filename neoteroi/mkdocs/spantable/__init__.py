@@ -119,10 +119,10 @@ class SpanTableProcessor(BlockProcessor):
                 if cell.html_class:
                     props["class"] = cell.html_class
 
-                if cell.col_span > 1:
+                if cell.col_span_defined:
                     props["colspan"] = str(cell.col_span)
 
-                if cell.row_span > 1:
+                if cell.row_span_defined:
                     props["rowspan"] = str(cell.row_span)
 
                 td = etree.SubElement(tr, "td", props)
