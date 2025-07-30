@@ -32,7 +32,7 @@ keywords = [
     "documentation",
 ]
 dependencies = [
-    "essentials-openapi",
+    "essentials-openapi>=1.2.1",
     "mkdocs",
     "httpx",
     "click",
