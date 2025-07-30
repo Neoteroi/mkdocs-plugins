@@ -9,8 +9,8 @@ The markdown requires by default
 neoteroi.mkdocs.oad
 """
 
-from pathlib import Path
 import re
+from pathlib import Path
 
 from mkdocs.config.config_options import Type
 from mkdocs.plugins import BasePlugin
