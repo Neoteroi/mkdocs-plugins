@@ -1,10 +1,20 @@
 import textwrap
+from unittest.mock import Mock
 
 import pytest
 
 from neoteroi.mkdocs.oad import MkDocsOpenAPIDocumentationPlugin
 
 from . import get_resource_file_path
+
+
+def make_mock_page(src_dir="docs", src_path="index.md"):
+    mock_file = Mock()
+    mock_file.src_dir = src_dir
+    mock_file.src_path = src_path
+    mock_page = Mock()
+    mock_page.file = mock_file
+    return mock_page
 
 
 def test_markdown_without_oad():
@@ -20,7 +30,7 @@ def test_markdown_without_oad():
         )
     )
 
-    result = handler.on_page_markdown(example)
+    result = handler.on_page_markdown(example, make_mock_page())
     assert result == example
 
 
@@ -39,7 +49,7 @@ def test_markdown_with_oad(file_name):
         )
     )
 
-    result = handler.on_page_markdown(example)
+    result = handler.on_page_markdown(example, make_mock_page())
 
     # Note: not testing the full output since this responsibility belongs to the
     # essentials-openapi package
