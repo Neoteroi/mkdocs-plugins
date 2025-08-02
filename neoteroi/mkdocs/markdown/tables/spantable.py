@@ -14,6 +14,8 @@ class Cell:
     skip: bool = False
     col_span: int = 1
     row_span: int = 1
+    col_span_defined: bool = False
+    row_span_defined: bool = False
     props: Optional[Dict[str, str]] = None
 
     @property
@@ -72,6 +74,9 @@ def get_matrix(table: Table) -> Matrix:
                 raw_cols_span = match.group(1)
                 raw_rows_span = match.group(2)
 
+                col_span_defined = False
+                row_span_defined = False
+
                 if raw_cols_span is None and raw_rows_span is None:
                     # Automatic mode: increase the span until empty cells are found
                     # columns span takes precedence over rows span
@@ -81,9 +86,20 @@ def get_matrix(table: Table) -> Matrix:
                         row_index + 1,
                         slice(column_index, column_index + cols_span),
                     )
+
+                    if cols_span > 1:
+                        col_span_defined = True
+                    if rows_span > 1:
+                        row_span_defined = True
+
                 else:
                     cols_span = max(int(raw_cols_span or 1), 1)
                     rows_span = max(int(raw_rows_span or 1), 1)
+
+                    if int(raw_cols_span) > 0:
+                        col_span_defined = True
+                    if int(raw_rows_span) > 0:
+                        row_span_defined = True
 
                 if cols_span > 0 or rows_span > 0:
                     for coords in _iter_coords(
@@ -100,6 +116,8 @@ def get_matrix(table: Table) -> Matrix:
                             skip=not current,
                             col_span=cols_span,
                             row_span=rows_span,
+                            col_span_defined=col_span_defined,
+                            row_span_defined=row_span_defined,
                             props=props,
                         )
             else:
