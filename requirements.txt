@@ -1,6 +1,6 @@
 pytest
 pytest-cov
-essentials-openapi[full]>=1.2.1
+essentials-openapi[full]>=1.3.0
 mkdocs
 flake8
 black
