@@ -11,6 +11,7 @@ neoteroi.mkdocs.oad
 
 import re
 from pathlib import Path
+from typing import Optional
 
 from mkdocs.config.config_options import Type
 from mkdocs.plugins import BasePlugin
@@ -19,12 +20,18 @@ from openapidocs.utils.source import read_from_source
 
 
 class MkDocsOpenAPIDocumentationPlugin(BasePlugin):
-    config_scheme = (("use_pymdownx", Type(bool, default=False)),)
+    config_scheme = (
+        ("use_pymdownx", Type(bool, default=False)),
+        ("templates_path", Type(str, default=None)),
+    )
 
     rx = re.compile(r"\[OAD\(([^\)]+)\)\]")
 
     def _get_style(self) -> str:
         return "MKDOCS" if self.config.get("use_pymdownx", False) else "MARKDOWN"
+
+    def _get_templates_path(self) -> Optional[str]:
+        return self.config.get("templates_path", None)
 
     def _replacer(self, cwd):
         def replace(match) -> str:
@@ -33,7 +40,10 @@ class MkDocsOpenAPIDocumentationPlugin(BasePlugin):
             data = read_from_source(source, cwd)
 
             handler = OpenAPIV3DocumentationHandler(
-                data, style=self._get_style(), source=source
+                data,
+                style=self._get_style(),
+                source=source,
+                templates_path=self._get_templates_path(),
             )
             return handler.write()
 
