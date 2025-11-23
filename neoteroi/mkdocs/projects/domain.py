@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Iterable, List, Optional, Union
+from typing import Iterable
 
 from dateutil.parser import parse as parse_date
 
@@ -10,9 +10,9 @@ from neoteroi.mkdocs.projects.timeutil import parse_lasts
 @dataclass(frozen=True)
 class Event:
     title: str
-    description: Optional[str] = None
-    time: Optional[datetime] = None
-    icon: Optional[str] = None
+    description: str | None = None
+    time: datetime | None = None
+    icon: str | None = None
 
     def __post_init__(self):
         # Note: datetimes are currently not supported, only the date component is kept
@@ -29,7 +29,7 @@ class Event:
         )
 
 
-def _parse_optional_datetime(value: Union[None, datetime, str]) -> Optional[datetime]:
+def _parse_optional_datetime(value: date | datetime | str | None) -> datetime | None:
     if isinstance(value, date):
         # YAML parses dates automatically
         return value
@@ -39,7 +39,7 @@ def _parse_optional_datetime(value: Union[None, datetime, str]) -> Optional[date
     return None
 
 
-def _parse_optional_date(value: Union[None, date, str]) -> Optional[date]:
+def _parse_optional_date(value: date | str | None) -> date | None:
     if isinstance(value, date):
         # YAML parses dates automatically
         return value
@@ -50,7 +50,7 @@ def _parse_optional_date(value: Union[None, date, str]) -> Optional[date]:
 
 
 def _resolve_activities(
-    activities, preceding_date: Optional[date] = None
+    activities, preceding_date: date | None = None
 ) -> Iterable["Activity"]:
     """
     Iterates through a list of objects representing activities and yields
@@ -65,12 +65,12 @@ def _resolve_activities(
 @dataclass(frozen=True)
 class Activity:
     title: str
-    start: Optional[date] = None
-    end: Optional[date] = None
-    description: Optional[str] = None
-    activities: Optional[List["Activity"]] = None
-    events: Optional[List[Event]] = None
-    hidden: Optional[bool] = None
+    start: date | None = None
+    end: date | None = None
+    description: str | None = None
+    activities: list["Activity"] | None = None
+    events: list[Event] | None = None
+    hidden: bool | None = None
 
     def __post_init__(self):
         # Note: datetimes are currently not supported, only the date component is kept
@@ -110,19 +110,19 @@ class Activity:
                 if activity.end:
                     yield activity.end
 
-    def _get_event_date(self, fn) -> Optional[date]:
+    def _get_event_date(self, fn) -> date | None:
         if self.events:
             dates = [event.time for event in self.events if event.time is not None]
             return fn(dates) if dates else None
         return None
 
-    def get_first_event_date(self) -> Optional[date]:
+    def get_first_event_date(self) -> date | None:
         return self._get_event_date(min)
 
-    def get_last_event_date(self) -> Optional[date]:
+    def get_last_event_date(self) -> date | None:
         return self._get_event_date(max)
 
-    def get_overall_start(self) -> Optional[date]:
+    def get_overall_start(self) -> date | None:
         """
         Returns the start date of this activity, including all sub and descendants
         activities.
@@ -134,7 +134,7 @@ class Activity:
         ] + [event.time for event in self.iter_events() if event.time is not None]
         return min(all_starts)
 
-    def get_overall_end(self) -> Optional[date]:
+    def get_overall_end(self) -> date | None:
         """
         Returns the end date of this activity, including all sub and descendants
         activities.
@@ -147,7 +147,7 @@ class Activity:
         return max(all_ends)
 
     @classmethod
-    def from_obj(cls, obj, preceding_date: Optional[date] = None):
+    def from_obj(cls, obj, preceding_date: date | None = None):
         if isinstance(obj, str):
             return cls(title=obj)
         if not isinstance(obj, dict):

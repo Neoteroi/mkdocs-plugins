@@ -9,7 +9,7 @@ import re
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from typing import Iterable, List, Tuple
+from typing import Iterable
 
 from dateutil.parser import ParserError
 from dateutil.parser import parse as parse_date
@@ -26,7 +26,7 @@ class GitContributionsReader(ContributionsReader):
         except UnicodeDecodeError:
             return value.decode("ISO-8859-1")
 
-    def _parse_name_and_email(self, name_and_email) -> Tuple[str, str]:
+    def _parse_name_and_email(self, name_and_email) -> tuple[str, str]:
         match = self._name_email_rx.search(name_and_email)
         if match:
             name = match.groupdict()["name"].strip()
@@ -41,7 +41,7 @@ class GitContributionsReader(ContributionsReader):
             name, email = self._parse_name_and_email(name_and_email)
             yield Contributor(name, email, int(count))
 
-    def get_contributors(self, file_path: Path) -> List[Contributor]:
+    def get_contributors(self, file_path: Path) -> list[Contributor]:
         """
         Obtains the list of contributors for a file with the given path,
         using the Git CLI.

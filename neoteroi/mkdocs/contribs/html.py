@@ -5,7 +5,6 @@ This module contains methods to render the contributions stats.
 import xml.etree.ElementTree as etree
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List
 from xml.etree.ElementTree import tostring as xml_to_str
 
 from neoteroi.mkdocs.contribs.domain import Contributor
@@ -25,7 +24,7 @@ class ContribsViewOptions:
 
 
 def contribution_stats_to_element(
-    contributors: List[Contributor],
+    contributors: list[Contributor],
     last_commit_date: datetime,
     options: ContribsViewOptions,
 ) -> etree.Element:
@@ -85,7 +84,7 @@ def contribution_stats_to_element(
 
 
 def render_contribution_stats(
-    contributors: List[Contributor],
+    contributors: list[Contributor],
     last_commit_date: datetime,
     options: ContribsViewOptions,
 ) -> str:

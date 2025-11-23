@@ -13,7 +13,6 @@ from datetime import datetime
 from fnmatch import fnmatch
 from pathlib import Path
 from subprocess import CalledProcessError
-from typing import List
 
 from mkdocs.config import config_options as c
 from mkdocs.plugins import BasePlugin
@@ -38,7 +37,7 @@ class DefaultContributionsReader(ContributionsReader):
         self._git_reader = GitContributionsReader()
         self._txt_reader = TXTContributionsReader()
 
-    def get_contributors(self, file_path: Path) -> List[Contributor]:
+    def get_contributors(self, file_path: Path) -> list[Contributor]:
         git_history_contributors = self._git_reader.get_contributors(file_path)
         configured_contributors = self._txt_reader.get_contributors(file_path)
         return list(
@@ -71,7 +70,7 @@ class ContribsPlugin(BasePlugin):
 
     def _merge_contributor_by_email(
         self,
-        contributors: List[Contributor],
+        contributors: list[Contributor],
         contributor: Contributor,
         contributor_info: dict,
     ) -> bool:
@@ -97,7 +96,7 @@ class ContribsPlugin(BasePlugin):
 
         return False
 
-    def _get_contributors(self, page_file: File) -> List[Contributor]:
+    def _get_contributors(self, page_file: File) -> list[Contributor]:
         results = []
         contributors = self._contribs_reader.get_contributors(
             Path("docs") / page_file.src_path

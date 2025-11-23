@@ -4,7 +4,6 @@ import xml.etree.ElementTree as etree
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from enum import Enum
-from typing import List, Union
 from uuid import uuid4
 
 from neoteroi.mkdocs.markdown.images import build_icon_html
@@ -65,8 +64,8 @@ class VerticalLine:
 
 @dataclass
 class BuildContext:
-    vertical_lines: List[VerticalLine] = field(default_factory=list)
-    styles: List[str] = field(default_factory=list)
+    vertical_lines: list[VerticalLine] = field(default_factory=list)
+    styles: list[str] = field(default_factory=list)
 
 
 class GanttHTMLBuilder:
@@ -397,7 +396,7 @@ class GanttHTMLBuilder:
         span_el = etree.SubElement(period_element, "span")
         span_el.text = item.title
 
-    def _format_time(self, value: Union[None, date, datetime]):
+    def _format_time(self, value: date | datetime | None):
         if value is None:
             return ""
         if isinstance(value, datetime):
@@ -431,7 +430,7 @@ class GanttHTMLBuilder:
             des.set("class", f"description {des.get('class') or ''}")
             dot_element.append(des)
 
-    def _calc_time_left(self, time: Union[date, datetime]) -> float:
+    def _calc_time_left(self, time: date | datetime) -> float:
         delta = (
             time
             - datetime(

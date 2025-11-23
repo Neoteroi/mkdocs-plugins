@@ -1,5 +1,5 @@
 import re
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Type, TypeVar
+from typing import Any, Iterable, Type, TypeVar
 
 _TABLE_LINE_PATTERN = re.compile(r"\s?\|([^\|]+)")
 _TABLE_SEPARATOR_LINE_PATTERN = re.compile(r"^[-:\s\|]*$")
@@ -20,7 +20,7 @@ class Matrix:
         )
 
     @property
-    def rows(self) -> Tuple[List[Any], ...]:
+    def rows(self) -> tuple[list[Any], ...]:
         return self._rows
 
     def __str__(self) -> str:
@@ -71,14 +71,14 @@ class Table:
         )
 
     @property
-    def headers(self) -> Tuple[str, ...]:
+    def headers(self) -> tuple[str, ...]:
         return self._headers
 
     @property
-    def records(self) -> Tuple[Tuple[str, ...], ...]:
+    def records(self) -> tuple[tuple[str, ...], ...]:
         return self._records
 
-    def items(self) -> Iterable[Dict[str, str]]:
+    def items(self) -> Iterable[dict[str, str]]:
         properties = {index: header for index, header in enumerate(self.headers)}
 
         for record in self.records:
@@ -110,9 +110,9 @@ class Table:
 T = TypeVar("T", bound=Table)
 
 
-def read_table(markdown: str, cls: Type[T] = Table) -> Optional[T]:
-    headers: List[str] = []
-    records: List[List[str]] = []
+def read_table(markdown: str, cls: Type[T] = Table) -> T | None:
+    headers: list[str] = []
+    records: list[list[str]] = []
 
     for line in markdown.splitlines():
         if _TABLE_SEPARATOR_LINE_PATTERN.match(line):

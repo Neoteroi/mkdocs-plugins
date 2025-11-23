@@ -16,7 +16,7 @@ import re
 import textwrap
 import xml.etree.ElementTree as etree
 from abc import ABC, abstractmethod
-from typing import Iterable, List, Optional
+from typing import Iterable
 
 from markdown.blockprocessors import BlockProcessor
 
@@ -34,7 +34,7 @@ from neoteroi.mkdocs.markdown.data.web import HTTPDataReader
 logger = logging.getLogger("MARKDOWN")
 
 
-def find_closing_fragment_index(pattern: re.Pattern, blocks: List[str]) -> int:
+def find_closing_fragment_index(pattern: re.Pattern, blocks: list[str]) -> int:
     for index, block in enumerate(blocks):
         if pattern.search(block):
             return index
@@ -128,7 +128,7 @@ class BaseProcessor(ABC):
                 f"Could not render a {self.name} block. Please correct the input.",
             )
 
-    def get_match(self, pattern, blocks) -> Optional[re.Match]:
+    def get_match(self, pattern, blocks) -> re.Match | None:
         first_block = blocks.pop(0)
         new_lines = []
         match = None
@@ -159,7 +159,7 @@ class SourceBlockProcessor(BlockProcessor, BaseProcessor):
     [timeline(https://.../example.json)]
     """
 
-    _pattern: Optional[re.Pattern] = None
+    _pattern: re.Pattern | None = None
 
     @property
     def pattern(self) -> re.Pattern:
@@ -233,8 +233,8 @@ class EmbeddedBlockProcessor(BlockProcessor, BaseProcessor):
     The source of data in this case is always coming as a string.
     """
 
-    _start_pattern: Optional[re.Pattern] = None
-    _end_pattern: Optional[re.Pattern] = None
+    _start_pattern: re.Pattern | None = None
+    _end_pattern: re.Pattern | None = None
 
     @property
     def start_pattern(self) -> re.Pattern:
