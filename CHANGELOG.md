@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove support for Python 3.9.
 - Add Python 3.14 to the build matrix.
 - Remove Codecov from build and README.
+- Update type annotations to Python >= 3.10.
 
 ## [1.1.3] 2025-08-02
 
