@@ -4,7 +4,6 @@ for Markdown.
 """
 
 import re
-from typing import Dict, Tuple
 
 _PROPS_RE = re.compile(
     r"""\s?((?P<name>[^\s\=]+)=(?P<quot>"|')(?P<value>[^\"\']+)(?P=quot))""",
@@ -14,7 +13,7 @@ _PROPS_RE = re.compile(
 
 def parse_props(
     line: str, prefix: str = "", bool_attrs: bool = False
-) -> Dict[str, str]:
+) -> dict[str, str]:
     """
     Parses a line describing properties, in this form:
 
@@ -49,7 +48,7 @@ def parse_props(
     return props
 
 
-def extract_props(line: str, prefix: str = "") -> Tuple[str, Dict[str, str]]:
+def extract_props(line: str, prefix: str = "") -> tuple[str, dict[str, str]]:
     """
     Extracts properties like the `parse_props` function, but
     also returns the original line with properties removed.

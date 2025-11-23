@@ -1,16 +1,15 @@
 from dataclasses import dataclass
-from typing import List, Optional
 
 
 @dataclass
 class TimelineItem:
     title: str
-    content: Optional[str] = None
-    sub_title: Optional[str] = None
-    icon: Optional[str] = None
-    key: Optional[str] = None
+    content: str | None = None
+    sub_title: str | None = None
+    icon: str | None = None
+    key: str | None = None
 
 
 @dataclass
 class Timeline:
-    items: List[TimelineItem]
+    items: list[TimelineItem]

@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as etree
 from dataclasses import dataclass
-from typing import Optional
 
 from .utils import create_instance
 
@@ -8,9 +7,9 @@ from .utils import create_instance
 @dataclass
 class Image:
     url: str
-    height: Optional[int] = None
-    width: Optional[int] = None
-    alt: Optional[str] = None
+    height: int | None = None
+    width: int | None = None
+    alt: str | None = None
 
     @classmethod
     def from_obj(cls, obj):

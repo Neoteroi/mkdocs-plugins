@@ -2,7 +2,7 @@ import os
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Iterable, List, Tuple
+from typing import Iterable
 
 from dateutil.parser import parse
 
@@ -30,7 +30,7 @@ class TXTContributionsReader(ContributionsReader):
         r"^\s*Last\smodified\stime:\s(?P<value>.+)$", re.IGNORECASE | re.MULTILINE
     )
 
-    def _parse_value(self, value: str) -> Tuple[str, str, int]:
+    def _parse_value(self, value: str) -> tuple[str, str, int]:
         match = self._contrib_rx.search(value)
         if match:
             values = match.groupdict()
@@ -51,7 +51,7 @@ class TXTContributionsReader(ContributionsReader):
             if name and email:
                 yield Contributor(name, email, count)
 
-    def get_contributors(self, file_path: Path) -> List[Contributor]:
+    def get_contributors(self, file_path: Path) -> list[Contributor]:
         """
         Obtains the list of contributors from a txt file with the given path.
         The file contents should look like:

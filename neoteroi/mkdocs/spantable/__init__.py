@@ -10,7 +10,6 @@ Copyright (c) 2022 to present, Roberto Prevato
 import logging
 import re
 import xml.etree.ElementTree as etree
-from typing import Dict, Optional
 
 from markdown import Extension
 from markdown.blockprocessors import BlockProcessor
@@ -55,7 +54,7 @@ class SpanTableProcessor(BlockProcessor):
             yield block + "\n"
             i += 1
 
-    def read_first_table(self, blocks) -> Optional[SpanTable]:
+    def read_first_table(self, blocks) -> SpanTable | None:
         """
         Reads the first table in the given blocks, returning it.
         If a block does not contain a table, it is ignored.
@@ -91,7 +90,7 @@ class SpanTableProcessor(BlockProcessor):
         self._handle_caption(table, props)
         self._set_table(span_table, table)
 
-    def _handle_caption(self, table_element: etree.Element, props: Dict[str, str]):
+    def _handle_caption(self, table_element: etree.Element, props: dict[str, str]):
         caption = props.get("caption")
         if caption:
             caption_el = etree.SubElement(table_element, "caption", {})

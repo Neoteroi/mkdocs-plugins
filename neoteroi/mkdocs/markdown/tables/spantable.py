@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Iterable
 
 from .. import extract_props
 from . import Matrix, Table
@@ -16,22 +16,22 @@ class Cell:
     row_span: int = 1
     col_span_defined: bool = False
     row_span_defined: bool = False
-    props: Optional[Dict[str, str]] = None
+    props: dict[str, str] | None = None
 
     @property
-    def html_class(self) -> Optional[str]:
+    def html_class(self) -> str | None:
         return self.props.get("class") if self.props else None
 
 
 def _iter_coords(
     x: int, y: int, colspan: int, rowspan: int
-) -> Iterable[Tuple[int, int]]:
+) -> Iterable[tuple[int, int]]:
     for x_increment in range(colspan):
         for y_increment in range(rowspan):
             yield (x + x_increment, y + y_increment)
 
 
-def _get_auto_cols_span(values: Tuple[str, ...], start_index: int = 0) -> int:
+def _get_auto_cols_span(values: tuple[str, ...], start_index: int = 0) -> int:
     span = 1
 
     for i in range(start_index, len(values)):
@@ -43,7 +43,7 @@ def _get_auto_cols_span(values: Tuple[str, ...], start_index: int = 0) -> int:
 
 
 def _get_auto_rows_span(
-    rows: List[Tuple[str, ...]], start_index: int, cols_slice: slice
+    rows: list[tuple[str, ...]], start_index: int, cols_slice: slice
 ) -> int:
     span = 1
 

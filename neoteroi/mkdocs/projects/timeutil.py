@@ -2,7 +2,7 @@ import calendar
 import re
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Dict, Iterable, List, Tuple
+from typing import Iterable
 
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
@@ -10,7 +10,7 @@ from dateutil.relativedelta import relativedelta
 _LASTS_PATTERN = re.compile(r"(?P<amount>\d+)\s?(?P<unit>\w+)")
 
 
-MONTHS: List[Tuple[int, str]] = [
+MONTHS: list[tuple[int, str]] = [
     (1, "January"),
     (2, "February"),
     (3, "March"),
@@ -25,7 +25,7 @@ MONTHS: List[Tuple[int, str]] = [
     (12, "December"),
 ]
 
-QUARTERS_BY_MONTH_NUMBER: Dict[int, int] = {
+QUARTERS_BY_MONTH_NUMBER: dict[int, int] = {
     1: 1,
     2: 1,
     3: 1,
@@ -41,7 +41,7 @@ QUARTERS_BY_MONTH_NUMBER: Dict[int, int] = {
 }
 
 
-_MIN_MONTHS_BY_QUARTER_NUMBER: Dict[int, int] = {
+_MIN_MONTHS_BY_QUARTER_NUMBER: dict[int, int] = {
     1: 1,
     2: 4,
     3: 7,
@@ -49,7 +49,7 @@ _MIN_MONTHS_BY_QUARTER_NUMBER: Dict[int, int] = {
 }
 
 
-_MAX_MONTHS_BY_QUARTER_NUMBER: Dict[int, int] = {
+_MAX_MONTHS_BY_QUARTER_NUMBER: dict[int, int] = {
     1: 3,
     2: 6,
     3: 9,
@@ -201,7 +201,7 @@ def iter_quarters_between_dates(min_date: date, max_date: date) -> Iterable[Quar
 
 def iter_weeks_between_dates(
     min_date: date, max_date: date
-) -> Iterable[Tuple[int, date]]:
+) -> Iterable[tuple[int, date]]:
     current_week_year, current_week_number, _ = min_date.isocalendar()
     current_week_date = date.fromisocalendar(current_week_year, current_week_number, 1)
     end_date = get_last_day_of_month(max_date)
